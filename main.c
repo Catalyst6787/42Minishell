@@ -1,7 +1,11 @@
-#include "libft/libft.h"
+#include "mini.h"
+
 
 int main(void)
 {
-	ft_printf("%s\n", "je suis beau");
+	char *res;
+	res = readline("ecrit ta commande bb> ");
+	printf("%s", res);
+	free(res);
 	return (0);
 }
