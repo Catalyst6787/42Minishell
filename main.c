@@ -1,7 +1,5 @@
 #include "mini.h"
 
-// quintuple monstre
-
 int main(void)
 {
 	char *res;
