@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = cc -Wall -Wextra -Werror
+CC = cc -g -Wall -Wextra -Werror
 
 RM = rm -f
 

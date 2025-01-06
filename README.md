@@ -1,7 +1,7 @@
-plan:
+**plan:**
 
 main
-	boucle 
+	boucle
 		readline -> parsing -> execution
 		free(readline)
 		retour a la ligne
