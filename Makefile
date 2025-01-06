@@ -14,7 +14,7 @@ LIBFT = $(LIBFT_PATH)libft.a
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
 
 %.o: %.c
 	$(CC) -c $< -o $@
