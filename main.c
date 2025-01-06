@@ -1,6 +1,6 @@
 #include "mini.h"
 
-// triple monstre
+// double monstre
 
 int main(void)
 {
