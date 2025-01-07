@@ -7,6 +7,7 @@
 // libc
 # include <stdio.h>
 # include <unistd.h>
+# include <stdlib.h>
 
 // readline
 # include <readline/readline.h>
