@@ -1,7 +1,5 @@
 #include "../mini.h"
 
-void	ft_free_split(char **tab);
-
 char	*find_path(char *command)
 {
 	char	**paths;
