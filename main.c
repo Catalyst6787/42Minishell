@@ -76,7 +76,7 @@ int	append_token(char *token, t_cmd *tail)
 	i = 0;
 	while(tail->tab && tail->tab[i])
 		i++;
-	newtab = malloc(sizeof(char *) * i + 2);
+	newtab = malloc(sizeof(char) * i + 2);
 	newtab[i + 1] = NULL;
 	newtab[i] = token;
 	i--;
@@ -91,21 +91,22 @@ int	append_token(char *token, t_cmd *tail)
 	return(1);
 }
 
-int	init_node(t_cmd *node, t_cmd *prev)
+
+int	init_node(t_cmd **node, t_cmd *prev)
 {
-	node = malloc(sizeof(t_cmd));
-	if (!node)
+	*node = malloc(sizeof(t_cmd));
+	if (!*node)
 		return(0);
-	node->prev = prev;
+	(*node)->prev = prev;
 	if (prev)
 	{
-		node->prev->next = node;
-		node->id = node->prev->id + 1;
+		(*node)->prev->next = *node;
+		(*node)->id = (*node)->prev->id + 1;
 	}
 	else
-		node->id = 0;
-	node->tab = NULL;
-	node->next = NULL;
+		(*node)->id = 0;
+	(*node)->tab = NULL;
+	(*node)->next = NULL;
 	return(1);
 }
 
@@ -124,7 +125,7 @@ int	tokenizator(char *input, t_cmd *head)
 	{
 		if ((ft_strlen(tab[i]) == 1 && is_special(tab[i][0])) && group_has_elem)
 		{
-			init_node(head->next, head);
+			init_node(&head->next, head);
 			head = head->next;
 			group_has_elem = 0;
 		}
@@ -139,16 +140,18 @@ int	tokenizator(char *input, t_cmd *head)
 	return(1);
 }
 
+
 int	main(void)
 {
 	t_cmd	*head;
 	char *input;
 
-	init_node(head, NULL);
+	head = NULL;
+	init_node(&head, NULL);
 	if (!head)
 		return(0);
 	input = readline(PROMPT);
-	int i = 1;
+	int i = 4;
 	while(i)
 	{
 		tokenizator(input, head);

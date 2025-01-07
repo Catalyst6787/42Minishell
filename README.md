@@ -14,3 +14,4 @@ parsing
 test.txt < wc > res.txt
 
 input -> ls -la
+
