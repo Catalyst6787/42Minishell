@@ -6,7 +6,7 @@ int main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	line = readline("dis moi tout > ");
+	line = readline(PROMPT);
 	while(ft_strncmp(line, "exit", 4))
 	{
 		if (*line)
@@ -15,7 +15,7 @@ int main(int ac, char **av, char **envp)
 			add_history(line);
 			free(line);
 		}
-		line = readline("dis moi tout > ");
+		line = readline(PROMPT);
 	}
 	rl_clear_history();
 	free(line);
