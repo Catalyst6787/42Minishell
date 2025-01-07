@@ -1,17 +1,20 @@
 #include "mini.h"
 
-int main(void)
+int main(int ac, char **av, char **envp)
 {
-	char *res;
-	res = readline("dis moi tout > ");
-	while(ft_strncmp(res, "exit", 4))
+	char *line;
+
+	(void)ac;
+	(void)av;
+	line = readline("dis moi tout > ");
+	while(ft_strncmp(line, "exit", 4))
 	{
-		printf("%s\n", res);
-		add_history(res);
-		free(res);
-		res = readline("dis moi tout > ");
+		child_process_for_externs(line, envp);
+		add_history(line);
+		free(line);
+		line = readline("dis moi tout > ");
 	}
 	rl_clear_history();
-	free(res);
+	free(line);
 	return (0);
 }
