@@ -38,7 +38,10 @@ void	child_process_for_externs(char *s, char **envp)
 	av_command = ft_split(s, ' ');
 	path = find_path(av_command[0]);
 	if (!path)
+	{
+		ft_printf("minishell: command not found: %s\n", av_command[0]);
 		return ;
+	}
 	pid = fork();
 	if (pid == -1)
 		return ;
