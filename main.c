@@ -92,15 +92,15 @@ char *remove_lone_quotes(char *s)
 	return(s);
 }
 
-char **clean_input(char *s)
+char *clean_input(char *s)
 {
-	(void)s;
 	// expand $
-	// remove empty strings and lone quotes
+	s = remove_lone_quotes(s);
+	s = remove_useless_quotes(s);
 	// split by space except quoted
 	// replace wildcard
-	// (remove quotes)
-	return(NULL);
+	// remove quotes
+	return(s);
 }
 
 int main(int ac, char **av, char **envp)
@@ -111,8 +111,7 @@ int main(int ac, char **av, char **envp)
 		return(printf("no args given\n"), 0);
 	(void)envp;
 
-	char *res = remove_lone_quotes(ft_strdup(av[1]));
-	res = remove_useless_quotes(res);
+	char *res = clean_input(ft_strdup(av[1]));
 	printf("%s\n", res);
 	free(res);
 	/*
