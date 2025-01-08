@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 13:28:50 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/08 14:18:14 by kgiraud          ###   ########.fr       */
+/*   Created: 2025/01/08 14:09:47 by kgiraud           #+#    #+#             */
+/*   Updated: 2025/01/08 14:28:09 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-void	ft_echo(char **av)
+void	ft_echo(char **av);
+
+void	ft_env(char **envp)
 {
 	int	i;
-	int	opt;
 
 	i = 0;
-	opt = 0;
-	if (ft_strncmp(av[i++], "echo", 4) != 0)
-		return ;
-	if (av[i] && ft_strncmp(av[i], "-n", 4) == 0)
+	while (envp[i])
 	{
-		opt = 1;
+		ft_printf("%s", envp[i]);
+		ft_printf("\n");
 		i++;
 	}
-	while (av[i])
-	{
-		ft_printf("%s", av[i++]);
-		if (av[i])
-			ft_printf(" ");
-	}
-	if (!opt)
-		ft_printf("\n");
 }
