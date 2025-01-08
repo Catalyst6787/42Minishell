@@ -20,6 +20,27 @@
 void	child_process_for_externs(char *s, char **envp);
 void	ft_free_split(char **tab);
 
+// PARSING
+
+char	*rem_char(char *s, int t);
+char	*remove_useless_quotes(char *s);
+char	*remove_lone_quotes(char *s);
+char	*clean_input(char *s);
+int		end_of_token(char *s);
+char	*token_dup(char *s);
+char	*quoted_token_dup(char *s);
+char	**split_tokens(char *s);
+
+
+// PARSING_UTILS
+
+int	which_cmd(char *cmd);
+int	is_special(char c);
+int	isquote(char c);
+int	get_last_char(char *s, char c);
+int	next_char(char *s, char c);
+int	count_chars(char *s, char c);
+
 
 # define PROMPT " > "
 
@@ -41,9 +62,5 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
-
-int	which_cmd(char *cmd);
-int	is_special(char c);
-
 
 #endif

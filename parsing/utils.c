@@ -1,6 +1,6 @@
 #include "mini.h"
 
-int which_cmd(char *cmd)
+int	which_cmd(char *cmd)
 {
 	if (!strcmp(cmd, "echo"))
 		return(ECHO);
@@ -35,3 +35,54 @@ int	is_special(char c)
 		return (0);
 }
 
+int	isquote(char c)
+{
+	if (c == '\'' || c == '\"')
+		return(1);
+	else
+		return(0);
+}
+
+int	get_last_char(char *s, char c)
+{
+	int i;
+
+	i = ft_strlen(s);
+	while(i)
+	{
+		if (s[i] == c)
+			return(i);
+		i--;
+	}
+	return(printf("get_last_char did not found char, exiting"), exit(0), 0);
+}
+
+int	next_char(char *s, char c)
+{
+	int i;
+
+	i = 1;
+	while(s[i])
+	{
+		if (s[i] == c)
+			return(i);
+		i++;
+	}
+	return(i);
+}
+
+int	count_chars(char *s, char c)
+{
+	int i;
+	int count;
+
+	i = 0;
+	count = 0;
+	while(s[i])
+	{
+		if (s[i] == c)
+			count++;
+		i++;
+	}	
+	return(count);
+}
