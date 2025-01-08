@@ -6,22 +6,36 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 13:28:50 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/08 14:18:14 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/08 15:25:09 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
+
+int	is_n_option(char *s)
+{
+	if (!s || !*s)
+		return (0);
+	if (*s != '-')
+		return (0);
+	s++;
+	while (*s)
+	{
+		if (*s != 'n')
+			return (0);
+		s++;
+	}
+	return (1);
+}
 
 void	ft_echo(char **av)
 {
 	int	i;
 	int	opt;
 
-	i = 0;
+	i = 1;
 	opt = 0;
-	if (ft_strncmp(av[i++], "echo", 4) != 0)
-		return ;
-	if (av[i] && ft_strncmp(av[i], "-n", 4) == 0)
+	while (av[i] && is_n_option(av[i]))
 	{
 		opt = 1;
 		i++;
