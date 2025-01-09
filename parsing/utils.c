@@ -35,6 +35,28 @@ int	is_special(char c)
 		return (0);
 }
 
+int is_separator(char *s)
+{
+	if ((ft_strlen(s) == 1 || (ft_strlen(s) == 2 && s[0] == s[1]))
+	&& (s[0] == '|' || s[0] == '>' || s[0] == '<'))
+		return (1);
+	else if (ft_strlen(s) == 2 && s[0] == s[1] && s[0] == '&')
+		return(1);
+	else
+		return(0);
+}
+
+int next_separator(char **tab, uint i)
+{
+	while(tab[i])
+	{
+		if (is_separator(tab[i]))
+			return(i);
+		i++;
+	}
+	return(0);
+}
+
 int	isquote(char c)
 {
 	if (c == '\'' || c == '\"')
@@ -85,4 +107,62 @@ int	count_chars(char *s, char c)
 		i++;
 	}	
 	return(count);
+}
+
+void	print_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	if (!tab)
+		return ;
+	while(tab[i])
+	{
+		printf("tab[%d]: {%s}\n", i, tab[i]);
+		i++;
+	}
+}
+
+void	free_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	if (!tab)
+		return ;
+	while(tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+void	print_list(t_cmd *head)
+{
+	while(head)
+	{
+		printf("\nnode nbr: %d\n", head->id);
+		print_tab(head->tab);
+		head = head->next;
+	}
+}
+
+
+void	free_list(t_cmd **head)
+{
+	t_cmd *next;
+	t_cmd *tail;
+
+	if (!head)
+		return ;
+	tail = *head;
+	while(tail)
+	{
+		free_tab(tail->tab);
+		next = tail->next;
+		free(tail);
+		tail = next;
+	}
+	head = NULL;
 }

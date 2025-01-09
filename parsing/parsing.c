@@ -121,7 +121,7 @@ char	**split_tokens(char *s)
 	i = 0;
 	j = 0;
 	nbr_of_tokens = count_tokens(s);
-	tab = malloc(sizeof(char *) * nbr_of_tokens + 1);
+	tab = (char **)malloc(sizeof(char *) * (nbr_of_tokens + 1));
 	tab[nbr_of_tokens] = NULL;
 	while(s[i])
 	{
@@ -166,4 +166,80 @@ int	count_tokens(char *s)
 		}
 	}
 	return (c);
+}
+
+void	append_node(t_cmd **head, char **tab)
+{
+	t_cmd *last;
+	t_cmd *new;
+
+	new = malloc(sizeof(t_cmd));
+	if (!new)
+		return(printf("Malloc error in append_node(), exiting"), exit(0)); // Should free_all
+	new->tab = tab;
+	new->next = NULL;
+	if (!head || !(*head))
+	{
+		*head = new;
+		new->id = 0;
+		new->prev = NULL;
+	}
+	else
+	{
+		last = *head;
+		while(last->next)
+			last = last->next;
+		new->id = last->id + 1;
+		last->next = new;
+		new->prev = last;
+	}
+}
+
+char **sub_tab(char **tab, uint from, uint to)
+{
+	char **subtab;
+	uint size;
+	uint i;
+
+	i = 0;
+	if (!tab)
+		return(printf("sub_tab was sent bad params, returning NULL"), NULL);
+	size = to - from;
+	subtab = malloc(sizeof(char *) * (size + 1));
+	subtab[size] = NULL;
+	while(i < size)
+	{
+		subtab[i] = tab[from];
+		i++;
+		from++;
+	}
+	return(subtab);
+}
+
+void	group_tokens(t_cmd **head, char **tab)
+{
+	int i;
+	int group_has_tokens;
+	int group_start;
+
+	i = 0;
+	group_has_tokens = 0;
+	group_start = 0;
+	while(tab[i])
+	{
+		if (is_separator(tab[i]) && group_has_tokens)
+		{
+			append_node(head, sub_tab(tab, group_start, i));
+			append_node(head, sub_tab(tab, i + 0, i + 1));
+			i++;
+			group_start = i;
+			group_has_tokens = 0;
+		}
+		else
+		{
+			i++;
+			group_has_tokens = 1;
+		}
+	}
+	append_node(head, sub_tab(tab, group_start, i));
 }

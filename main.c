@@ -1,50 +1,31 @@
 #include "mini.h"
 
-void	print_tab(char **tab)
-{
-	int i;
 
-	i = 0;
-	if (!tab)
-		return ;
-	while(tab[i])
-	{
-		printf("tab[%d]: {%s}\n", i, tab[i]);
-		i++;
-	}
-}
-
-void	free_tab(char **tab)
-{
-	int i;
-
-	i = 0;
-	if (!tab)
-		return ;
-	while(tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
 
 int main(int ac, char **av, char **envp)
 {
 	char **tab;
+	t_cmd	*groups;
 
 	//if (ac != 2)
 	//	return(printf("no args given\n"), 0);
 	(void)envp;
 	(void)av;
 	(void)ac;
+	groups = NULL;
 
-	char *res = clean_input(ft_strdup("test 'quoted' \"double quoted\" \"'triple quoted'\" 0 ' ' "));
+	char *res = clean_input(ft_strdup("this is group one | that is group three > group five is here"));
 	printf("%s\n\n", res);
 	printf("nbr of tokens; %d\n", count_tokens(res));
 	tab = split_tokens(res);
 	print_tab(tab);
-	free_tab(tab);
+
+	group_tokens(&groups, tab);
+	print_list(groups);
+	free_list(&groups);
+
+	//free_tab(tab);
+	free(tab);
 	free(res);
 	/*
 	line = readline(PROMPT);
