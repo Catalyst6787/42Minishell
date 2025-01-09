@@ -114,30 +114,33 @@ char	*quoted_token_dup(char *s)
 char	**split_tokens(char *s)
 {
 	int		i;
-	char	*tmp;
+	int		j;
+	int		nbr_of_tokens;
+	char	**tab;
 
 	i = 0;
-	tmp = NULL;
+	j = 0;
+	nbr_of_tokens = count_tokens(s);
+	tab = malloc(sizeof(char *) * nbr_of_tokens + 1);
+	tab[nbr_of_tokens] = NULL;
 	while(s[i])
 	{
 		if (s[i] == ' ')
 			i++;
 		else if (isquote(s[i]))
 		{
-			tmp = quoted_token_dup(s + i);
-			printf("%s\n", tmp);
-			free(tmp);
+			tab[j] = quoted_token_dup(s + i);
 			i = end_of_token(s + i) + i + 1;
+			j++;
 		}
 		else
 		{
-			tmp = token_dup(s + i);
-			printf("%s\n", tmp);
-			free(tmp);
+			tab[j] = token_dup(s + i);
 			i = end_of_token(s + i) + i;
+			j++;
 		}
 	}
-	return(NULL);
+	return(tab);
 }
 
 int	count_tokens(char *s)
