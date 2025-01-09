@@ -139,3 +139,28 @@ char	**split_tokens(char *s)
 	}
 	return(NULL);
 }
+
+int	count_tokens(char *s)
+{
+	int	i;
+	int	c;
+
+	i = 0;
+	c = 0;
+	while(s[i])
+	{
+		if (s[i] == ' ')
+			i++;
+		else if (isquote(s[i]))
+		{
+			i = end_of_token(s + i) + i + 1;
+			c++;
+		}
+		else
+		{
+			i = end_of_token(s + i) + i;
+			c++;
+		}
+	}
+	return (c);
+}

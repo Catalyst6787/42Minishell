@@ -12,8 +12,9 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	(void)ac;
 
-	char *res = clean_input(ft_strdup(" \"quotes: \" "));
+	char *res = clean_input(ft_strdup("\"\n\""));
 	printf("%s\n\n", res);
+	printf("nbr of tokens; %d\n", count_tokens(res));
 	split_tokens(res);
 	free(res);
 	/*

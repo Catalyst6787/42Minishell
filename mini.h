@@ -30,6 +30,7 @@ int		end_of_token(char *s);
 char	*token_dup(char *s);
 char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
+int		count_tokens(char *s);
 
 
 // PARSING_UTILS
