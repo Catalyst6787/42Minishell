@@ -6,21 +6,18 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 14:09:47 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/08 14:29:21 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/09 16:45:50 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-void	ft_env(char **envp)
+void	ft_env(t_env *env)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
+	while (env)
 	{
-		ft_printf("%s", envp[i]);
-		ft_printf("\n");
-		i++;
+		printf("%s=", env->name);
+		printf("%s\n", env->value);
+		env = env->next;
 	}
 }
