@@ -8,7 +8,8 @@ int main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	line = readline(PROMPT);
-	init_env(env, envp);
+	env = NULL;
+	init_envp(&env, envp);
 	while(ft_strncmp(line, "exit", 4))
 	{
 		if (*line)
