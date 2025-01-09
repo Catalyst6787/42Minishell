@@ -14,7 +14,7 @@ int main(int ac, char **av, char **envp)
 	(void)ac;
 	groups = NULL;
 
-	char *res = clean_input(ft_strdup("this is group one | that is group three > group five is here"));
+	char *res = clean_input(ft_strdup("this is group one | that is group three > group five is here || double pipe >> double redirection && double ampersand << reverse double redirection"));
 	printf("%s\n\n", res);
 	printf("nbr of tokens; %d\n", count_tokens(res));
 	tab = split_tokens(res);
