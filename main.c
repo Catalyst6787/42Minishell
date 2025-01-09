@@ -2,11 +2,13 @@
 
 int main(int ac, char **av, char **envp)
 {
-	char *line;
+	char 	*line;
+	t_env	*env;
 
 	(void)ac;
 	(void)av;
 	line = readline(PROMPT);
+	init_env(env, envp);
 	while(ft_strncmp(line, "exit", 4))
 	{
 		if (*line)

@@ -42,8 +42,15 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
+typedef struct s_env
+{
+	char	**envp;
+}	t_env;
+
 int	which_cmd(char *cmd);
 int	is_special(char c);
 
+// builtins
+void	init_env(t_env *env, char **envp);
 
 #endif
