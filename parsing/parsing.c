@@ -195,11 +195,11 @@ void	append_node(t_cmd **head, char **tab)
 	}
 }
 
-char **sub_tab(char **tab, uint from, uint to)
+char **sub_tab(char **tab, int from, int to)
 {
 	char **subtab;
-	uint size;
-	uint i;
+	int size;
+	int i;
 
 	i = 0;
 	if (!tab)

@@ -40,7 +40,7 @@ char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
-char	**sub_tab(char **tab, uint from, uint to);
+char	**sub_tab(char **tab, int from, int to);
 void	group_tokens(t_cmd **head, char **tab);
 
 // PARSING_UTILS
@@ -48,7 +48,7 @@ void	group_tokens(t_cmd **head, char **tab);
 int		which_cmd(char *cmd);
 int		is_special(char c);
 int		is_separator(char *s);
-int		next_separator(char **tab, uint i);
+int		next_separator(char **tab, int i);
 int		isquote(char c);
 int		get_last_char(char *s, char c);
 int		next_char(char *s, char c);

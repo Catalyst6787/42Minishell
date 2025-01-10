@@ -46,7 +46,7 @@ int is_separator(char *s)
 		return(0);
 }
 
-int next_separator(char **tab, uint i)
+int next_separator(char **tab, int i)
 {
 	while(tab[i])
 	{
