@@ -24,6 +24,14 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	int				export;
+	struct s_env	*next;
+}	t_env;
+
 // externs
 void	child_process_for_externs(char **tab, char **envp);
 void	ft_free_split(char **tab);
@@ -62,6 +70,20 @@ void	free_tab(char **tab);
 void	print_list(t_cmd *head);
 void	free_list(t_cmd **head);
 
+// envp
+void	add_env_node(t_env **env, char *name, char *value, int export);
+void	init_envp(t_env **env, char **envp);
+t_env	*get_in_envp(t_env *env, char *key, int size_key);
+void	change_value_in_envp(t_env *env, char *key, int size_key, char *new_value);
+void	delete_export_node(t_env **env, char *key, int size_key);
+
+// builtins
+void	ft_echo(char **av);
+void	ft_env(t_env *env);
+void	ft_pwd(void);
+void	ft_cd(char **av, t_env *env);
+void	ft_export(char **av, t_env *env);
+void	ft_unset(char **av, t_env *env);
 
 # define PROMPT " > "
 

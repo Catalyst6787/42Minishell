@@ -8,10 +8,13 @@ int main(int ac, char **av, char **envp)
 	t_cmd	*groups;
 	t_cmd	*tail;
 	int		exit;
+	t_env	*env;
 
 	groups = NULL;
 	tail = NULL;
 	exit = 0;
+	env = NULL;
+	init_envp(&env, envp);
 	(void)ac;
 	(void)av;
 
