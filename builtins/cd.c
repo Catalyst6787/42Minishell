@@ -6,26 +6,33 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:58:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/09 14:53:13 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/10 14:57:36 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-void	ft_cd(char **av, char **envp)
+void	ft_cd(char **av, t_env *env)
 {
-	// Garder le répertoire courant dans $OLDPWD avec getcwd()
-	// Si échec de getcwd, afficher une erreur et quitter
+	char	*pwd;
+	char	*path;
 
-	// Déterminer le changement de répertoire :
-	// - Rien : utiliser $HOME
-	// - "-" : utiliser $OLDPWD
-	// - Sinon : utiliser le path donné en argument
-
-	// Tenter de changer de répertoire avec chdir()
-	// - Si chdir échoue, afficher une erreur (répertoire inexistant, permissions, etc.)
-
-	// Si changement réussi :
-	// - Mettre à jour $PWD avec le nouveau répertoire (getcwd())
-	// - Mettre à jour $OLDPWD dans **envp
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (perror("minishell: getcwd in cd error"));
+	if (!av[1] || (av[1][0] == '-' && av[1][1] == '-'))
+		path = get_in_envp(env, "HOME", 4)->value;
+	else if (av[1][0] == '-' && !av[1][1])
+		path = get_in_envp(env, "OLDPWD", 6)->value;
+	else
+		path = av[1];
+	if (chdir(path) == -1)
+		return (perror("minishell: chdir in cd error"));
+	change_value_in_envp(env, "OlDPWD", 6, pwd);
+	free(pwd);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (perror("minishell: getcwd in cd error"));
+	change_value_in_envp(env, "PWD", 3, pwd);
+	free(pwd);
 }
