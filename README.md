@@ -32,3 +32,5 @@ node 3:
 node 4:
 	0: >
 	1: fileout.txt
+
+TODO: pour se faciliter la vie on peut remplacer tout les < file.txt, >> file.txt, pipe par un node avec les deux fd et le mode append: oui/non
