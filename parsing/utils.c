@@ -16,6 +16,24 @@ int	which_cmd(char *cmd)
 		return(ENV);
 	else if (!strcmp(cmd, "exit"))
 		return(EXIT);
+	else if (!strcmp(cmd, "|"))
+		return(PIPE);
+	else if (!strcmp(cmd, "<"))
+		return(RED_INPUT);
+	else if (!strcmp(cmd, ">"))
+		return(RED_OUTPUT);
+	else if (!strcmp(cmd, "<<"))
+		return(RED_INPUT_DEL);
+	else if (!strcmp(cmd, ">>"))
+		return(RED_OUTPUT_APPEND);
+	else if (!strcmp(cmd, "&&"))
+		return(AND);
+	else if (!strcmp(cmd, "||"))
+		return(OR);
+	else if (!strcmp(cmd, "("))
+		return(PAR_OPEN);
+	else if (!strcmp(cmd, ")"))
+		return(PAR_CLOSE);
 	else
 		return(EXTERNAL);
 	

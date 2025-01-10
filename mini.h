@@ -25,8 +25,12 @@ typedef struct s_cmd
 }	t_cmd;
 
 // externs
-void	child_process_for_externs(char *s, char **envp);
+void	child_process_for_externs(char **tab, char **envp);
 void	ft_free_split(char **tab);
+
+// EXECUTION
+
+int	redirect_operator(t_cmd *node, char **envp);
 
 // PARSING
 
@@ -71,5 +75,17 @@ void	free_list(t_cmd **head);
 # define ENV 5
 # define EXIT 6
 # define EXTERNAL 7
+
+# define PIPE 10
+# define RED_INPUT 11
+# define RED_OUTPUT 12
+# define RED_INPUT_DEL 13
+# define RED_OUTPUT_APPEND 14
+
+# define AND 15
+# define OR 16
+# define PAR_OPEN 17
+# define PAR_CLOSE 18
+
 
 #endif

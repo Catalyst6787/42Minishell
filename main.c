@@ -1,47 +1,44 @@
 #include "mini.h"
 
-
-
 int main(int ac, char **av, char **envp)
 {
 	char **tab;
+	char *line;
+	char *clean_line;
 	t_cmd	*groups;
+	t_cmd	*tail;
+	int		exit;
 
-	//if (ac != 2)
-	//	return(printf("no args given\n"), 0);
-	(void)envp;
-	(void)av;
-	(void)ac;
 	groups = NULL;
+	tail = NULL;
+	exit = 0;
+	(void)ac;
+	(void)av;
 
-	char *res = clean_input(ft_strdup("this is group one | that is group three > group five is here || double pipe >> double redirection && double ampersand << reverse double redirection"));
-	printf("%s\n\n", res);
-	printf("nbr of tokens; %d\n", count_tokens(res));
-	tab = split_tokens(res);
-	print_tab(tab);
-
-	group_tokens(&groups, tab);
-	print_list(groups);
-	free_list(&groups);
-
-	//free_tab(tab);
-	free(tab);
-	free(res);
-	/*
-	line = readline(PROMPT);
-	while(ft_strncmp(line, "exit", 4))
+	while(!exit)
 	{
-		if (*line)
-		{
-			print_tab(clean_input(line));
-			//child_process_for_externs(line, envp);
-			add_history(line);
-			free(line);
-		}
 		line = readline(PROMPT);
+		clean_line = clean_input(line);
+		tab = split_tokens(clean_line);
+		group_tokens(&groups, tab); // ces 4 lignes peuvent etre combine en un fn d'aide
+		tail = groups;
+		while(tail)
+		{
+			printf("\nCMD number: %d\n", tail->id);
+			if (!redirect_operator(tail, envp))
+				exit = 1;
+			tail = tail->next;
+		}
+		add_history(line);
+		free(line);
+		line = NULL;
+		//free(clean_line);
+		clean_line = NULL;
+		free_list(&groups);
+		groups = NULL;
+		free(tab);
+		tab = NULL;
 	}
 	rl_clear_history();
-	free(line);
-	*/
 	return (0);
 }
