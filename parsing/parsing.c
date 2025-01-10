@@ -20,7 +20,6 @@ char	*rem_char(char *s, int t)
 		}
 		else
 			j++;
-
 	}
 	free(s);
 	return(nstr);
@@ -57,11 +56,9 @@ char	*remove_lone_quotes(char *s)
 char	*clean_input(char *s)
 {
 	// expand $
-	s = remove_lone_quotes(s); // this makes statements such as echo " quotes:' " impossible
+	s = remove_lone_quotes(s); // this makes statements such as echo " quotes:' " impossible but " 'quotes' " work.
 	s = remove_useless_quotes(s); 
-	// split by space except quoted
 	// replace wildcard
-	// remove quotes
 	return(s);
 }
 
