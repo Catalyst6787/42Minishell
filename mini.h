@@ -85,6 +85,9 @@ void	ft_cd(char **av, t_env *env);
 void	ft_export(char **av, t_env *env);
 void	ft_unset(char **av, t_env *env);
 
+// utils
+int		ft_strcmp(char *s1, char *s2);
+
 # define PROMPT " > "
 
 // define commands
