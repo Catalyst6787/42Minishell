@@ -2,37 +2,37 @@
 
 int	which_cmd(char *cmd)
 {
-	if (!strcmp(cmd, "echo"))
+	if (!ft_strcmp(cmd, "echo"))
 		return(ECHO);
-	else if (!strcmp(cmd, "cd"))
+	else if (!ft_strcmp(cmd, "cd"))
 		return(CD);
-	else if (!strcmp(cmd, "pwd"))
+	else if (!ft_strcmp(cmd, "pwd"))
 		return(PWD);
-	else if (!strcmp(cmd, "export"))
+	else if (!ft_strcmp(cmd, "export"))
 		return(EXPORT);
-	else if (!strcmp(cmd, "unset"))
+	else if (!ft_strcmp(cmd, "unset"))
 		return(UNSET);
-	else if (!strcmp(cmd, "env"))
+	else if (!ft_strcmp(cmd, "env"))
 		return(ENV);
-	else if (!strcmp(cmd, "exit"))
+	else if (!ft_strcmp(cmd, "exit"))
 		return(EXIT);
-	else if (!strcmp(cmd, "|"))
+	else if (!ft_strcmp(cmd, "|"))
 		return(PIPE);
-	else if (!strcmp(cmd, "<"))
+	else if (!ft_strcmp(cmd, "<"))
 		return(RED_INPUT);
-	else if (!strcmp(cmd, ">"))
+	else if (!ft_strcmp(cmd, ">"))
 		return(RED_OUTPUT);
-	else if (!strcmp(cmd, "<<"))
+	else if (!ft_strcmp(cmd, "<<"))
 		return(RED_INPUT_DEL);
-	else if (!strcmp(cmd, ">>"))
+	else if (!ft_strcmp(cmd, ">>"))
 		return(RED_OUTPUT_APPEND);
-	else if (!strcmp(cmd, "&&"))
+	else if (!ft_strcmp(cmd, "&&"))
 		return(AND);
-	else if (!strcmp(cmd, "||"))
+	else if (!ft_strcmp(cmd, "||"))
 		return(OR);
-	else if (!strcmp(cmd, "("))
+	else if (!ft_strcmp(cmd, "("))
 		return(PAR_OPEN);
-	else if (!strcmp(cmd, ")"))
+	else if (!ft_strcmp(cmd, ")"))
 		return(PAR_CLOSE);
 	else
 		return(EXTERNAL);
