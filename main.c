@@ -28,7 +28,7 @@ int main(int ac, char **av, char **envp)
 		while(tail)
 		{
 			printf("\nCMD number: %d\n", tail->id);
-			if (!redirect_operator(tail, envp))
+			if (!redirect_operator(tail, envp, env))
 				exit = 1;
 			tail = tail->next;
 		}
