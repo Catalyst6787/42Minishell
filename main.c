@@ -43,6 +43,7 @@ int main(int ac, char **av, char **envp)
 			groups = NULL;
 			free(tab);
 			tab = NULL;
+			//free_env() TODO
 		}
 	}
 	rl_clear_history();
