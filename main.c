@@ -21,27 +21,30 @@ int main(int ac, char **av, char **envp)
 	while(!exit)
 	{
 		line = readline(PROMPT);
-		clean_line = clean_input(line);
-		tab = split_tokens(clean_line);
-		group_tokens(&groups, tab); // ces 4 lignes peuvent etre combine en un fn d'aide
-		tail = groups;
-		while(tail)
+		if (*line)
 		{
-			printf("\nCMD number: %d\n", tail->id);
-			if (!redirect_operator(tail, envp, env))
-				exit = 1;
-			tail = tail->next;
+			clean_line = clean_input(line);
+			tab = split_tokens(clean_line);
+			group_tokens(&groups, tab); // ces 4 lignes peuvent etre combine en un fn d'aide
+			tail = groups;
+			while(tail)
+			{
+				printf("\nCMD number: %d\n", tail->id);
+				if (!redirect_operator(tail, envp, env))
+					exit = 1;
+				tail = tail->next;
+			}
+			add_history(line);
+			free(line);
+			line = NULL;
+			//free(clean_line);
+			clean_line = NULL;
+			free_list(&groups);
+			groups = NULL;
+			free(tab);
+			tab = NULL;
 		}
-		add_history(line);
-		free(line);
-		line = NULL;
-		//free(clean_line);
-		clean_line = NULL;
-		free_list(&groups);
-		groups = NULL;
-		free(tab);
-		tab = NULL;
 	}
-	rl_clear_history();
+	clear_history();
 	return (0);
 }
