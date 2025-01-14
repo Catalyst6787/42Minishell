@@ -35,6 +35,8 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	pid_t 	pid;
 
 	path = find_path(node->tab[0]);
+	node->input = 0; //
+	node->output = 1; // faudra enlever quand lucien a fini
 	if (dup2(node->input, STDIN_FILENO) == -1)
 		return (free(path));
 	if (dup2(node->output, STDOUT_FILENO) == -1)

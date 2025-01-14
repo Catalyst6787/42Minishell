@@ -20,6 +20,8 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 {
 	pid_t 	pid;
 
+	node->input = 0; //
+	node->output = 1; // faudra enlever quand lucien a fini
 	if (dup2(node->input, STDIN_FILENO) == -1)
 		return ;
 	if (dup2(node->output, STDOUT_FILENO) == -1)
