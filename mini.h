@@ -76,6 +76,7 @@ void	init_envp(t_env **env, char **envp);
 t_env	*get_in_envp(t_env *env, char *key, int size_key);
 void	change_value_in_envp(t_env *env, char *key, int size_key, char *new_value);
 void	delete_export_node(t_env **env, char *key, int size_key);
+void	free_envp(t_env **env);
 
 // builtins
 void	ft_echo(char **av);
