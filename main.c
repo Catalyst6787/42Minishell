@@ -45,6 +45,7 @@ int main(int ac, char **av, char **envp)
 			tab = NULL;
 		}
 	}
+	free_envp(&env);
 	rl_clear_history();
 	return (0);
 }
