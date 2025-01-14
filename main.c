@@ -26,7 +26,7 @@ int main(int ac, char **av, char **envp)
 			clean_line = clean_input(line);
 			tab = split_tokens(clean_line);
 			group_tokens(&groups, tab); // ces 4 lignes peuvent etre combine en un fn d'aide
-			groups = get_input_output(&groups);
+			//groups = get_input_output(&groups);
 			tail = groups;
 			while(tail)
 			{
@@ -37,6 +37,7 @@ int main(int ac, char **av, char **envp)
 					exit = 1;
 				tail = tail->next;
 			}
+			print_list(groups);
 			add_history(line);
 			free(line);
 			line = NULL;

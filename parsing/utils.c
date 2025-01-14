@@ -161,6 +161,8 @@ void	print_list(t_cmd *head)
 	while(head)
 	{
 		printf("\nnode nbr: %d\n", head->id);
+		printf("node input: %d\n", head->input);
+		printf("node output: %d\n", head->output);
 		print_tab(head->tab);
 		head = head->next;
 	}

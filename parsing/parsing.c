@@ -245,10 +245,12 @@ void	group_tokens(t_cmd **head, char **tab)
 
 t_cmd *get_input_output(t_cmd **head)
 {
-	t_cmd *tail;
-	t_cmd *next;
+	t_cmd	*tail;
+	t_cmd	*next;
+	t_cmd	*last;
 
 	tail = *head;
+	next = tail;
 	while(tail)
 	{
 		next = tail->next;
@@ -301,9 +303,11 @@ t_cmd *get_input_output(t_cmd **head)
 			else
 				return(printf("Error in get_input_output, Cannot use a > without input or output."), NULL);
 		}
+		last = tail;
 		tail = next;
 	}
-	while(tail->prev)
-		tail = tail->prev;
-	return(tail);
+	while(last && last->prev)
+		last = last->prev;
+	
+	return(last);
 }
