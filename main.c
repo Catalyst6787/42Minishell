@@ -46,6 +46,7 @@ int main(int ac, char **av, char **envp)
 			//free_env() TODO
 		}
 	}
+	free_envp(&env);
 	rl_clear_history();
 	return (0);
 }
