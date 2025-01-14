@@ -166,7 +166,6 @@ void	print_list(t_cmd *head)
 	}
 }
 
-
 void	free_list(t_cmd **head)
 {
 	t_cmd *next;
@@ -183,4 +182,19 @@ void	free_list(t_cmd **head)
 		tail = next;
 	}
 	head = NULL;
+}
+
+void	node_remove(t_cmd *node)
+{
+	if (node->prev && node->next)
+	{
+		node->prev->next = node->next;
+		node->next->prev = node->prev;
+	}
+	else if (node->prev)
+		node->prev->next = NULL;
+	else if (node->next)
+		node->next->prev = NULL;
+	free_tab(node->tab);
+	free(node);
 }

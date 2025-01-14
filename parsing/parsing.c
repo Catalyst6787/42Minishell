@@ -190,6 +190,8 @@ void	append_node(t_cmd **head, char **tab)
 		last->next = new;
 		new->prev = last;
 	}
+	new->input = -1;
+	new->output = -1;
 }
 
 char **sub_tab(char **tab, int from, int to)
@@ -239,4 +241,69 @@ void	group_tokens(t_cmd **head, char **tab)
 		}
 	}
 	append_node(head, sub_tab(tab, group_start, i));
+}
+
+t_cmd *get_input_output(t_cmd **head)
+{
+	t_cmd *tail;
+	t_cmd *next;
+
+	tail = *head;
+	while(tail)
+	{
+		next = tail->next;
+		if (which_cmd(tail->tab[0]) == PIPE)
+		{
+			if (tail->prev && tail->next)
+			{
+				tail->prev->output = 1;
+				tail->next->input = 0;
+				node_remove(tail);
+			}
+			else
+				return(printf("Error in get_input_output, Cannot use a pipe without input and ouptut."), NULL);
+		}
+		else if (which_cmd(tail->tab[0]) == RED_INPUT)
+		{
+			if (tail->next && tail->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			{
+				tail->next->next->input = open(tail->next->tab[0], O_RDONLY | O_EXCL);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else
+				return(printf("Error in get_input_output, Cannot use a < without input or output."), NULL);
+		}
+		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
+		{
+			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			{
+				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else
+				return(printf("Error in get_input_output, Cannot use a > without input or output."), NULL);
+		}
+		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
+			return(printf("Error in get_input_output, RED_INPUT_DEL not supported yet."), NULL);
+		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
+		{
+			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			{
+				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_APPEND | O_CREAT);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else
+				return(printf("Error in get_input_output, Cannot use a > without input or output."), NULL);
+		}
+		tail = next;
+	}
+	while(tail->prev)
+		tail = tail->prev;
+	return(tail);
 }
