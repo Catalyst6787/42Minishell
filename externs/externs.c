@@ -29,28 +29,26 @@ char	*find_path(char *command)
 	return (NULL);
 }
 
-void	child_process_for_externs(char **av_command, char **envp)
+void	child_process_for_externs(t_cmd *node, char **envp)
 {
 	char	*path;
 	pid_t 	pid;
 
-	path = find_path(av_command[0]);
+	path = find_path(node->tab[0]);
+	if (dup2(node->input, STDIN_FILENO) == -1)
+		return (free(path));
+	if (dup2(node->output, STDOUT_FILENO) == -1)
+		return (free(path));
 	if (!path)
 	{
-		ft_printf("minishell: command not found: %s\n", av_command[0]);
-		//ft_free_split(av_command);
+		ft_printf("minishell: command not found: %s\n", node->tab[0]);
 		return ;
 	}
 	pid = fork();
 	if (pid == -1)
-	{
-		//ft_free_split(av_command);
-		free(path);
-		return ;
-	}
+		return (free(path));
 	if (pid == 0)
-		execve(path, av_command, envp);
-	//ft_free_split(av_command);
+		execve(path, node->tab, envp);
 	free(path);
 	waitpid(pid, NULL, 0);
 }
