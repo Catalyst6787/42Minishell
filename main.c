@@ -37,6 +37,8 @@ int main(int ac, char **av, char **envp)
 				printf("OUTPUT: %d\n", tail->output);
 				if (!redirect_operator(tail, envp, env))
 					exit = 1;
+				while (wait(NULL) > 0)
+					printf("la ça wait\n");
 				tail = tail->next;
 			}
 			print_list(groups);
@@ -54,6 +56,6 @@ int main(int ac, char **av, char **envp)
 		}
 	}
 	free_envp(&env);
-	rl_clear_history();
+	clear_history();
 	return (0);
 }

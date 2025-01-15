@@ -35,10 +35,6 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	pid_t 	pid;
 
 	path = find_path(node->tab[0]);
-	if (dup2(node->input, STDIN_FILENO) == -1)
-		return (free(path));
-	if (dup2(node->output, STDOUT_FILENO) == -1)
-		return (free(path));
 	if (!path)
 	{
 		ft_printf("minishell: command not found: %s\n", node->tab[0]);
@@ -48,7 +44,17 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	if (pid == -1)
 		return (free(path));
 	if (pid == 0)
+	{
+		if (dup2(node->input, STDIN_FILENO) == -1)
+			return (printf("errror in dup2"), free(path));
+		if (dup2(node->output, STDOUT_FILENO) == -1)
+			return (printf("errror in dup2"), free(path));
 		execve(path, node->tab, envp);
+	}
+	if (node->prev)
+		close(node->prev->output);
+	if (node->next)
+		close(node->next->input);
 	free(path);
-	waitpid(pid, NULL, 0);
+	//waitpid(pid, NULL, 0);
 }
