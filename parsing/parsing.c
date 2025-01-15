@@ -190,8 +190,8 @@ void	append_node(t_cmd **head, char **tab)
 		last->next = new;
 		new->prev = last;
 	}
-	new->input = -1;
-	new->output = -1;
+	new->input = 0;
+	new->output = 1;
 }
 
 char **sub_tab(char **tab, int from, int to)
