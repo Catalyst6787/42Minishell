@@ -39,6 +39,7 @@ int main(int ac, char **av, char **envp)
 					exit = 1;
 				tail = tail->next;
 			}
+			printf("\n\nLIST:\n");
 			print_list(groups);
 			add_history(line);
 			free(line);
