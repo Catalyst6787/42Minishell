@@ -200,3 +200,16 @@ void	node_remove(t_cmd *node)
 	free_tab(node->tab);
 	free(node);
 }
+
+void	reset_id(t_cmd *node)
+{
+	if (!node)
+		return ;
+	node->id = 0;
+	node = node->next;
+	while(node)
+	{
+		node->id = node->prev->id + 1;
+		node = node->next;
+	}
+}

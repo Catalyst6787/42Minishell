@@ -56,7 +56,7 @@ char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
 char	**sub_tab(char **tab, int from, int to);
-void	group_tokens(t_cmd **head, char **tab);
+int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head);
 
 // PARSING_UTILS
@@ -74,6 +74,7 @@ void	free_tab(char **tab);
 void	print_list(t_cmd *head);
 void	free_list(t_cmd **head);
 void	node_remove(t_cmd *node);
+void	reset_id(t_cmd *node);
 
 // envp
 void	add_env_node(t_env **env, char *name, char *value, int export);

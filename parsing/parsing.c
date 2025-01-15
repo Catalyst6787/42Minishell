@@ -215,7 +215,7 @@ char **sub_tab(char **tab, int from, int to)
 	return(subtab);
 }
 
-void	group_tokens(t_cmd **head, char **tab)
+int	group_tokens(t_cmd **head, char **tab)
 {
 	int i;
 	int group_has_tokens;
@@ -225,11 +225,11 @@ void	group_tokens(t_cmd **head, char **tab)
 	group_has_tokens = 0;
 	group_start = 0;
 	if (!tab || !tab[0])
-		return(printf("group_tokens encountered empty cmd"), (void)NULL);
+		return(printf("group_tokens encountered empty cmd"), 0);
 	if (tab[0][i] == '<')
 	{
 		if (!tab[0] || !tab[1] || !tab[2])
-			return(printf("Error: '<' Must be followed by input file and command\n"), (void)NULL);
+			return(printf("Error: '<'/'<<' Must be followed by input file and command\n"), 0);
 		append_node(head, sub_tab(tab, 0, 1));
 		append_node(head, sub_tab(tab, 1, 2));
 		i += 2;
@@ -253,6 +253,7 @@ void	group_tokens(t_cmd **head, char **tab)
 	}
 	if (group_has_tokens)
 		append_node(head, sub_tab(tab, group_start, i));
+	return(1);
 }
 
 t_cmd *get_input_output(t_cmd **head)
@@ -263,6 +264,7 @@ t_cmd *get_input_output(t_cmd **head)
 
 	tail = *head;
 	next = tail;
+	tail->input = 0;
 	while(tail)
 	{
 		next = tail->next;
@@ -302,7 +304,7 @@ t_cmd *get_input_output(t_cmd **head)
 				return(printf("Error in get_input_output, Cannot use a > without input or output."), NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
-			return(printf("Error in get_input_output, RED_INPUT_DEL not supported yet."), NULL);
+			return(printf("Error in get_input_output, RED_INPUT_DEL not supported yet.\n"), NULL);
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
 		{
 			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
@@ -318,6 +320,7 @@ t_cmd *get_input_output(t_cmd **head)
 		last = tail;
 		tail = next;
 	}
+	last->output = 1;
 	while(last && last->prev)
 		last = last->prev;
 	

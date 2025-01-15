@@ -25,9 +25,10 @@ int main(int ac, char **av, char **envp)
 		{
 			clean_line = clean_input(line);
 			tab = split_tokens(clean_line);
-			group_tokens(&groups, tab); // ces 4 lignes peuvent etre combine en un fn d'aide
-			groups = get_input_output(&groups);
+			if (group_tokens(&groups, tab)) // ces 4 lignes peuvent etre combine en un fn d'aide
+				groups = get_input_output(&groups);
 			tail = groups;
+			reset_id(tail);
 			while(tail)
 			{
 				printf("\nCMD number: %d\n", tail->id);
