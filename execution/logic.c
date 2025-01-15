@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "../mini.h"
 
 void	redirect_builtin(int cmd ,char **av, t_env *env)
 {

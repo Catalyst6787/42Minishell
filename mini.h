@@ -42,6 +42,8 @@ void	ft_free_split(char **tab);
 // EXECUTION
 
 int	redirect_operator(t_cmd *node, char **envp, t_env *env);
+void	create_pipes(t_cmd *head);
+void	close_fd(t_cmd *head);
 
 // PARSING
 
