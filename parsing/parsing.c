@@ -224,6 +224,17 @@ void	group_tokens(t_cmd **head, char **tab)
 	i = 0;
 	group_has_tokens = 0;
 	group_start = 0;
+	if (!tab || !tab[0])
+		return(printf("group_tokens encountered empty cmd"), (void)NULL);
+	if (tab[0][i] == '<')
+	{
+		if (!tab[0] || !tab[1] || !tab[2])
+			return(printf("Error: '<' Must be followed by input file and command\n"), (void)NULL);
+		append_node(head, sub_tab(tab, 0, 1));
+		append_node(head, sub_tab(tab, 1, 2));
+		i += 2;
+		group_start = i;
+	}
 	while(tab[i])
 	{
 		if (is_separator(tab[i]) && group_has_tokens)
@@ -240,7 +251,8 @@ void	group_tokens(t_cmd **head, char **tab)
 			group_has_tokens = 1;
 		}
 	}
-	append_node(head, sub_tab(tab, group_start, i));
+	if (group_has_tokens)
+		append_node(head, sub_tab(tab, group_start, i));
 }
 
 t_cmd *get_input_output(t_cmd **head)
