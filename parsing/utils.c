@@ -1,4 +1,4 @@
-#include "mini.h"
+#include "../mini.h"
 
 int	which_cmd(char *cmd)
 {
@@ -161,11 +161,12 @@ void	print_list(t_cmd *head)
 	while(head)
 	{
 		printf("\nnode nbr: %d\n", head->id);
+		printf("node input: %d\n", head->input);
+		printf("node output: %d\n", head->output);
 		print_tab(head->tab);
 		head = head->next;
 	}
 }
-
 
 void	free_list(t_cmd **head)
 {
@@ -183,4 +184,32 @@ void	free_list(t_cmd **head)
 		tail = next;
 	}
 	head = NULL;
+}
+
+void	node_remove(t_cmd *node)
+{
+	if (node->prev && node->next)
+	{
+		node->prev->next = node->next;
+		node->next->prev = node->prev;
+	}
+	else if (node->prev)
+		node->prev->next = NULL;
+	else if (node->next)
+		node->next->prev = NULL;
+	free_tab(node->tab);
+	free(node);
+}
+
+void	reset_id(t_cmd *node)
+{
+	if (!node)
+		return ;
+	node->id = 0;
+	node = node->next;
+	while(node)
+	{
+		node->id = node->prev->id + 1;
+		node = node->next;
+	}
 }

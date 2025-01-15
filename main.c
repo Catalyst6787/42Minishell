@@ -25,20 +25,27 @@ int main(int ac, char **av, char **envp)
 		{
 			clean_line = clean_input(line);
 			tab = split_tokens(clean_line);
-			group_tokens(&groups, tab); // ces 4 lignes peuvent etre combine en un fn d'aide
+			if (group_tokens(&groups, tab)) // ces 4 lignes peuvent etre combine en un fn d'aide
+				groups = get_input_output(&groups);
 			tail = groups;
+			reset_id(groups);
+			create_pipes(groups);
 			while(tail)
 			{
 				printf("\nCMD number: %d\n", tail->id);
+				printf("INPUT: %d\n", tail->input);
+				printf("OUTPUT: %d\n", tail->output);
 				if (!redirect_operator(tail, envp, env))
 					exit = 1;
 				tail = tail->next;
 			}
+			print_list(groups);
 			add_history(line);
 			free(line);
 			line = NULL;
 			//free(clean_line);
 			clean_line = NULL;
+			close_fd(groups);
 			free_list(&groups);
 			groups = NULL;
 			free(tab);
