@@ -41,6 +41,7 @@ int main(int ac, char **av, char **envp)
 					printf("la ça wait\n");
 				tail = tail->next;
 			}
+			printf("\n\nLIST:\n");
 			print_list(groups);
 			add_history(line);
 			free(line);
