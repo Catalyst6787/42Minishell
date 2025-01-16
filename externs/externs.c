@@ -28,7 +28,7 @@ char	*find_path(char *command)
 	ft_free_split(paths);
 	return (NULL);
 }
-
+/*
 void	child_process_for_externs(t_cmd *node, char **envp)
 {
 	char	*path;
@@ -62,3 +62,89 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	free(path);
 	 // TEST
 }
+*/
+
+void	child_process_for_externs(t_cmd *node, char **envp)
+{
+    char	*path;
+    pid_t	pid;
+
+    // Find the command's full path using the find_path function
+    path = find_path(node->tab[0]);
+    if (!path)
+    {
+        ft_printf("minishell: command not found: %s\n", node->tab[0]);
+        return ;
+    }
+
+    pid = fork();
+    if (pid == -1)
+    {
+        perror("fork");
+        free(path);
+        return ;
+    }
+
+    if (pid == 0) // Child process
+    {
+        // If the node has an input file descriptor, redirect stdin to it
+        if (node->input != 0)
+        {
+            if (dup2(node->input, STDIN_FILENO) == -1)
+            {
+                perror("dup2 input");
+                free(path);
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // If the node has an output file descriptor, redirect stdout to it
+        if (node->output != 1)
+        {
+            if (dup2(node->output, STDOUT_FILENO) == -1)
+            {
+                perror("dup2 output");
+                free(path);
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // Execute the command
+        if (execve(path, node->tab, envp) == -1)
+        {
+            perror("execve");
+            free(path);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else // Parent process
+    {
+        // Wait for the child process to finish
+        waitpid(pid, NULL, 0);
+
+        // Close the input/output file descriptors if they are not stdin/stdout
+        if (node->input != 0)
+            close(node->input);
+        if (node->output != 1)
+            close(node->output);
+
+        // If there’s a next node, close the current output file descriptor
+        if (node->next != NULL)
+        {
+            close(node->output);
+        }
+    }
+
+    // Free the path memory allocated by find_path
+    free(path);
+
+    // If this is the last node in the pipeline, close the output file descriptor
+    if (node->next == NULL)
+    {
+        if (node->output != 1)
+            close(node->output); // Close the output pipe for the last command
+    }
+}
+
+
+
