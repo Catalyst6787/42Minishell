@@ -45,16 +45,17 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 		return (free(path));
 	if (pid == 0)
 	{
-		if (dup2(node->input, STDIN_FILENO) == -1)
-			return (printf("errror in dup2"), free(path));
-		if (dup2(node->output, STDOUT_FILENO) == -1)
-			return (printf("errror in dup2"), free(path));
+		if (node->input != 0)
+			if (dup2(node->input, STDIN_FILENO) == -1)
+				return (printf("errror in dup2"), free(path));
+		if (node->output != 1)
+			if (dup2(node->output, STDOUT_FILENO) == -1)
+				return (printf("errror in dup2"), free(path));
 		execve(path, node->tab, envp);
 	}
-	if (node->prev)
-		close(node->prev->output);
-	if (node->next)
-		close(node->next->input);
+	waitpid(pid, NULL, 0);
+	close(node->output);
+	close(node->input);
 	free(path);
-	//waitpid(pid, NULL, 0);
+	 // TEST
 }
