@@ -56,6 +56,9 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	waitpid(pid, NULL, 0);
 	close(node->output);
 	close(node->input);
+	if (node->output == 1)
+		printf("output fd: %d", node->output); //close(STDOUT_FILENO);
+	//close(STDIN_FILENO);
 	free(path);
 	 // TEST
 }
