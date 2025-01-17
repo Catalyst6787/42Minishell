@@ -21,6 +21,7 @@ int main(int ac, char **av, char **envp)
 	while(!exit)
 	{
 		line = readline(PROMPT);
+
 		if (line && *line)
 		{
 			clean_line = clean_input(line);
