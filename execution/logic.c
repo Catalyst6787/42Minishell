@@ -16,7 +16,7 @@ void	which_builtin(int cmd ,char **av, t_env *env)
 		ft_env(env);
 }
 
-void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
+/* void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 {
 	pid_t 	pid;
 
@@ -31,9 +31,45 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 			return ;
 		which_builtin(cmd, node->tab, env); // apres faut vraiment tout free mec
 		//free tout et close les fd
+		//exit(0);
+	}
+	waitpid(pid, NULL, 0);
+} */
+
+void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
+{
+	pid_t 	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return ;
+	if (pid == 0)
+	{
+		if (node->input != 0)
+			if (dup2(node->input, STDIN_FILENO) == -1)
+				{
+					printf("errror in dup2");
+					return ;
+				}
+		if (node->output != 1)
+			if (dup2(node->output, STDOUT_FILENO) == -1)
+				{
+					printf("errror in dup2");
+					return ;
+				}
+		which_builtin(cmd, node->tab, env);
 		exit(0);
 	}
-	//waitpid(pid, NULL, 0);
+	else
+	{
+		waitpid(pid, NULL, 0);
+		if (node->input != 0)
+			close(node->input);
+		if (node->output != 1)
+			close(node->output);
+		if (node->next != NULL)
+			close(node->output);
+ 	}
 }
 
 int	redirect_operator(t_cmd *node, char **envp, t_env *env)

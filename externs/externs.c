@@ -52,6 +52,8 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 			if (dup2(node->output, STDOUT_FILENO) == -1)
 				return (printf("errror in dup2"), free(path));
 		execve(path, node->tab, envp);
+		perror("execve error");
+		exit(0);
 	}
 	else
 	{
@@ -64,11 +66,4 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 			close(node->output);
  	}
 	free(path);
-	/*
-	if (node->next == NULL)
-	{
-		if (node->output != 1)
-			close(node->output);
-	}
-	*/ //pas necessaire
 }
