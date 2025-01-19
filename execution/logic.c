@@ -16,26 +16,6 @@ void	which_builtin(int cmd ,char **av, t_env *env)
 		ft_env(env);
 }
 
-/* void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
-{
-	pid_t 	pid;
-
-	pid = fork();
-	if (pid == -1)
-		return ;
-	if (pid == 0)
-	{
-		if (dup2(node->input, STDIN_FILENO) == -1)
-			return ;
-		if (dup2(node->output, STDOUT_FILENO) == -1)
-			return ;
-		which_builtin(cmd, node->tab, env); // apres faut vraiment tout free mec
-		//free tout et close les fd
-		//exit(0);
-	}
-	waitpid(pid, NULL, 0);
-} */
-
 void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 {
 	pid_t 	pid;
