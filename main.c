@@ -2,9 +2,7 @@
 
 int main(int ac, char **av, char **envp)
 {
-	char **tab;
 	char *line;
-	char *clean_line;
 	t_cmd	*groups;
 	t_cmd	*tail;
 	int		exit;
@@ -24,10 +22,7 @@ int main(int ac, char **av, char **envp)
 
 		if (line && *line)
 		{
-			clean_line = clean_input(line);
-			tab = split_tokens(clean_line);
-			if (group_tokens(&groups, tab)) // ces 4 lignes peuvent etre combine en un fn d'aide
-				groups = get_input_output(&groups);
+			parse_input(line, &groups);
 			tail = groups;
 			reset_id(groups);
 			create_pipes(groups);
@@ -45,13 +40,10 @@ int main(int ac, char **av, char **envp)
 			add_history(line);
 			free(line);
 			line = NULL;
-			//free(clean_line);
-			clean_line = NULL;
 			close_fd(groups);
 			free_list(&groups);
 			groups = NULL;
-			free(tab);
-			tab = NULL;
+			
 			//free_env() TODO
 		}
 	}

@@ -48,6 +48,8 @@ void	close_fd(t_cmd *head);
 
 // PARSING
 
+int	parse_input(char *line, t_cmd **groups);
+
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
 char	*remove_lone_quotes(char *s);
