@@ -24,7 +24,6 @@ int main(int ac, char **av, char **envp)
 		{
 			parse_input(line, &groups);
 			tail = groups;
-			reset_id(groups);
 			create_pipes(groups);
 			while(tail)
 			{
@@ -35,8 +34,6 @@ int main(int ac, char **av, char **envp)
 					exit = 1;
 				tail = tail->next;
 			}
-			printf("\n\nLIST:\n");
-			print_list(groups);
 			add_history(line);
 			free(line);
 			line = NULL;
@@ -44,7 +41,7 @@ int main(int ac, char **av, char **envp)
 			free_list(&groups);
 			groups = NULL;
 			
-			//free_env() TODO
+			//free_env TODO
 		}
 	}
 	free_envp(&env);

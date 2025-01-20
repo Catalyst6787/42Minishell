@@ -12,5 +12,6 @@ int	parse_input(char *line, t_cmd **groups)
 	clean_line = NULL;
 	free(tab);
 	tab = NULL;
+	reset_id(*groups);
 	return(1);
 }
