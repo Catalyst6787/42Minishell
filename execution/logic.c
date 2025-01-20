@@ -70,7 +70,10 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 	else
 	{
 		printf("Builtin:\n"); // TODO put child process_for_builtin here
-		child_process_for_builtins(node, cmd, env);
+		if (cmd == CD || cmd == EXPORT || cmd == UNSET)
+			which_builtin(cmd, node->tab, env);
+		else
+			child_process_for_builtins(node, cmd, env);
 	}
 	return(1);
 }

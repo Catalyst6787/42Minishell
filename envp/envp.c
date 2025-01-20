@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/14 15:35:59 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:23:08 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ void	init_envp(t_env **env, char **envp)
 			return ;
 		}
 		if (tmp[1])
-			add_env_node(env, tmp[0], tmp[1], 0);
+			add_env_node(env, tmp[0], tmp[1], 1);
 		else
-			add_env_node(env, tmp[0], "", 0);
+			add_env_node(env, tmp[0], "", 1);
 		ft_free_split(tmp);
 	}
 }
