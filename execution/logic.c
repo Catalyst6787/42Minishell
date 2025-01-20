@@ -25,15 +25,31 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 		return ;
 	if (pid == 0)
 	{
-		if (dup2(node->input, STDIN_FILENO) == -1)
-			return ;
-		if (dup2(node->output, STDOUT_FILENO) == -1)
-			return ;
-		which_builtin(cmd, node->tab, env); // apres faut vraiment tout free mec
-		//free tout et close les fd
+		if (node->input != 0)
+			if (dup2(node->input, STDIN_FILENO) == -1)
+				{
+					printf("errror in dup2");
+					return ;
+				}
+		if (node->output != 1)
+			if (dup2(node->output, STDOUT_FILENO) == -1)
+				{
+					printf("errror in dup2");
+					return ;
+				}
+		which_builtin(cmd, node->tab, env);
 		exit(0);
 	}
-	//waitpid(pid, NULL, 0);
+	else
+	{
+		waitpid(pid, NULL, 0);
+		if (node->input != 0)
+			close(node->input);
+		if (node->output != 1)
+			close(node->output);
+		if (node->next != NULL)
+			close(node->output);
+ 	}
 }
 
 int	redirect_operator(t_cmd *node, char **envp, t_env *env)

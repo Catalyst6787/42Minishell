@@ -295,7 +295,7 @@ t_cmd *get_input_output(t_cmd **head)
 		{
 			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
 			{
-				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT);
+				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
@@ -309,7 +309,7 @@ t_cmd *get_input_output(t_cmd **head)
 		{
 			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
 			{
-				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_APPEND | O_CREAT);
+				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);

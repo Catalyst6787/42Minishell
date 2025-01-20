@@ -38,8 +38,6 @@ int main(int ac, char **av, char **envp)
 				printf("OUTPUT: %d\n", tail->output);
 				if (!redirect_operator(tail, envp, env))
 					exit = 1;
-				while (wait(NULL) > 0)
-					printf("la ça wait\n");
 				tail = tail->next;
 			}
 			printf("\n\nLIST:\n");
