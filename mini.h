@@ -18,6 +18,9 @@
 // processus
 # include <sys/wait.h>
 
+// signals
+# include <signal.h>
+
 typedef struct s_cmd
 {
 	int				id;
@@ -94,6 +97,9 @@ void	ft_pwd(void);
 void	ft_cd(char **av, t_env *env);
 void	ft_export(char **av, t_env *env);
 void	ft_unset(char **av, t_env *env);
+
+// signals
+
 
 // utils
 int		ft_strcmp(char *s1, char *s2);
