@@ -53,12 +53,19 @@ char	*remove_lone_quotes(char *s)
 	return(s);
 }
 
+char *remove_lone_quote_specify(char *s, char c)
+{
+	s = rem_char(s, get_last_char(s, c));
+	return(s);
+}
+
+
 char	*clean_input(char *s)
 {
-	// expand $
-	s = remove_lone_quotes(s); // this makes statements such as echo " quotes:' " impossible but " 'quotes' " work.
-	s = remove_useless_quotes(s); 
-	// replace wildcard
+	int is_changed = 1;
+	while(is_changed)
+		s = clean_quotes(s, &is_changed);
+	s = clean_useless_quotes(s);
 	return(s);
 }
 
@@ -225,7 +232,7 @@ int	group_tokens(t_cmd **head, char **tab)
 	group_has_tokens = 0;
 	group_start = 0;
 	if (!tab || !tab[0])
-		return(printf("group_tokens encountered empty cmd"), 0);
+		return(printf("Error: group_tokens encountered empty cmd\n"), 0);
 	if (tab[0][i] == '<')
 	{
 		if (!tab[0] || !tab[1] || !tab[2])

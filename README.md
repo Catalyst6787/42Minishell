@@ -2,10 +2,10 @@
 
 LULU:
 
-ameliorer parsing pour quotes "" ''
-suprrimer characters speciaux comme \ et ;
-$var
-clean (optionel)
+- [x]  ameliorer parsing pour quotes "" ''
+- suprimer characters speciaux comme \ et ;
+- $var
+- clean (optionel)
 
 
 KIMESTRE
@@ -19,3 +19,4 @@ FIN:
   l'afficher si cmd = $?
 - fix leaks
 - handle errors
+
