@@ -333,3 +333,77 @@ t_cmd *get_input_output(t_cmd **head)
 	
 	return(last);
 }
+
+char	*extract_var(char *s, int i)
+{
+	int	c;
+	int	j;
+	char	*var;
+
+	c = 0;
+	j = i;
+	var = NULL;
+	while (s && s[i] && s[i] != ' ')
+	{
+		c++;
+		i++;
+	}
+	c - 1;
+	var = malloc(sizeof(char) * (c + 1));
+	var[c] == '\0';
+	while(c)
+	{
+		var[c] = s[i];
+		s--;
+		c--;
+	}
+	return(var);
+}
+
+char *get_var_value(char *s, t_env *env)
+{
+	t_env *tail;
+	while(tail)
+	{
+		if (!strcmp(s, tail->value))
+			return(ft_strdup(tail->value));
+		tail = tail->next;
+	}
+	return(NULL);
+}
+
+char *replace_by(char *s, char *value, int index, int length)
+{
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	int totlen = ft_strlen(s) + ft_strlen(value) - length;
+	char *res = malloc(sizeof(char) * (totlen + 1));
+	if (!res)
+		return(printf("Malloc error in replace_by\n"), NULL);
+	res[totlen] = '\0';
+	while(i < index)
+	{
+		res[k] = s[i];
+		i++;
+		k++;
+	}
+	while(length)
+	{
+		i++;
+		length--;
+	}
+	while(value[j])
+	{
+		res[k] == value[j];
+		k++;
+		j++;
+	}
+	while(s[i])
+	{
+		res[k] = s[i];
+		k++;
+		i++;
+	}
+	return(res);
+}

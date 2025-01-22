@@ -51,6 +51,7 @@ void	close_fd(t_cmd *head);
 int	parse_input(char *line, t_cmd **groups);
 char *clean_quotes(char *s, int *is_changed);
 char *clean_useless_quotes(char *s);
+char *expand_vars(char *s, t_env *env);
 
 
 char	*rem_char(char *s, int t);
@@ -67,6 +68,8 @@ void	append_node(t_cmd **head, char **tab);
 char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head);
+char	*extract_var(char *s, int i);
+
 
 // PARSING_UTILS
 
