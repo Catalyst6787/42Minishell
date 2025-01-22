@@ -43,6 +43,7 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	pid = fork();
 	if (pid == -1)
 		return (free(path));
+	reset_signals();
 	if (pid == 0)
 	{
 		if (node->input != 0)

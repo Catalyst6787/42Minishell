@@ -15,14 +15,16 @@ int main(int ac, char **av, char **envp)
 	exit = 0;
 	env = NULL;
 	init_envp(&env, envp);
+	handle_signals();
 	(void)ac;
 	(void)av;
 
 	while(!exit)
 	{
 		line = readline(PROMPT);
-
-		if (line && *line)
+		if (!line)
+			exit = 1;
+		else if (*line)
 		{
 			clean_line = clean_input(line);
 			tab = split_tokens(clean_line);

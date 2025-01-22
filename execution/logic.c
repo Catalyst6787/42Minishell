@@ -23,6 +23,7 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 	pid = fork();
 	if (pid == -1)
 		return ;
+	reset_signals();
 	if (pid == 0)
 	{
 		if (node->input != 0)
