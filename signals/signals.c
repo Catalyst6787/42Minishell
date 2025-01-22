@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:38:36 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/22 15:38:21 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/22 15:51:33 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void	handle_signals(void)
 
 void	reset_signals(void)
 {
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
