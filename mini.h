@@ -48,9 +48,15 @@ void	close_fd(t_cmd *head);
 
 // PARSING
 
+int	parse_input(char *line, t_cmd **groups);
+char *clean_quotes(char *s, int *is_changed);
+char *clean_useless_quotes(char *s);
+
+
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
 char	*remove_lone_quotes(char *s);
+char *remove_lone_quote_specify(char *s, char c);
 char	*clean_input(char *s);
 int		end_of_token(char *s);
 char	*token_dup(char *s);

@@ -88,7 +88,7 @@ int	get_last_char(char *s, char c)
 	int i;
 
 	i = ft_strlen(s);
-	while(i)
+	while(i != -1)
 	{
 		if (s[i] == c)
 			return(i);
