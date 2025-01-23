@@ -6,6 +6,7 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 	char **tab;
 
 	clean_line = clean_input(ft_strdup(line));
+	clean_line = remove_chars(clean_line, UNHANDLED);
 	clean_line = expand_vars(clean_line, env);
 	if (!clean_line)
 		return(groups = NULL, 0);
@@ -101,6 +102,32 @@ char *clean_useless_quotes(char *s)
 			else
 				simple_isopen = 1;
 		}
+		i++;
+	}
+	return(s);
+}
+
+char *remove_chars(char *s, char *chars)
+{
+	int i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while(s[i])
+	{
+		while(chars[j])
+		{
+			if (s[i] == chars[j] && !is_quoted(s, i, '\'') && !is_quoted(s, i, '\"'))
+			{
+				s = rem_char(s, i);
+				i = 0;
+				j = 0;
+				continue;
+			}
+			j++;
+		}
+		j = 0;
 		i++;
 	}
 	return(s);

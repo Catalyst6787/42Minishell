@@ -3,7 +3,7 @@
 LULU:
 
 - [x]  ameliorer parsing pour quotes "" ''
-- suprimer characters speciaux comme \ et ;
+- [x]  suprimer characters speciaux comme \ et ;
 - [x]  $var
 - clean (optionel)
 
@@ -22,3 +22,4 @@ FIN:
 
 **Erreurs a corriger:**
 - segfault quand on ajoute une variable vide { export A="" }
+- double prompt apres avoir quitte une commande avec CTRL + C { yes CTRL + C}

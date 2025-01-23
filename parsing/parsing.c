@@ -60,6 +60,7 @@ char *remove_lone_quote_specify(char *s, char c)
 }
 
 
+
 char	*clean_input(char *s)
 {
 	int is_changed = 1;

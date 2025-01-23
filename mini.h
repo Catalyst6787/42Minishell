@@ -54,6 +54,7 @@ void	close_fd(t_cmd *head);
 int	parse_input(char *line, t_cmd **groups, t_env *env);
 char *clean_quotes(char *s, int *is_changed);
 char *clean_useless_quotes(char *s);
+char *remove_chars(char *s, char *chars);
 char *expand_vars(char *s, t_env *env);
 
 
@@ -118,6 +119,7 @@ void	reset_signals(void);
 int		ft_strcmp(char *s1, char *s2);
 
 # define PROMPT " > "
+# define UNHANDLED "*[]\\;&`(){}#!="
 
 // define commands
 
