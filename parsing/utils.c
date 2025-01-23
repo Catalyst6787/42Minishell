@@ -219,7 +219,6 @@ int is_quoted(char *s, int i, char c)
 {
 	int j;
 
-	c = 0;
 	j = 0;
 	i--;
 	while(s[i])

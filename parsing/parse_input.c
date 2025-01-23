@@ -7,6 +7,8 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 
 	clean_line = clean_input(ft_strdup(line));
 	clean_line = expand_vars(clean_line, env);
+	if (!clean_line)
+		return(groups = NULL, 0);
 	tab = split_tokens(clean_line);
 	if (group_tokens(groups, tab))
 		*groups = get_input_output(groups);

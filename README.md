@@ -4,7 +4,7 @@ LULU:
 
 - [x]  ameliorer parsing pour quotes "" ''
 - suprimer characters speciaux comme \ et ;
-- $var
+- [x]  $var
 - clean (optionel)
 
 
@@ -20,3 +20,5 @@ FIN:
 - fix leaks
 - handle errors
 
+**Erreurs a corriger:**
+- segfault quand on ajoute une variable vide { export A="" }
