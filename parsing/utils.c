@@ -213,3 +213,22 @@ void	reset_id(t_cmd *node)
 		node = node->next;
 	}
 }
+
+// takes a char as input for type of quote, could be anything.
+int is_quoted(char *s, int i, char c)
+{
+	int j;
+
+	c = 0;
+	j = 0;
+	i--;
+	while(s[i])
+	{
+		if (s[i] == c)
+			j++;
+		i--;
+	}
+	if (j % 2 != 0)
+		return(1);
+	return(0);
+}

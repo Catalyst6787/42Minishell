@@ -336,25 +336,29 @@ t_cmd *get_input_output(t_cmd **head)
 
 char	*extract_var(char *s, int i)
 {
-	int	c;
-	int	j;
-	char	*var;
+	int c;
+	int j;
+	int k;
+	char *var;
 
 	c = 0;
-	j = i;
 	var = NULL;
-	while (s && s[i] && s[i] != ' ')
+	i++;
+	j = 0;
+	k = i;
+	while(s && s[i] && s[i] != '\'' && s[i] != '\"' && s[i] != ' ')
 	{
 		c++;
 		i++;
 	}
-	c - 1;
 	var = malloc(sizeof(char) * (c + 1));
-	var[c] == '\0';
+	var[c] = '\0';
+	i = k;
 	while(c)
 	{
-		var[c] = s[i];
-		s--;
+		var[j] = s[i];
+		j++;
+		i++;
 		c--;
 	}
 	return(var);
@@ -362,12 +366,11 @@ char	*extract_var(char *s, int i)
 
 char *get_var_value(char *s, t_env *env)
 {
-	t_env *tail;
-	while(tail)
+	while(env)
 	{
-		if (!strcmp(s, tail->value))
-			return(ft_strdup(tail->value));
-		tail = tail->next;
+		if (!strcmp(s, env->name))
+			return(ft_strdup(env->value));
+		env = env->next;
 	}
 	return(NULL);
 }
@@ -395,7 +398,7 @@ char *replace_by(char *s, char *value, int index, int length)
 	}
 	while(value[j])
 	{
-		res[k] == value[j];
+		res[k] = value[j];
 		k++;
 		j++;
 	}
@@ -405,5 +408,9 @@ char *replace_by(char *s, char *value, int index, int length)
 		k++;
 		i++;
 	}
+	free(s);
+	s = NULL;
+	free(value);
+	value = NULL;
 	return(res);
 }

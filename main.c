@@ -1,5 +1,6 @@
 #include "mini.h"
 
+
 int main(int ac, char **av, char **envp)
 {
 	char *line;
@@ -22,7 +23,7 @@ int main(int ac, char **av, char **envp)
 
 		if (line && *line)
 		{
-			parse_input(line, &groups);
+			parse_input(line, &groups, env);
 			tail = groups;
 			create_pipes(groups);
 			while(tail)

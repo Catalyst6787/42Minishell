@@ -48,7 +48,7 @@ void	close_fd(t_cmd *head);
 
 // PARSING
 
-int	parse_input(char *line, t_cmd **groups);
+int	parse_input(char *line, t_cmd **groups, t_env *env);
 char *clean_quotes(char *s, int *is_changed);
 char *clean_useless_quotes(char *s);
 char *expand_vars(char *s, t_env *env);
@@ -69,6 +69,8 @@ char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head);
 char	*extract_var(char *s, int i);
+char *get_var_value(char *s, t_env *env);
+char	*replace_by(char *s, char *value, int index, int length);
 
 
 // PARSING_UTILS
@@ -87,6 +89,7 @@ void	print_list(t_cmd *head);
 void	free_list(t_cmd **head);
 void	node_remove(t_cmd *node);
 void	reset_id(t_cmd *node);
+int is_quoted(char *s, int i, char c);
 
 // envp
 void	add_env_node(t_env **env, char *name, char *value, int export);

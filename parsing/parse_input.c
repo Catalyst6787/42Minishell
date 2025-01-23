@@ -1,12 +1,12 @@
 #include "../mini.h"
 
-int	parse_input(char *line, t_cmd **groups)
+int	parse_input(char *line, t_cmd **groups, t_env *env)
 {
 	char *clean_line;
 	char **tab;
 
 	clean_line = clean_input(ft_strdup(line));
-	// expand
+	clean_line = expand_vars(clean_line, env);
 	tab = split_tokens(clean_line);
 	if (group_tokens(groups, tab))
 		*groups = get_input_output(groups);
@@ -115,7 +115,7 @@ char *expand_vars(char *s, t_env *env)
 	var_value = NULL;
 	while (s[i])
 	{
-		if (s[i] == '$' && !is_quoted(s, i))
+		if (s[i] == '$' && !is_quoted(s, i, '\''))
 		{
 			var = extract_var(s, i);
 			var_value = get_var_value(var, env);
@@ -125,4 +125,5 @@ char *expand_vars(char *s, t_env *env)
 		}
 		i++;
 	}
+	return(s);
 }
