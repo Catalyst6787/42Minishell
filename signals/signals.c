@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:38:36 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/22 15:51:33 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/23 12:23:08 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 void	handle_signint(int sig)
 {
 	(void)sig;
-	//printf("Là ça signint\n");
+	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0); // ça peut etre ça marche pas
 	rl_redisplay();
