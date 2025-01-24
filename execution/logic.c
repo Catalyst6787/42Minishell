@@ -57,6 +57,7 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 {
 	int cmd;
 
+	in_cmd = 1;
 	if (!node || !node->tab)
 		return(0);
 	cmd = which_cmd(node->tab[0]);
@@ -76,5 +77,6 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 		else
 			child_process_for_builtins(node, cmd, env);
 	}
+	in_cmd = 0;
 	return(1);
 }

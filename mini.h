@@ -39,6 +39,8 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+extern int in_cmd;
+
 // externs
 void	child_process_for_externs(t_cmd *node, char **envp);
 void	ft_free_split(char **tab);
