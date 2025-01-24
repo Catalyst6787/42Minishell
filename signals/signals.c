@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:38:36 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/24 14:24:50 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/24 14:37:11 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,10 @@ void	handle_signint(int sig)
 	}
 }
 
-void	handle_sigquit(int sig)
-{
-	(void)sig;
-}
-
 void	handle_signals(void)
 {
 	signal(SIGINT, handle_signint);
-	signal(SIGQUIT, handle_sigquit);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	reset_signals(void)
