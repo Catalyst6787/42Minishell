@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:47:09 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/23 10:23:40 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/01/24 16:29:50 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ t_env	*create_env_node(char *name, char *value, int export)
 	if (!new)
 		return (NULL);
 	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
+	if (value)
+		new->value = ft_strdup(value);
+	else
+		new->value = ft_strdup("");
 	new->export = export;
 	new->next = NULL;
 	return (new);

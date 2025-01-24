@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/20 15:23:08 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/24 16:36:39 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	delete_export_node(t_env **env, char *key, int size_key)
 
 	head = *env;
 	to_del = get_in_envp(*env, key, size_key);
+	if (!to_del)
+		return ;
 	if (to_del->export != 1)
 		return ;
 	if (head == to_del)

@@ -9,8 +9,8 @@ LULU:
 
 
 KIMESTRE
-ameliorer export
-etudier les signaux
+- [x] ameliorer export
+- [x] etudier les signaux
 
 FIN:
 - delimiteur
@@ -21,5 +21,5 @@ FIN:
 - handle errors
 
 **Erreurs a corriger:**
-- segfault quand on ajoute une variable vide { export A="" }
-- double prompt apres avoir quitte une commande avec CTRL + C { yes CTRL + C}
+- [x] segfault quand on ajoute une variable vide { export A="" }
+- [x] double prompt apres avoir quitte une commande avec CTRL + C { yes CTRL + C}
