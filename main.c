@@ -31,9 +31,9 @@ int main(int ac, char **av, char **envp)
 			create_pipes(groups);
 			while(tail)
 			{
-				printf("\nCMD number: %d\n", tail->id);
-				printf("INPUT: %d\n", tail->input);
-				printf("OUTPUT: %d\n", tail->output);
+				//printf("\nCMD number: %d\n", tail->id);
+				//printf("INPUT: %d\n", tail->input);
+				//printf("OUTPUT: %d\n", tail->output);
 				if (!redirect_operator(tail, envp, env))
 					exit = 1;
 				tail = tail->next;

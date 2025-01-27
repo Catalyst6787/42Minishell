@@ -62,16 +62,16 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 		return(0);
 	cmd = which_cmd(node->tab[0]);
 	if (cmd == EXIT)
-		return(printf("Goodbye! :)\n"), 0);
+		return(/*printf("Goodbye! :)\n"), */0);
 	else if (cmd == EXTERNAL)
 		child_process_for_externs(node, envp);
-	else if (cmd >= PIPE && cmd <= RED_OUTPUT_APPEND)
-		printf("Redirection: %s\n", node->tab[0]);
-	else if (cmd >= AND)
-		printf("BONUS: %s\n", node->tab[0]);
+	//else if (cmd >= PIPE && cmd <= RED_OUTPUT_APPEND)
+		//printf("Redirection: %s\n", node->tab[0]);
+	//else if (cmd >= AND)
+		//printf("BONUS: %s\n", node->tab[0]);
 	else
 	{
-		printf("Builtin:\n"); // TODO put child process_for_builtin here
+		//printf("Builtin:\n"); // TODO put child process_for_builtin here
 		if (cmd == CD || cmd == EXPORT || cmd == UNSET)
 			which_builtin(cmd, node->tab, env);
 		else

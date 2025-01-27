@@ -333,7 +333,7 @@ t_cmd *get_input_output(t_cmd **head)
 		last = last->prev;
 	
 	return(last);
-}
+}	
 
 char	*extract_var(char *s, int i)
 {
