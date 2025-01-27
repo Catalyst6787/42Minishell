@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:06:59 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/10 15:52:22 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/27 17:02:06 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	ft_export(char **av, t_env *env)
 		{
 			if (env->export)
 			{
-				printf("declare -x %s=", env->name);
-				printf("%s\n", env->value);
+				printf("declare -x %s=\"", env->name);
+				printf("%s\"\n", env->value);
 			}
 			env = env->next;
 		}
