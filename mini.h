@@ -4,6 +4,10 @@
 // libft
 # include "libft/libft.h"
 
+// gnl
+
+# include "gnl/get_next_line.h"
+
 // libc
 # include <stdio.h>
 # include <unistd.h>
