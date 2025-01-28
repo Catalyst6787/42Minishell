@@ -291,14 +291,14 @@ t_cmd *get_input_output(t_cmd **head)
 		{
 			if (tail->next && tail->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
 			{
-				tail->next->next->input = open(tail->next->tab[0], O_RDONLY | O_EXCL);
+				tail->next->next->input = open(tail->next->tab[0], O_RDONLY);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
 			}
 			else if (tail->next && tail->prev)
 			{
-				tail->prev->input = open(tail->next->tab[0], O_RDONLY | O_EXCL);
+				tail->prev->input = open(tail->next->tab[0], O_RDONLY);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
