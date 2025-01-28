@@ -292,6 +292,8 @@ t_cmd *get_input_output(t_cmd **head)
 			if (tail->next && tail->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
 			{
 				tail->next->next->input = open(tail->next->tab[0], O_RDONLY);
+				if ((tail->next->next->input) == -1)
+					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
@@ -299,6 +301,8 @@ t_cmd *get_input_output(t_cmd **head)
 			else if (tail->next && tail->prev)
 			{
 				tail->prev->input = open(tail->next->tab[0], O_RDONLY);
+				if ((tail->prev->input) == -1)
+					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);

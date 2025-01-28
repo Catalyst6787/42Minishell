@@ -2,9 +2,6 @@
 
 LULU:
 
-- [x]  ameliorer parsing pour quotes "" ''
-- [x]  suprimer characters speciaux comme \ et ;
-- [x]  $var
 - clean (optionel)
 
 
@@ -14,7 +11,8 @@ KIMESTRE
 
 FIN:
 - delimiteur
-- redirectiosn dans les deux sens
+- [x] redirections dans les deux sens
+- [x] verifier si les fichier d’input existent avant de les ouvrirs
 - trouver l'exit status de la derniere fonction et le mettre dans envp $?
   l'afficher si cmd = $?
 - fix leaks
