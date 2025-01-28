@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 13:28:50 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/08 15:25:09 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/28 14:07:49 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_n_option(char *s)
 	return (1);
 }
 
-void	ft_echo(char **av)
+int	ft_echo(char **av)
 {
 	int	i;
 	int	opt;
@@ -48,4 +48,5 @@ void	ft_echo(char **av)
 	}
 	if (!opt)
 		ft_printf("\n");
+	return (0);
 }

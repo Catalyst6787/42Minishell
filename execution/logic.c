@@ -1,24 +1,29 @@
 #include "../mini.h"
 
-void	which_builtin(int cmd ,char **av, t_env *env)
+int	which_builtin(int cmd ,char **av, t_env *env)
 {
+	int	status;
+
 	if (cmd == ECHO)
-		ft_echo(av);
+		status = ft_echo(av);
 	else if (cmd == CD)
-		ft_cd(av, env);
+		status = ft_cd(av, env);
 	else if (cmd == PWD)
-		ft_pwd();
+		status = ft_pwd();
 	else if (cmd == EXPORT)
-		ft_export(av, env);
+		status = ft_export(av, env);
 	else if (cmd == UNSET)
-		ft_unset(av, env);
+		status = ft_unset(av, env);
 	else if (cmd == ENV)
-		ft_env(env);
+		status = ft_env(env);
+	change_value_in_envp(env, "?", 1, ft_itoa(status));
+	return (status);
 }
 
 void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 {
 	pid_t 	pid;
+	int		status;
 
 	pid = fork();
 	if (pid == -1)
@@ -38,12 +43,13 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 					printf("errror in dup2");
 					return ;
 				}
-		which_builtin(cmd, node->tab, env);
-		exit(0);
+		status = which_builtin(cmd, node->tab, env);
+		exit(status);
 	}
 	else
 	{
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		change_value_in_envp(env, "?", 1, ft_itoa(status));
 		if (node->input != 0)
 			close(node->input);
 		if (node->output != 1)
@@ -64,7 +70,7 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 	if (cmd == EXIT)
 		return(/*printf("Goodbye! :)\n"), */0);
 	else if (cmd == EXTERNAL)
-		child_process_for_externs(node, envp);
+		child_process_for_externs(node, envp, env);
 	//else if (cmd >= PIPE && cmd <= RED_OUTPUT_APPEND)
 		//printf("Redirection: %s\n", node->tab[0]);
 	//else if (cmd >= AND)
@@ -78,5 +84,5 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 			child_process_for_builtins(node, cmd, env);
 	}
 	in_cmd = 0;
-	return(1);
+	return (1);
 }

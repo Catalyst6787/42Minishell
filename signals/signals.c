@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:38:36 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/24 15:00:54 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/28 15:08:25 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	handle_signint(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	test(int sig)
+{
+	(void)sig;
+	printf("Ntm c'est un test\n");
 }
 
 void	handle_signals(void)
