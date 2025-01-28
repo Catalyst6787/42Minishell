@@ -6,13 +6,13 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 14:09:47 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/28 13:47:41 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/28 15:00:06 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-void	ft_env(t_env *env)
+int	ft_env(t_env *env)
 {
 	while (env)
 	{
@@ -23,4 +23,5 @@ void	ft_env(t_env *env)
 		}
 		env = env->next;
 	}
+	return (0);
 }
