@@ -234,10 +234,10 @@ int	group_tokens(t_cmd **head, char **tab)
 	group_start = 0;
 	if (!tab || !tab[0])
 		return(printf("Error: group_tokens encountered empty cmd\n"), 0);
-	if (tab[0][i] == '<')
+	if (tab[0][i] == '<' || tab[0][i] == '>')
 	{
-		if (!tab[0] || !tab[1] || !tab[2])
-			return(printf("Error: '<'/'<<' Must be followed by input file and command\n"), 0);
+		if (!tab[1])
+			return(printf("Error: '<'/'<<' Must be followed by input file\n"), 0);
 		append_node(head, sub_tab(tab, 0, 1));
 		append_node(head, sub_tab(tab, 1, 2));
 		i += 2;
@@ -296,20 +296,34 @@ t_cmd *get_input_output(t_cmd **head)
 				node_remove(tail->next);
 				node_remove(tail);
 			}
-			else
-				return(printf("Error in get_input_output, Cannot use a < without input or output."), NULL);
-		}
-		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
-		{
-			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			else if (tail->next && tail->prev)
 			{
-				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				tail->prev->input = open(tail->next->tab[0], O_RDONLY | O_EXCL);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
 			}
 			else
-				return(printf("Error in get_input_output, Cannot use a > without input or output."), NULL);
+				return(printf("Error in get_input_output, Cannot use a < without input and output."), NULL);
+		}
+		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
+		{
+			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			{
+				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else if (tail->next && tail->next->next)
+			{
+				tail->next->next->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else
+				return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
 			return(printf("Error in get_input_output, RED_INPUT_DEL not supported yet.\n"), NULL);
@@ -317,18 +331,25 @@ t_cmd *get_input_output(t_cmd **head)
 		{
 			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
 			{
-				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else if (tail->next && tail->next->next)
+			{
+				tail->next->next->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
 			}
 			else
-				return(printf("Error in get_input_output, Cannot use a > without input or output."), NULL);
+				return(printf("Error in get_input_output, Cannot use a >> without input and output."), NULL);
 		}
 		last = tail;
 		tail = next;
 	}
-	last->output = 1;
+	//last->output = 1;
 	while(last && last->prev)
 		last = last->prev;
 	

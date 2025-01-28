@@ -120,7 +120,7 @@ void	reset_signals(void);
 // utils
 int		ft_strcmp(char *s1, char *s2);
 
-# define PROMPT " > "
+# define PROMPT "mini : "
 # define UNHANDLED "*[]\\;&`(){}#!"
 
 // define commands
