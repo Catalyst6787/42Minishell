@@ -29,10 +29,11 @@ char	*find_path(char *command)
 	return (NULL);
 }
 
-void	child_process_for_externs(t_cmd *node, char **envp)
+void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 {
 	char	*path;
 	pid_t 	pid;
+	int		status;
 
 	path = find_path(node->tab[0]);
 	if (!path)
@@ -57,7 +58,8 @@ void	child_process_for_externs(t_cmd *node, char **envp)
 	}
 	else
 	{
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		change_value_in_envp(env, "?", 1, ft_itoa(status));
 		if (node->input != 0)
 			close(node->input);
 		if (node->output != 1)

@@ -42,7 +42,7 @@ typedef struct s_env
 extern int in_cmd;
 
 // externs
-void	child_process_for_externs(t_cmd *node, char **envp);
+void	child_process_for_externs(t_cmd *node, char **envp, t_env *env);
 void	ft_free_split(char **tab);
 
 // EXECUTION
@@ -106,12 +106,12 @@ void	delete_export_node(t_env **env, char *key, int size_key);
 void	free_envp(t_env **env);
 
 // builtins
-void	ft_echo(char **av);
-void	ft_env(t_env *env);
-void	ft_pwd(void);
-void	ft_cd(char **av, t_env *env);
-void	ft_export(char **av, t_env *env);
-void	ft_unset(char **av, t_env *env);
+int		ft_echo(char **av);
+int		ft_env(t_env *env);
+int		ft_pwd(void);
+int		ft_cd(char **av, t_env *env);
+int		ft_export(char **av, t_env *env);
+int		ft_unset(char **av, t_env *env);
 
 // signals
 void	handle_signals(void);
