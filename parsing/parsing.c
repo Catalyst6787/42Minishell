@@ -330,7 +330,28 @@ t_cmd *get_input_output(t_cmd **head)
 				return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
-			return(printf("Error in get_input_output, RED_INPUT_DEL not supported yet.\n"), NULL);
+		{
+			if (tail->next && tail->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			{
+				tail->next->next->input = delimiter()
+				if ((tail->next->next->input) == -1)
+					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else if (tail->next && tail->prev)
+			{
+				tail->prev->input = open(tail->next->tab[0], O_RDONLY);
+				if ((tail->prev->input) == -1)
+					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
+				next = tail->next->next;
+				node_remove(tail->next);
+				node_remove(tail);
+			}
+			else
+				return(printf("Error in get_input_output, Cannot use a < without input and output."), NULL);
+		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
 		{
 			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]

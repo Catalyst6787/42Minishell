@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:13:02 by lfaure            #+#    #+#             */
-/*   Updated: 2024/11/06 22:44:28 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/01/29 12:16:15 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*get_next_line2(int chars_read, char *tmp)
 		return (free(tmp), tmp = NULL, get_stat(NULL, 0), NULL);
 	if (get_stat(NULL, 2))
 	{
-		tmp = ft_strjoin(get_stat(NULL, 2), "");
+		tmp = gnl_strjoin(get_stat(NULL, 2), "");
 		get_stat(NULL, 0);
 	}
 	return (get_stat(NULL, 3), tmp);
@@ -105,7 +105,7 @@ char	*get_next_line(int fd)
 	while (chars_read > 0)
 	{
 		buf[chars_read] = '\0';
-		tmp = ft_strjoin(get_stat(NULL, 2), buf);
+		tmp = gnl_strjoin(get_stat(NULL, 2), buf);
 		if (checkline(tmp) == 2)
 			return (get_stat(after_nl(tmp), 1), until_nl(tmp, 1));
 		else if (checkline(tmp) == 1)

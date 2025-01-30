@@ -63,6 +63,9 @@ char *clean_useless_quotes(char *s);
 char *remove_chars(char *s, char *chars);
 char *expand_vars(char *s, t_env *env);
 
+// DELIMITER
+int	delimiter(int fd, char *del);
+
 
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
