@@ -1,16 +1,20 @@
 #include "../mini.h"
 
-char	*find_path(char *command)
+char	*find_path(char *command, t_env *env)
 {
 	char	**paths;
 	char	*path;
 	char	*tmp;
 	int		i;
+	t_env *PATH;
 
 	i = 0;
 	if (access(command, X_OK) == 0)
 		return (command);
-	paths = ft_split(getenv("PATH"), ':');
+	PATH = get_in_envp(env, "PATH", 4);
+	if (!PATH)
+		return (NULL);
+	paths = ft_split(PATH->value, ':');
 	i = 0;
 	while (paths[i])
 	{
@@ -35,7 +39,7 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 	pid_t 	pid;
 	int		status;
 
-	path = find_path(node->tab[0]);
+	path = find_path(node->tab[0], env);
 	if (!path)
 	{
 		ft_printf("minishell: command not found: %s\n", node->tab[0]);

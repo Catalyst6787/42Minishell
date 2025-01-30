@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:22:08 by kgiraud           #+#    #+#             */
-/*   Updated: 2024/10/06 22:05:26 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/01/30 13:55:32 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	**ft_split(char const *s, char c)
 	char	**tab;
 	int		nb_w;
 
-	if (!s)
+	if (!s || !*s)
 		return (NULL);
 	nb_w = ft_count_words(s, c);
 	tab = (char **)malloc(sizeof(char *) * (nb_w + 1));
