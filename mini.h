@@ -39,8 +39,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-extern int in_cmd;
-
 // externs
 void	child_process_for_externs(t_cmd *node, char **envp, t_env *env);
 void	ft_free_split(char **tab);
@@ -116,6 +114,9 @@ int		ft_unset(char **av, t_env *env);
 // signals
 void	handle_signals(void);
 void	reset_signals(void);
+int 	fgv_in_cmd(int new);
+int 	fgv_sig_nb(int new);
+t_env	*fgv_env(t_env *new);
 
 // utils
 int		ft_strcmp(char *s1, char *s2);

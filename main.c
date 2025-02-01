@@ -1,7 +1,5 @@
 #include "mini.h"
 
-int in_cmd = 0;
-
 int main(int ac, char **av, char **envp)
 {
 	char *line;

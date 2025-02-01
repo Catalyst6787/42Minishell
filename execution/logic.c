@@ -49,7 +49,8 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 	else
 	{
 		waitpid(pid, &status, 0);
-		change_value_in_envp(env, "?", 1, ft_itoa(status));
+		change_value_in_envp(env, "?", 1, ft_itoa(status + fgv_sig_nb(-1)));
+		fgv_sig_nb(0);
 		if (node->input != 0)
 			close(node->input);
 		if (node->output != 1)
@@ -63,7 +64,7 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 {
 	int cmd;
 
-	in_cmd = 1;
+	fgv_in_cmd(1);
 	if (!node || !node->tab)
 		return(0);
 	cmd = which_cmd(node->tab[0]);
@@ -83,6 +84,6 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 		else
 			child_process_for_builtins(node, cmd, env);
 	}
-	in_cmd = 0;
+	fgv_in_cmd(0);
 	return (1);
 }
