@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 15:28:00 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/02 15:49:33 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/02 19:29:52 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int fgv_exit_arg(int new)
 
 int	ft_exit(char **av)
 {
-	if (av[2])
+	if (av[1] && av[2])
 		return (printf("minishell: exit: too many arguments\n"), 1);
 	if (av[1])
 		fgv_exit_arg(ft_atoi(av[1]));
