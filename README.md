@@ -10,11 +10,11 @@ KIMESTRE
 - [x] etudier les signaux
 
 FIN:
-- delimiteur
+- [x] delimiteur
 - [x] redirections dans les deux sens
 - [x] verifier si les fichier d’input existent avant de les ouvrirs
-- trouver l'exit status de la derniere fonction et le mettre dans envp $?
-  l'afficher si cmd = $?
+- [x] trouver l'exit status de la derniere fonction et le mettre dans envp $?
+- [x] l'afficher si cmd = $?
 - fix leaks
 - handle errors
 

@@ -12,7 +12,7 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 		return(groups = NULL, 0);
 	tab = split_tokens(clean_line);
 	if (group_tokens(groups, tab))
-		*groups = get_input_output(groups);
+		*groups = get_input_output(groups, env);
 	clean_line = NULL;
 	free(tab);
 	tab = NULL;
@@ -144,13 +144,15 @@ char *expand_vars(char *s, t_env *env)
 	var_value = NULL;
 	while (s[i])
 	{
-		if (s[i] == '$' && !is_quoted(s, i, '\''))
+		if (s[i] == '$' /*&& !is_quoted(s, i, '\'')*/)
 		{
 			var = extract_var(s, i);
 			var_value = get_var_value(var, env);
-			if (!var_value)
-				return(/*printf("Error: variable '%s' not found\n", var), */NULL);
-			s = replace_by(s, var_value, i, (ft_strlen(var) + 1));
+			if (var_value)
+				s = replace_by(s, var_value, i, (ft_strlen(var) + 1));
+			else
+				s = replace_by(s, ft_strdup(""), i, (ft_strlen(var) + 1));
+
 		}
 		i++;
 	}

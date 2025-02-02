@@ -294,7 +294,7 @@ int	group_tokens(t_cmd **head, char **tab)
 	return(1);
 }
 
-t_cmd *get_input_output(t_cmd **head)
+t_cmd *get_input_output(t_cmd **head, t_env *env)
 {
 	t_cmd	*tail;
 	t_cmd	*next;
@@ -363,7 +363,7 @@ t_cmd *get_input_output(t_cmd **head)
 		{
 			if (tail->next && tail->prev)
 			{
-				append_node_before(&tail->prev, heredoc(tail->next->tab[0]), head);
+				append_node_before(&tail->prev, heredoc(tail->next->tab[0], env), head);
 				tail->prev->input = 0;
 				next = tail->next->next;
 				node_remove(tail->next);
@@ -371,7 +371,7 @@ t_cmd *get_input_output(t_cmd **head)
 			}
 			else if (tail->next && tail->next->next)
 			{
-				append_node_before(&tail, heredoc(tail->next->tab[0]), head);
+				append_node_before(&tail, heredoc(tail->next->tab[0], env), head);
 				tail->next->next->input = 0;
 				next = tail->next->next;
 				node_remove(tail->next);

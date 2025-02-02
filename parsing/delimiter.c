@@ -45,7 +45,7 @@
 // 	return(ft_strdup(string));
 // }
 
-char	**heredoc(char *del)
+char	**heredoc(char *del, t_env *env)
 {
 	int first = 1;
 	char *tot = ft_strdup("");
@@ -73,7 +73,7 @@ char	**heredoc(char *del)
 	free(line);
 	result = malloc(sizeof(char *) * 3);
 	result[0] = ft_strdup("<<");
-	result[1] = tot;
+	result[1] = expand_vars(tot, env);
 	result[2] = NULL;
 	return(result);
 }
