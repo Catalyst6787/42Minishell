@@ -49,5 +49,5 @@ int main(int ac, char **av, char **envp)
 	}
 	free_envp(&env);
 	clear_history();
-	return (0);
+	return (fgv_exit_arg(-1));
 }

@@ -1,23 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/12 15:15:30 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/02 15:39:42 by kgiraud          ###   ########.fr       */
+/*   Created: 2025/02/02 15:28:00 by kgiraud           #+#    #+#             */
+/*   Updated: 2025/02/02 15:49:33 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../mini.h"
 
-int	ft_strcmp(char *s1, char *s2)
+int fgv_exit_arg(int new)
 {
-	int	i;
+	static int value;
+	
+	if (new == -1)
+		return (value);
+	value = new;
+	return (value);
+}
 
-	i = 0;
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
+int	ft_exit(char **av)
+{
+	if (av[2])
+		return (printf("minishell: exit: too many arguments\n"), 1);
+	if (av[1])
+		fgv_exit_arg(ft_atoi(av[1]));
+	return (0);
 }
