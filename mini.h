@@ -4,6 +4,10 @@
 // libft
 # include "libft/libft.h"
 
+// gnl
+
+# include "gnl/get_next_line.h"
+
 // libc
 # include <stdio.h>
 # include <unistd.h>
@@ -57,6 +61,10 @@ char *clean_useless_quotes(char *s);
 char *remove_chars(char *s, char *chars);
 char *expand_vars(char *s, t_env *env);
 
+// HEREDOC
+char	**heredoc(char *del);
+int		red_input_del(char **av);
+
 
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
@@ -69,6 +77,7 @@ char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
+void	append_node_first(t_cmd **tail, char **tab, t_cmd **head);
 char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head);
@@ -113,6 +122,7 @@ int		ft_unset(char **av, t_env *env);
 int 	fgv_exit_arg(int new);
 int		ft_exit(char **av);
 
+
 // signals
 void	handle_signals(void);
 void	reset_signals(void);
@@ -124,6 +134,7 @@ t_env	*fgv_env(t_env *new);
 int		ft_strcmp(char *s1, char *s2);
 
 # define PROMPT "mini : "
+# define HEREDOC_PROMPT "> "
 # define UNHANDLED "*[]\\;&`(){}#!"
 
 // define commands
