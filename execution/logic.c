@@ -16,6 +16,8 @@ int	which_builtin(int cmd ,char **av, t_env *env)
 		status = ft_unset(av, env);
 	else if (cmd == ENV)
 		status = ft_env(env);
+	else if (cmd == RED_INPUT_DEL)
+		status = red_input_del(av);
 	change_value_in_envp(env, "?", 1, ft_itoa(status));
 	return (status);
 }

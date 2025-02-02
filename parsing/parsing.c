@@ -202,6 +202,36 @@ void	append_node(t_cmd **head, char **tab)
 	new->output = 1;
 }
 
+void append_node_before(t_cmd **tail, char **tab, t_cmd **head)
+{
+	t_cmd *new;
+
+	new = malloc(sizeof(t_cmd));
+	if (!new)
+		return(printf("Malloc error in append_node_before(), exiting\n"), exit(1));
+	new->tab = tab;
+	new->id = 0;
+	new->input = 0;
+	new->output = 1;
+	if (*tail)
+	{
+		new->next = *tail;
+		new->prev = (*tail)->prev;
+		(*tail)->prev = new;
+		if (new->prev)
+			new->prev->next = new;
+	}
+	else
+	{
+		new->next = NULL;
+		new->prev = NULL;
+		*head = *tail = new;
+	}
+	if (*tail == *head)
+		*head = *tail;
+}
+
+
 char **sub_tab(char **tab, int from, int to)
 {
 	char **subtab;
@@ -237,7 +267,7 @@ int	group_tokens(t_cmd **head, char **tab)
 	if (tab[0][i] == '<' || tab[0][i] == '>')
 	{
 		if (!tab[1])
-			return(printf("Error: '<'/'<<' Must be followed by input file\n"), 0);
+			return(printf("Error: </>/>> Must be followed by input file, << must be followed by delimiter,\n"), 0);
 		append_node(head, sub_tab(tab, 0, 1));
 		append_node(head, sub_tab(tab, 1, 2));
 		i += 2;
@@ -331,26 +361,24 @@ t_cmd *get_input_output(t_cmd **head)
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
 		{
-			if (tail->next && tail->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
+			if (tail->next && tail->prev)
 			{
-				tail->next->next->input = delimiter()
-				if ((tail->next->next->input) == -1)
-					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
+				append_node_before(&tail->prev, heredoc(tail->next->tab[0]), head);
+				tail->prev->input = 0;
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
 			}
-			else if (tail->next && tail->prev)
+			else if (tail->next && tail->next->next)
 			{
-				tail->prev->input = open(tail->next->tab[0], O_RDONLY);
-				if ((tail->prev->input) == -1)
-					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
+				append_node_before(&tail, heredoc(tail->next->tab[0]), head);
+				tail->next->next->input = 0;
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
 			}
 			else
-				return(printf("Error in get_input_output, Cannot use a < without input and output."), NULL);
+				return(printf("Error in get_input_output, Cannot use a << without input and output.\n"), NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
 		{
@@ -371,13 +399,15 @@ t_cmd *get_input_output(t_cmd **head)
 			else
 				return(printf("Error in get_input_output, Cannot use a >> without input and output."), NULL);
 		}
-		last = tail;
+		if (tail)
+			last = tail;
 		tail = next;
 	}
+	//(void)last;
 	//last->output = 1;
 	while(last && last->prev)
 		last = last->prev;
-	
+	//return(*head);
 	return(last);
 }	
 

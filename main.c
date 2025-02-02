@@ -1,7 +1,7 @@
 #include "mini.h"
 
 int in_cmd = 0;
-/*
+
 int main(int ac, char **av, char **envp)
 {
 	char *line;
@@ -16,6 +16,8 @@ int main(int ac, char **av, char **envp)
 	env = NULL;
 	init_envp(&env, envp);
 	handle_signals();
+	if (ac != 1)
+		printf("no arguments are expected, discarding\n");
 	(void)ac;
 	(void)av;
 
@@ -31,9 +33,9 @@ int main(int ac, char **av, char **envp)
 			create_pipes(groups);
 			while(tail)
 			{
-				//printf("\nCMD number: %d\n", tail->id);
-				//printf("INPUT: %d\n", tail->input);
-				//printf("OUTPUT: %d\n", tail->output);
+				// printf("\nCMD number: %d\n", tail->id);
+				// printf("INPUT: %d\n", tail->input);
+				// printf("OUTPUT: %d\n", tail->output);
 				if (!redirect_operator(tail, envp, env))
 					exit = 1;
 				tail = tail->next;
@@ -41,7 +43,7 @@ int main(int ac, char **av, char **envp)
 			add_history(line);
 			free(line);
 			line = NULL;
-			//print_list(groups);
+			// print_list(groups);
 			close_fd(groups);
 			free_list(&groups);
 			groups = NULL;
@@ -53,4 +55,3 @@ int main(int ac, char **av, char **envp)
 	clear_history();
 	return (0);
 }
-*/

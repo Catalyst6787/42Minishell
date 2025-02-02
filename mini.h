@@ -63,8 +63,9 @@ char *clean_useless_quotes(char *s);
 char *remove_chars(char *s, char *chars);
 char *expand_vars(char *s, t_env *env);
 
-// DELIMITER
-int	delimiter(int fd, char *del);
+// HEREDOC
+char	**heredoc(char *del);
+int		red_input_del(char **av);
 
 
 char	*rem_char(char *s, int t);
@@ -78,6 +79,7 @@ char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
+void	append_node_first(t_cmd **tail, char **tab, t_cmd **head);
 char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head);
@@ -120,6 +122,7 @@ int		ft_cd(char **av, t_env *env);
 int		ft_export(char **av, t_env *env);
 int		ft_unset(char **av, t_env *env);
 
+
 // signals
 void	handle_signals(void);
 void	reset_signals(void);
@@ -128,6 +131,7 @@ void	reset_signals(void);
 int		ft_strcmp(char *s1, char *s2);
 
 # define PROMPT "mini : "
+# define HEREDOC_PROMPT "> "
 # define UNHANDLED "*[]\\;&`(){}#!"
 
 // define commands
