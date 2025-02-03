@@ -10,7 +10,7 @@ char	*find_path(char *command, t_env *env)
 
 	i = 0;
 	if (access(command, X_OK) == 0)
-		return (command);
+		return (ft_strdup(command));
 	PATH = get_in_envp(env, "PATH", 4);
 	if (!PATH)
 		return (NULL);

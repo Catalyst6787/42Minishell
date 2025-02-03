@@ -41,7 +41,7 @@ int main(int ac, char **av, char **envp)
 			add_history(line);
 			free(line);
 			line = NULL;
-			// print_list(groups);
+			print_list(groups); // debug
 			close_fd(groups);
 			free_list(&groups);
 			groups = NULL;
