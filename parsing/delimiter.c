@@ -1,50 +1,5 @@
 #include "../mini.h"
 
-// static char	*get_full_file(int fd)
-// {
-// 	int first = 1;
-// 	char *buf = "";
-// 	char *tmp = NULL;
-// 	char *full_file = get_next_line(fd);
-// 	if (!full_file)
-// 		return(NULL);
-// 	while(buf || first)
-// 	{
-// 		tmp = ft_strjoin(full_file, buf);
-// 		free(full_file);
-// 		if (!first)
-// 			free(buf);
-// 		first = 0;
-// 		buf = NULL;
-// 		full_file = tmp;
-// 		buf = get_next_line(fd);
-// 	}
-// 	return(full_file);
-// }
-
-// return copy of string until delimiter
-// static char	*get_until_string(const char *string, const char *delimiter)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!string)
-// 		return(NULL);
-// 	if (!delimiter || !delimiter[0])
-// 		return(ft_strdup(string));
-// 	while(string[i])
-// 	{
-// 		if (!ft_strncmp((string + i), delimiter, ft_strlen(delimiter)))
-// 		{
-// 			if (i == 0)
-// 				return (NULL);
-// 			return (ft_substr(string, 0, i));
-// 		}
-// 		i++; 
-// 	}
-// 	return(ft_strdup(string));
-// }
-
 char	**heredoc(char *del, t_env *env)
 {
 	int first = 1;

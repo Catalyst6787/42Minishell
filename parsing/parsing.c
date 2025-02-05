@@ -313,6 +313,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				tail->prev->output = 1;
 				tail->next->input = 0;
 				node_remove(tail);
+				tail = NULL;
 			}
 			else
 				return(printf("Error in get_input_output, Cannot use a pipe without input and ouptut."), NULL);
@@ -327,6 +328,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else if (tail->next && tail->prev)
 			{
@@ -336,6 +338,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else
 				return(printf("Error in get_input_output, Cannot use a < without input and output."), NULL);
@@ -348,6 +351,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else if (tail->next && tail->next->next)
 			{
@@ -355,6 +359,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else
 				return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), NULL);
@@ -364,18 +369,22 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 			if (tail->next && tail->prev)
 			{
 				append_node_before(&tail->prev, heredoc(tail->next->tab[0], env), head);
+				last = tail->prev;
 				tail->prev->input = 0;
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else if (tail->next && tail->next->next)
 			{
 				append_node_before(&tail, heredoc(tail->next->tab[0], env), head);
+				last = tail->next->next;
 				tail->next->next->input = 0;
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else
 				return(printf("Error in get_input_output, Cannot use a << without input and output.\n"), NULL);
@@ -388,6 +397,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else if (tail->next && tail->next->next)
 			{
@@ -395,6 +405,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
+				tail = NULL;
 			}
 			else
 				return(printf("Error in get_input_output, Cannot use a >> without input and output."), NULL);
