@@ -144,7 +144,7 @@ char *expand_vars(char *s, t_env *env)
 	var_value = NULL;
 	while (s[i])
 	{
-		if (s[i] == '$' /*&& !is_quoted(s, i, '\'')*/)
+		if (s[i] == '$' && !is_quoted(s, i, '\''))
 		{
 			var = extract_var(s, i);
 			var_value = get_var_value(var, env);
