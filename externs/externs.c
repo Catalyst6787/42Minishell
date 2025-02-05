@@ -68,8 +68,8 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 			close(node->input);
 		if (node->output != 1)
 			close(node->output);
-		if (node->next != NULL)
-			close(node->output);
+		// if (node->next != NULL)
+		// 	close(node->output);
  	}
 	free(path);
 }

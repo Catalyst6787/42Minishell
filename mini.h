@@ -56,11 +56,11 @@ pid_t	fgv_last_pid(pid_t new);
 
 // PARSING
 
-int	parse_input(char *line, t_cmd **groups, t_env *env);
-char *clean_quotes(char *s, int *is_changed);
-char *clean_useless_quotes(char *s);
-char *remove_chars(char *s, char *chars);
-char *expand_vars(char *s, t_env *env);
+int		parse_input(char *line, t_cmd **groups, t_env *env);
+char	*clean_quotes(char *s, int *is_changed);
+char	*clean_useless_quotes(char *s);
+char	*remove_chars(char *s, char *chars);
+char	*expand_vars(char *s, t_env *env);
 
 // HEREDOC
 char	**heredoc(char *del, t_env *env);

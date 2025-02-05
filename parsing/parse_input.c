@@ -2,7 +2,7 @@
 
 int	parse_input(char *line, t_cmd **groups, t_env *env)
 {
-	char *clean_line;
+	char	*clean_line;
 	char **tab;
 
 	clean_line = clean_input(ft_strdup(line));
@@ -13,6 +13,7 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 	tab = split_tokens(clean_line);
 	if (group_tokens(groups, tab))
 		*groups = get_input_output(groups, env);
+	free(clean_line);
 	clean_line = NULL;
 	free(tab);
 	tab = NULL;
@@ -152,6 +153,7 @@ char *expand_vars(char *s, t_env *env)
 				s = replace_by(s, var_value, i, (ft_strlen(var) + 1));
 			else
 				s = replace_by(s, ft_strdup(""), i, (ft_strlen(var) + 1));
+			free(var);
 
 		}
 		i++;
