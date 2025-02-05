@@ -7,6 +7,8 @@ int main(int ac, char **av, char **envp)
 	t_cmd	*tail;
 	int		exit;
 	t_env	*env;
+	int		status;
+	pid_t	pid;
 
 	groups = NULL;
 	tail = NULL;
@@ -37,6 +39,16 @@ int main(int ac, char **av, char **envp)
 				if (!redirect_operator(tail, envp, env))
 					exit = 1;
 				tail = tail->next;
+			}
+			pid = 0;
+			while (pid != -1)
+			{
+				pid = wait(&status);
+				if (pid != -1 && pid == fgv_last_pid(-1))
+				{
+					change_value_in_envp(env, "?", 1, ft_itoa(WEXITSTATUS(status) + fgv_sig_nb(-1)));
+					fgv_sig_nb(0);
+				}
 			}
 			add_history(line);
 			free(line);

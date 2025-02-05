@@ -52,6 +52,7 @@ void	ft_free_split(char **tab);
 int	redirect_operator(t_cmd *node, char **envp, t_env *env);
 void	create_pipes(t_cmd *head);
 void	close_fd(t_cmd *head);
+pid_t	fgv_last_pid(pid_t new);
 
 // PARSING
 
