@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:58:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/28 14:10:24 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/05 18:30:05 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	ft_cd(char **av, t_env *env)
 		path = av[1];
 	if (chdir(path) == -1)
 		return (perror("minishell: chdir in cd error"), 1);
-	change_value_in_envp(env, "OlDPWD", 6, pwd);
+	change_value_in_envp(env, "OlDPWD", 6, ft_strdup(pwd));
 	free(pwd);
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (perror("minishell: getcwd in cd error"), 1);
-	change_value_in_envp(env, "PWD", 3, pwd);
+	change_value_in_envp(env, "PWD", 3, ft_strdup(pwd));
 	free(pwd);
 	return (0);
 }
