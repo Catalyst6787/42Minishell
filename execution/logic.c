@@ -46,6 +46,14 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 					return ;
 				}
 		status = which_builtin(cmd, node->tab, env);
+		free_envp(&env);
+		while(node->prev)
+		{
+			node = node->prev;
+		}
+		free_list(&node);
+		//free_tab(node->tab);
+		//free(node);
 		exit(status);
 	}
 	else
