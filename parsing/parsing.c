@@ -420,7 +420,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		last = last->prev;
 	//return(*head);
 	return(last);
-}	
+}
 
 char	*extract_var(char *s, int i)
 {
