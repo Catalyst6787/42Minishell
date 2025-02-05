@@ -42,7 +42,7 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 	if (!path)
 	{
 		ft_printf("minishell: command not found: %s\n", node->tab[0]);
-		change_value_in_envp(fgv_env(NULL), "?", 1, "127");
+		change_value_in_envp(fgv_env(NULL), "?", 1, ft_strdup("127"));
 		return ;
 	}
 	pid = fork();
