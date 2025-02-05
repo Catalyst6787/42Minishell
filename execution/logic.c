@@ -50,9 +50,8 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
-		change_value_in_envp(env, "?", 1, ft_itoa(WEXITSTATUS(status) + fgv_sig_nb(-1)));
-		fgv_sig_nb(0);
+		if (!node->next)
+			fgv_last_pid(pid);
 		if (node->input != 0)
 			close(node->input);
 		if (node->output != 1)

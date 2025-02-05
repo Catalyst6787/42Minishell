@@ -37,7 +37,6 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 {
 	char	*path;
 	pid_t 	pid;
-	int		status;
 
 	path = find_path(node->tab[0], env);
 	if (!path)
@@ -63,9 +62,8 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
-		change_value_in_envp(env, "?", 1, ft_itoa(WEXITSTATUS(status) + fgv_sig_nb(-1)));
-		fgv_sig_nb(0);
+		if (!node->next)
+			fgv_last_pid(pid);
 		if (node->input != 0)
 			close(node->input);
 		if (node->output != 1)
