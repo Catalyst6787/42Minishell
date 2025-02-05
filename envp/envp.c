@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/05 17:17:31 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/05 18:11:00 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	change_value_in_envp(t_env *env, char *key, int size_key, char *new_value)
 		if (ft_strncmp(env->name, key, size_key) == 0)
 		{
 			free(env->value);
-			env->value = ft_strdup(new_value);
+			env->value = new_value;
 		}
 		env = env->next;
 	}
