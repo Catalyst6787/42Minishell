@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:38:36 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/05 16:14:49 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/05 18:17:17 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,6 @@ void	handle_signint(int sig)
 	{
 		fgv_sig_nb(128);
 	}
-}
-
-void	test(int sig)
-{
-	(void)sig;
-	printf("Ntm c'est un test\n");
 }
 
 void	handle_signals(void)
