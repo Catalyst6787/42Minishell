@@ -1,5 +1,76 @@
 #include "../mini.h"
 
+
+char *insert_space(char *s, int i) {
+	if (!s)
+		return(printf("string is NULL"), NULL);
+	if (i < 0)
+		return(printf("bad index"), NULL);
+	int len = ft_strlen(s);
+	char *new_str = (char *)malloc(len + 2); 
+	if (!new_str) return NULL;
+
+	int j = 0;
+	while (j <= i) {
+		new_str[j] = s[j];
+		j++;
+	}
+	new_str[j] = ' ';
+	j++;	
+	while (j <= len) {
+		new_str[j] = s[j - 1];
+		j++;
+	}
+	new_str[j] = '\0';
+		
+	free(s);
+	return new_str;
+}
+
+
+char	*insert_spaces(char *s)
+{
+	int i;
+
+	i = 0;
+	while(s[i])
+	{
+		if (s[i] && s[i + 1] && ((s[i] == '<' && s[i + 1] == '<') || (s[i] == '>' && s[i + 1] == '>')))
+		{
+			if (i > 0 && s[i - 1] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
+			{
+				s = insert_space(s, i - 1);
+				i = 0;
+				continue ;
+			}
+			else if (s[i + 2] && s[i + 2] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
+			{
+				s = insert_space(s, i + 1);
+				i = 0;
+				continue ;
+			}
+		}
+		else if (s[i] && (s[i] == '|' || (s[i] == '<' && (!s[i - 1] || s[i - 1] != '<' )) || (s[i] == '>' && (!s[i - 1] || s[i - 1] != '>' ))))
+		{
+			if (i > 0 && s[i - 1] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
+			{
+				s = insert_space(s, i - 1);
+				i = 0;
+				continue ;
+			}
+			else if (s[i + 1] && s[i + 1] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
+			{
+				s = insert_space(s, i);
+				i = 0;
+				continue ;
+			}
+		}
+		i++;
+	}
+	return(s);
+}
+
+
 int	parse_input(char *line, t_cmd **groups, t_env *env)
 {
 	char	*clean_line;
@@ -8,6 +79,7 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 	clean_line = clean_input(ft_strdup(line));
 	clean_line = remove_chars(clean_line, UNHANDLED);
 	clean_line = expand_vars(clean_line, env);
+	clean_line = insert_spaces(clean_line);
 	if (!clean_line)
 		return(groups = NULL, 0);
 	tab = split_tokens(clean_line);
