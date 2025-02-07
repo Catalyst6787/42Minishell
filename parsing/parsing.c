@@ -374,7 +374,10 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		{
 			if (tail->next && tail->prev)
 			{
-				append_node_before(&tail->prev, heredoc(tail->next->tab[0], env), head);
+				int sigint_received = 0;
+				append_node_before(&tail->prev, heredoc(tail->next->tab[0], env, &sigint_received), head);
+				if (sigint_received == 1)
+					return(free_list(head), NULL);
 				last = tail->prev;
 				tail->prev->input = 0;
 				next = tail->next->next;
@@ -384,7 +387,10 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 			}
 			else if (tail->next && tail->next->next)
 			{
-				append_node_before(&tail, heredoc(tail->next->tab[0], env), head);
+				int sigint_received = 0;
+				append_node_before(&tail, heredoc(tail->next->tab[0], env, &sigint_received), head);
+				if (sigint_received == 1)
+					return(free_list(head), NULL);
 				last = tail->next->next;
 				tail->next->next->input = 0;
 				next = tail->next->next;

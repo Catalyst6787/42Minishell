@@ -14,6 +14,5 @@ FIN:
  -> trouvé! double free quand le path complet est donné (c’est réglé dcp)
 
 -[x] les commandes sans espaces (ls|cat)
--[] si commande n'existe pas (lol | cat) -> on devrait renvoyer une erreur sans faire celles d'apres
 -[x] heredoc devrait pas expand quand 'DEL' mais expand a l'interieur meme si 'content' 
 -[] gere les signaux dans heredoc
