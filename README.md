@@ -15,4 +15,5 @@ FIN:
 
 -[x] les commandes sans espaces (ls|cat)
 -[] si commande n'existe pas (lol | cat) -> on devrait renvoyer une erreur sans faire celles d'apres
--[] heredoc devrait pas expand quand 'DEL' mais expand a l'interieur meme si 'content' (gere les signaux en bonus)
+-[x] heredoc devrait pas expand quand 'DEL' mais expand a l'interieur meme si 'content' 
+-[] gere les signaux dans heredoc

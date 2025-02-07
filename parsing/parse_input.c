@@ -78,7 +78,7 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 
 	clean_line = clean_input(ft_strdup(line));
 	clean_line = remove_chars(clean_line, UNHANDLED);
-	clean_line = expand_vars(clean_line, env);
+	clean_line = expand_vars(clean_line, env, 0);
 	clean_line = insert_spaces(clean_line);
 	if (!clean_line)
 		return(groups = NULL, 0);
@@ -206,7 +206,7 @@ char *remove_chars(char *s, char *chars)
 	return(s);
 }
 
-char *expand_vars(char *s, t_env *env)
+char *expand_vars(char *s, t_env *env, int is_heredoc)
 {
 	int i;
 	char *var;
@@ -217,7 +217,7 @@ char *expand_vars(char *s, t_env *env)
 	var_value = NULL;
 	while (s[i])
 	{
-		if (s[i] == '$' && !is_quoted(s, i, '\''))
+		if (s[i] == '$' && (!is_quoted(s, i, '\'') || is_heredoc))
 		{
 			var = extract_var(s, i);
 			var_value = get_var_value(var, env);
