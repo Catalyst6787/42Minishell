@@ -63,7 +63,7 @@ char	*remove_chars(char *s, char *chars);
 char	*expand_vars(char *s, t_env *env, int is_heredoc);
 
 // HEREDOC
-char	**heredoc(char *del, t_env *env);
+char	**heredoc(char *del, t_env *env, int *sigint_received);
 int		red_input_del(char **av);
 
 

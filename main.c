@@ -29,6 +29,7 @@ int main(int ac, char **av, char **envp)
 		else if (*line)
 		{
 			parse_input(line, &groups, env);
+			handle_signals();
 			tail = groups;
 			create_pipes(groups);
 			while(tail)
