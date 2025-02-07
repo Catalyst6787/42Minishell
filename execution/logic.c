@@ -93,6 +93,6 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 		else
 			child_process_for_builtins(node, cmd, env);
 	}
-	fgv_in_cmd(0);
+	//fgv_in_cmd(0);
 	return (1);
 }

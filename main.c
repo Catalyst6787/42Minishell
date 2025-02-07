@@ -46,10 +46,14 @@ int main(int ac, char **av, char **envp)
 				pid = wait(&status);
 				if (pid != -1 && pid == fgv_last_pid(-1))
 				{
-					change_value_in_envp(env, "?", 1, ft_itoa(WEXITSTATUS(status) + fgv_sig_nb(-1)));
+					if (fgv_sig_nb(-1))
+						change_value_in_envp(env, "?", 1, ft_itoa(fgv_sig_nb(-1)));
+					else
+						change_value_in_envp(env, "?", 1, ft_itoa(WEXITSTATUS(status)));
 					fgv_sig_nb(0);
 				}
 			}
+			fgv_in_cmd(0);
 			add_history(line);
 			free(line);
 			line = NULL;
