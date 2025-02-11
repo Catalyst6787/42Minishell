@@ -64,11 +64,15 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 	{
 		reset_signals();
 		if (node->input != 0)
+		{
 			if (dup2(node->input, STDIN_FILENO) == -1)
 				return (printf("errror in dup2"), free(path));
+		}
 		if (node->output != 1)
+		{
 			if (dup2(node->output, STDOUT_FILENO) == -1)
 				return (printf("errror in dup2"), free(path));
+		}
 		execve(path, node->tab, envp);
 		exit(0);
 	}
