@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   externs.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/11 13:09:19 by kgiraud           #+#    #+#             */
+/*   Updated: 2025/02/11 13:11:47 by kgiraud          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 char	*find_path(char *command, t_env *env)
@@ -6,7 +18,7 @@ char	*find_path(char *command, t_env *env)
 	char	*path;
 	char	*tmp;
 	int		i;
-	t_env *PATH;
+	t_env	*PATH;
 
 	i = 0;
 	if (access(command, X_OK) == 0)
@@ -36,7 +48,7 @@ char	*find_path(char *command, t_env *env)
 void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 {
 	char	*path;
-	pid_t 	pid;
+	pid_t	pid;
 
 	path = find_path(node->tab[0], env);
 	if (!path)
@@ -68,8 +80,6 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 			close(node->input);
 		if (node->output != 1)
 			close(node->output);
-		// if (node->next != NULL)
-		// 	close(node->output);
- 	}
+	}
 	free(path);
 }

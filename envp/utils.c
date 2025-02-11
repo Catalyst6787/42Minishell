@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:47:09 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/24 16:29:50 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/11 13:08:33 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	add_env_node(t_env **env, char *name, char *value, int export)
 {
 	t_env	*new;
 	t_env	*last_node;
-	
+
 	new = create_env_node(name, value, export);
 	last_node = find_last_node(*env);
 	if (!last_node)

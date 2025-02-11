@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/05 18:11:00 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/11 13:06:03 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_env	*get_in_envp(t_env *env, char *key, int size_key)
 	return (NULL);
 }
 
-void	change_value_in_envp(t_env *env, char *key, int size_key, char *new_value)
+void	change_value_in_envp(t_env *env, char *key,
+	int size_key, char *new_value)
 {
 	while (env)
 	{

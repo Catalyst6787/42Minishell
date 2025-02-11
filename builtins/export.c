@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:06:59 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/01/28 14:11:31 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/11 13:05:01 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,26 @@ int	var_is_valid(char *s)
 	return (1);
 }
 
+void	print_export(t_env *env)
+{
+	while (env)
+	{
+		if (env->export)
+		{
+			printf("declare -x %s=\"", env->name);
+			printf("%s\"\n", env->value);
+		}
+		env = env->next;
+	}
+}
+
 int	ft_export(char **av, t_env *env)
 {
 	char	**tab_var;
 	t_env	*var;
-	
+
 	if (!av[1])
-	{
-		while (env)
-		{
-			if (env->export)
-			{
-				printf("declare -x %s=\"", env->name);
-				printf("%s\"\n", env->value);
-			}
-			env = env->next;
-		}
-	}
+		print_export(env);
 	else if (av[1])
 	{
 		tab_var = ft_split(av[1], '=');

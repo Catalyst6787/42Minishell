@@ -6,11 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 11:38:36 by kgiraud           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/07 14:35:50 by kgiraud          ###   ########.fr       */
-=======
-/*   Updated: 2025/02/07 16:37:56 by lfaure           ###   ########.fr       */
->>>>>>> lfaure
+/*   Updated: 2025/02/11 13:14:26 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +21,20 @@
 // Ctrl-C doit tuer l’enfant s’il est en cours d’exécution.
 // Ctrl-\ doit tuer l’enfant ou avoir son comportement par défaut.
 
-int fgv_in_cmd(int new)
+int	fgv_in_cmd(int new)
 {
-	static int value;
-	
+	static int	value;
+
 	if (new == -1)
 		return (value);
 	value = new;
 	return (value);
 }
 
-int fgv_sig_nb(int new)
+int	fgv_sig_nb(int new)
 {
-	static int value;
-	
+	static int	value;
+
 	if (new == -1)
 		return (value);
 	value = new;
@@ -47,8 +43,8 @@ int fgv_sig_nb(int new)
 
 t_env	*fgv_env(t_env *new)
 {
-	static t_env *env;
-	
+	static t_env	*env;
+
 	if (!new)
 		return (env);
 	env = new;
@@ -76,10 +72,4 @@ void	handle_signals(void)
 {
 	signal(SIGINT, handle_signint);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-void	reset_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	//signal(SIGQUIT, SIG_DFL);
 }
