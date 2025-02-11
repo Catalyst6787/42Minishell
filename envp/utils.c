@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:47:09 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/11 13:08:33 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:16:47 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,20 @@ void	add_env_node(t_env **env, char *name, char *value, int export)
 		*env = new;
 	else
 		last_node->next = new;
+}
+
+void	free_envp(t_env **env)
+{
+	t_env	*head;
+	t_env	*tmp;
+
+	head = *env;
+	while (head)
+	{
+		tmp = head->next;
+		free(head->name);
+		free(head->value);
+		free(head);
+		head = tmp;
+	}
 }
