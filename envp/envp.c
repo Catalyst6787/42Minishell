@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/11 13:06:03 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:16:42 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,28 @@ void	change_value_in_envp(t_env *env, char *key,
 	return ;
 }
 
+void	delete_node(t_env *head, t_env *to_del)
+{
+	t_env	*tmp;
+
+	while (head)
+	{
+		if (head->next == to_del)
+		{
+			tmp = head->next->next;
+			free(head->next->name);
+			free(head->next->value);
+			free(head->next);
+			head->next = tmp;
+			return ;
+		}
+		head = head->next;
+	}
+}
+
 void	delete_export_node(t_env **env, char *key, int size_key)
 {
 	t_env	*head;
-	t_env	*tmp;
 	t_env	*to_del;
 
 	head = *env;
@@ -59,35 +77,7 @@ void	delete_export_node(t_env **env, char *key, int size_key)
 		fgv_env(*env);
 		return ;
 	}
-	while (head)
-	{
-		if (head->next == to_del)
-		{
-			tmp = head->next->next;
-			free(head->next->name);
-			free(head->next->value);
-			free(head->next);
-			head->next = tmp;
-			return ;
-		}
-		head = head->next;
-	}
-}
-
-void	free_envp(t_env **env)
-{
-	t_env	*head;
-	t_env	*tmp;
-
-	head = *env;
-	while (head)
-	{
-		tmp = head->next;
-		free(head->name);
-		free(head->value);
-		free(head);
-		head = tmp;
-	}
+	delete_node(head, to_del);
 }
 
 void	init_envp(t_env **env, char **envp)
