@@ -18,3 +18,25 @@ FIN:
 -[x] gere les signaux dans heredoc
 
 cat <"./test_files/infile" | grep hello
+
+echo hello'world' 
+mini output = (hello'world')
+bash output = (helloworld)
+
+echo "$" 
+mini output = ()
+bash output = ($)
+
+echo $?HELLO 
+mini output = ()
+bash output = (0HELLO)
+
+exit hello 
+mini exit code = 0
+bash exit code = 2
+
+exit 42 world 
+mini output = (minishell: exit: too many arguments)
+bash output = ()
+mini exit code = 0
+bash exit code = 1
