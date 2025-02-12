@@ -32,3 +32,18 @@ void	close_fd(t_cmd *head)
 		tail = tail->next;
 	}
 }
+
+void	close_fd_except(t_cmd *head, t_cmd *node)
+{
+	t_cmd *tail;
+	
+	tail = head;
+	while(tail)
+	{
+		if (tail->input != 0 && tail != node)
+			close(tail->input);
+		if (tail->output != 1 && tail != node)
+			close(tail->output);
+		tail = tail->next;
+	}
+}

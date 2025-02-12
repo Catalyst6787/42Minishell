@@ -44,14 +44,15 @@ typedef struct s_env
 }	t_env;
 
 // externs
-void	child_process_for_externs(t_cmd *node, char **envp, t_env *env);
+void	child_process_for_externs(t_cmd *node, char **envp, t_env *env, t_cmd *head);
 void	ft_free_split(char **tab);
 
 // EXECUTION
 
-int	redirect_operator(t_cmd *node, char **envp, t_env *env);
+int	redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head);
 void	create_pipes(t_cmd *head);
 void	close_fd(t_cmd *head);
+void	close_fd_except(t_cmd *head, t_cmd *node);
 pid_t	fgv_last_pid(pid_t new);
 
 // PARSING

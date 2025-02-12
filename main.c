@@ -37,7 +37,7 @@ int main(int ac, char **av, char **envp)
 				// printf("\nCMD number: %d\n", tail->id);
 				// printf("INPUT: %d\n", tail->input);
 				// printf("OUTPUT: %d\n", tail->output);
-				if (!redirect_operator(tail, envp, env))
+				if (!redirect_operator(tail, envp, env, groups))
 					exit = 1;
 				tail = tail->next;
 			}

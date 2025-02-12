@@ -22,7 +22,7 @@ int	which_builtin(int cmd ,char **av, t_env *env)
 	return (status);
 }
 
-void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
+void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env, t_cmd *head)
 {
 	pid_t	pid;
 	int		status;
@@ -37,6 +37,7 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 			return(printf("errror in dup2"), (void)NULL);
 		if (dup2(node->output, STDOUT_FILENO) == -1)
 			return (printf("errror in dup2"), (void)NULL);
+		close_fd_except(head, node);
 		status = which_builtin(cmd, node->tab, env);
 		free_envp(&env);
 		while(node->prev)
@@ -55,7 +56,7 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
  	}
 }
 
-int	redirect_operator(t_cmd *node, char **envp, t_env *env)
+int	redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head)
 {
 	int cmd;
 
@@ -66,13 +67,13 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 	if (cmd == EXIT)
 		return(ft_exit(node->tab));
 	else if (cmd == EXTERNAL)
-		child_process_for_externs(node, envp, env);
+		child_process_for_externs(node, envp, env, head);
 	else
 	{
 		if (cmd == CD || cmd == EXPORT || cmd == UNSET)
 			which_builtin(cmd, node->tab, env);
 		else
-			child_process_for_builtins(node, cmd, env);
+			child_process_for_builtins(node, cmd, env, head);
 	}
 	//fgv_in_cmd(0);
 	return (1);

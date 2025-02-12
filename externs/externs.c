@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:09:19 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/12 12:16:59 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/12 13:41:20 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*find_path(char *command, t_env *env)
 	return (NULL);
 }
 
-void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
+void	child_process_for_externs(t_cmd *node, char **envp, t_env *env, t_cmd *head)
 {
 	char	*path;
 	pid_t	pid;
@@ -67,6 +67,7 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 			return (printf("errror in dup2"), free(path));
 		if (dup2(node->output, STDOUT_FILENO) == -1)
 			return (printf("errror in dup2"), free(path));
+		close_fd_except(head, node);
 		execve(path, node->tab, envp);
 		exit(0);
 	}
