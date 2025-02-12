@@ -15,6 +15,6 @@ FIN:
 
 -[x] les commandes sans espaces (ls|cat)
 -[x] heredoc devrait pas expand quand 'DEL' mais expand a l'interieur meme si 'content' 
--[] gere les signaux dans heredoc
+-[x] gere les signaux dans heredoc
 
 cat <"./test_files/infile" | grep hello

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:09:19 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/11 15:03:40 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/12 11:58:12 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,10 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env)
 	if (pid == 0)
 	{
 		reset_signals();
-		if (node->input != 0)
-		{
-			if (dup2(node->input, STDIN_FILENO) == -1)
-				return (printf("errror in dup2"), free(path));
-		}
-		if (node->output != 1)
-		{
-			if (dup2(node->output, STDOUT_FILENO) == -1)
-				return (printf("errror in dup2"), free(path));
-		}
+		if (dup2(node->input, STDIN_FILENO) == -1)
+			return (printf("errror in dup2"), free(path));
+		if (dup2(node->output, STDOUT_FILENO) == -1)
+			return (printf("errror in dup2"), free(path));
 		execve(path, node->tab, envp);
 		exit(0);
 	}
