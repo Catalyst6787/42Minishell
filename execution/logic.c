@@ -33,18 +33,10 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 	if (pid == 0)
 	{
 		reset_signals();
-		if (node->input != 0)
-			if (dup2(node->input, STDIN_FILENO) == -1)
-				{
-					printf("errror in dup2");
-					return ;
-				}
-		if (node->output != 1)
-			if (dup2(node->output, STDOUT_FILENO) == -1)
-				{
-					printf("errror in dup2");
-					return ;
-				}
+		if (dup2(node->input, STDIN_FILENO) == -1)
+			return(printf("errror in dup2"), (void)NULL);
+		if (dup2(node->output, STDOUT_FILENO) == -1)
+			return (printf("errror in dup2"), (void)NULL);
 		status = which_builtin(cmd, node->tab, env);
 		free_envp(&env);
 		while(node->prev)
