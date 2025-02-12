@@ -24,7 +24,7 @@ int	which_builtin(int cmd ,char **av, t_env *env)
 
 void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 {
-	pid_t 	pid;
+	pid_t	pid;
 	int		status;
 
 	pid = fork();
@@ -40,12 +40,8 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 		status = which_builtin(cmd, node->tab, env);
 		free_envp(&env);
 		while(node->prev)
-		{
 			node = node->prev;
-		}
 		free_list(&node);
-		//free_tab(node->tab);
-		//free(node);
 		exit(status);
 	}
 	else
@@ -71,13 +67,8 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env)
 		return(ft_exit(node->tab));
 	else if (cmd == EXTERNAL)
 		child_process_for_externs(node, envp, env);
-	//else if (cmd >= PIPE && cmd <= RED_OUTPUT_APPEND)
-		//printf("Redirection: %s\n", node->tab[0]);
-	//else if (cmd >= AND)
-		//printf("BONUS: %s\n", node->tab[0]);
 	else
 	{
-		//printf("Builtin:\n"); // TODO put child process_for_builtin here
 		if (cmd == CD || cmd == EXPORT || cmd == UNSET)
 			which_builtin(cmd, node->tab, env);
 		else
