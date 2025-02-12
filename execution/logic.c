@@ -56,8 +56,6 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env)
 			close(node->input);
 		if (node->output != 1)
 			close(node->output);
-		if (node->next != NULL)
-			close(node->output);
  	}
 }
 
