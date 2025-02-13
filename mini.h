@@ -62,6 +62,7 @@ char	*clean_quotes(char *s, int *is_changed);
 char	*clean_useless_quotes(char *s);
 char	*remove_chars(char *s, char *chars);
 char	*expand_vars(char *s, t_env *env, int is_heredoc);
+char	*insert_spaces(char *s);
 
 // HEREDOC
 char	**heredoc(char *del, t_env *env, int *sigint_received);
