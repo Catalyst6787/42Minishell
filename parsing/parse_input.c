@@ -70,21 +70,6 @@ char	*insert_spaces(char *s)
 	return(s);
 }
 
-// char*	remove_unquoted_quotes(char *line)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while(line && line[i])
-// 	{
-// 		if (!is_quoted(line, i, '\'') && !is_quoted(line, i, '"') && (line[i] == '\'' || line[i] == '"'))
-// 			line = rem_char(line, i);
-// 		else
-// 			i++;
-// 	}
-// 	return(line);
-// }
-
 int	parse_input(char *line, t_cmd **groups, t_env *env)
 {
 	char	*clean_line;
