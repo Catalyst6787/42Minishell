@@ -19,6 +19,10 @@ FIN:
 
 cat <"./test_files/infile" | grep hello
 
+echo hello'world' 
+mini output = (hello'world')
+bash output = (helloworld)
+
 echo "$" 
 mini output = ()
 bash output = ($)
