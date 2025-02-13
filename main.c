@@ -31,6 +31,19 @@ static void	wait_for_pids(t_env *env)
 	fgv_in_cmd(0);
 }
 
+static t_cmd*	init_list(char *line, t_cmd **groups, t_env *env)
+{
+	parse_input(line, groups, env);
+	handle_signals();
+	create_pipes(*groups);
+	return(*groups);
+}
+
+// static void	handle_cmds(char **line, char **envp, t_env **env, t_cmd **groups)
+// {
+
+// }
+
 int main(int ac, char **av, char **envp)
 {
 	char	*line;
@@ -51,10 +64,7 @@ int main(int ac, char **av, char **envp)
 			exit = 1;
 		else if (*line)
 		{
-			parse_input(line, &groups, env);
-			handle_signals();
-			create_pipes(groups);
-			tail = groups;
+			tail = init_list(line, &groups, env);
 			while(tail)
 			{
 				if (!redirect_operator(tail, envp, env, groups))
