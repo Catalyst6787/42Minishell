@@ -1,16 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/13 17:45:57 by lfaure            #+#    #+#             */
+/*   Updated: 2025/02/13 17:59:38 by lfaure           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 // remove char at s[i], frees original s and returns updated string
 char	*rem_char(char *s, int t)
 {
-	int i;
-	int j;
-	char *nstr;
+	int		i;
+	int		j;
+	char	*nstr;
+
 	nstr = malloc(sizeof(char) * ft_strlen(s));
 	nstr[ft_strlen(s) - 1] = '\0';
 	i = 0;
 	j = 0;
-	while(s[j])
+	while (s[j])
 	{
 		if (j != t)
 		{
@@ -22,26 +35,25 @@ char	*rem_char(char *s, int t)
 			j++;
 	}
 	free(s);
-	return(nstr);
+	return (nstr);
 }
 
 char	*remove_useless_quotes(char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(s[i] && s[i + 1])
+	while (s[i] && s[i + 1])
 	{
 		if ((s[i] == '\'' && s[i + 1] == '\'') || (s[i] == '\"' && s[i + 1] == '\"'))
 		{
-			// rem two useless quotes
-			s = rem_char(s, i); // returns string with s[i] removed (frees og)
+			s = rem_char(s, i);
 			s = rem_char(s, i);
 			i = 0;
 		}
 		i++;
 	}
-	return(s);
+	return (s);
 }
 
 char	*remove_lone_quotes(char *s)
@@ -50,52 +62,54 @@ char	*remove_lone_quotes(char *s)
 		s = rem_char(s, get_last_char(s, '\''));
 	if ((count_chars(s, '\"') % 2) != 0)
 		s = rem_char(s, get_last_char(s, '\"'));
-	return(s);
+	return (s);
 }
 
 char *remove_lone_quote_specify(char *s, char c, int *is_changed)
 {
 	s = rem_char(s, get_last_char(s, c));
 	*is_changed = 1;
-	return(s);
+	return (s);
 }
 
 
 
 char	*clean_input(char *s)
 {
-	int is_changed = 1;
+	int is_changed;
+	is_changed = 1;
+
 	while(is_changed)
 		s = clean_quotes(s, &is_changed);
 	s = clean_useless_quotes(s);
-	return(s);
+	return (s);
 }
 
 int	end_of_token(char *s, int is_quoted_heredoc)
 {
 	if (isquote(s[0]) && !is_quoted_heredoc)
-		return(next_char(s, s[0]));
+		return (next_char(s, s[0]));
 	else
-		return(next_char(s, ' '));
+		return (next_char(s, ' '));
 }
 
 char	*token_dup(char *s, int is_quoted_heredoc)
 {
-	int i;
-	int t;
-	char *dup;
+	int		i;
+	int		t;
+	char	*dup;
 
 	i = 0;
 	t = 0;
 	t = end_of_token(s, is_quoted_heredoc);
 	dup = malloc(sizeof(char) * t + 1);
 	dup[t] = '\0';
-	while(i < t)
+	while (i < t)
 	{
 		dup[i] = s[i];
 		i++;
 	}
-	return(dup);
+	return (dup);
 }
 
 char	*quoted_token_dup(char *s)
@@ -109,12 +123,40 @@ char	*quoted_token_dup(char *s)
 	t = end_of_token(s, 0);
 	dup = malloc(sizeof(char) * t);
 	dup[t - 1] = '\0';
-	while(i < t - 1)
+	while (i < t - 1)
 	{
 		dup[i] = s[i + 1];
 		i++;
 	}
-	return(dup);
+	return (dup);
+}
+
+static void split_tokens_loop(char **s, int *i, int *j, char ***tab)
+{
+	while ((*s)[*i])
+	{
+		if ((*s)[*i] == ' ')
+			(*i)++;
+		else if (*j > 0 && which_cmd((*tab)[*j - 1]) == RED_INPUT_DEL
+			&& (*s)[*i + 1] && (is_quoted(*s, *i + 1, '\'') || is_quoted(*s, *i + 1, '\"')))
+		{
+			(*tab)[*j] = token_dup(*s + *i, 1);
+			*i = end_of_token(*s + *i, 1) + *i;
+			(*j)++;
+		}
+		else if (isquote((*s)[*i]))
+		{
+			(*tab)[*j] = quoted_token_dup(*s + *i);
+			*i = end_of_token(*s + *i, 0) + *i + 1;
+			(*j)++;
+		}
+		else
+		{
+			(*tab)[*j] = token_dup(*s + *i, 0);
+			*i = end_of_token(*s + *i, 0) + *i;
+			(*j)++;
+		}
+	}
 }
 
 char	**split_tokens(char *s)
@@ -129,30 +171,8 @@ char	**split_tokens(char *s)
 	nbr_of_tokens = count_tokens(s);
 	tab = (char **)malloc(sizeof(char *) * (nbr_of_tokens + 1));
 	tab[nbr_of_tokens] = NULL;
-	while(s[i])
-	{
-		if (s[i] == ' ')
-			i++;
-		else if (j > 0 && which_cmd(tab[j - 1]) == RED_INPUT_DEL && s[i + 1] && (is_quoted(s, i + 1, '\'') || is_quoted(s, i + 1, '\"')))
-		{
-			tab[j] = token_dup(s + i, 1);
-			i = end_of_token(s + i, 1) + i;
-			j++;
-		}
-		else if (isquote(s[i]))
-		{
-			tab[j] = quoted_token_dup(s + i);
-			i = end_of_token(s + i, 0) + i + 1;
-			j++;
-		}
-		else
-		{
-			tab[j] = token_dup(s + i, 0);
-			i = end_of_token(s + i, 0) + i;
-			j++;
-		}
-	}
-	return(tab);
+	split_tokens_loop(&s, &i, &j, &tab);
+	return (tab);
 }
 
 int	count_tokens(char *s)
@@ -162,7 +182,7 @@ int	count_tokens(char *s)
 
 	i = 0;
 	c = 0;
-	while(s[i])
+	while (s[i])
 	{
 		if (s[i] == ' ')
 			i++;
@@ -182,12 +202,12 @@ int	count_tokens(char *s)
 
 void	append_node(t_cmd **head, char **tab)
 {
-	t_cmd *last;
-	t_cmd *new;
+	t_cmd	*last;
+	t_cmd	*new;
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
-		return(printf("Malloc error in append_node(), exiting"), exit(0)); // Should free_all
+		return (printf("Malloc error in append_node(), exiting"), exit(0)); // Should free_all
 	new->tab = tab;
 	new->next = NULL;
 	if (!head || !(*head))
@@ -199,7 +219,7 @@ void	append_node(t_cmd **head, char **tab)
 	else
 	{
 		last = *head;
-		while(last->next)
+		while (last->next)
 			last = last->next;
 		new->id = last->id + 1;
 		last->next = new;
@@ -211,11 +231,11 @@ void	append_node(t_cmd **head, char **tab)
 
 void append_node_before(t_cmd **tail, char **tab, t_cmd **head)
 {
-	t_cmd *new;
+	t_cmd	*new;
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
-		return(printf("Malloc error in append_node_before(), exiting\n"), exit(1));
+		return (printf("Malloc error in append_node_before(), exiting\n"), exit(1));
 	new->tab = tab;
 	new->id = 0;
 	new->input = 0;
@@ -241,46 +261,47 @@ void append_node_before(t_cmd **tail, char **tab, t_cmd **head)
 
 char **sub_tab(char **tab, int from, int to)
 {
-	char **subtab;
-	int size;
-	int i;
+	char	**subtab;
+	int		size;
+	int		i;
 
 	i = 0;
 	if (!tab)
-		return(printf("sub_tab was sent bad params, returning NULL"), NULL);
+		return (printf("sub_tab was sent bad params, returning NULL"), NULL);
 	size = to - from;
 	subtab = malloc(sizeof(char *) * (size + 1));
 	subtab[size] = NULL;
-	while(i < size)
+	while (i < size)
 	{
 		subtab[i] = tab[from];
 		i++;
 		from++;
 	}
-	return(subtab);
+	return (subtab);
 }
+
 
 int	group_tokens(t_cmd **head, char **tab)
 {
-	int i;
-	int group_has_tokens;
-	int group_start;
+	int	i;
+	int	group_has_tokens;
+	int	group_start;
 
 	i = 0;
 	group_has_tokens = 0;
 	group_start = 0;
 	if (!tab || !tab[0])
-		return(printf("Error: group_tokens encountered empty cmd\n"), 0);
+		return (printf("Error: group_tokens encountered empty cmd\n"), 0);
 	if (tab[0][i] == '<' || tab[0][i] == '>')
 	{
 		if (!tab[1])
-			return(printf("Error: </>/>> Must be followed by input file, << must be followed by delimiter,\n"), 0);
+			return (printf("Error: </>/>> Must be followed by input file, << must be followed by delimiter,\n"), 0);
 		append_node(head, sub_tab(tab, 0, 1));
 		append_node(head, sub_tab(tab, 1, 2));
 		i += 2;
 		group_start = i;
 	}
-	while(tab[i])
+	while (tab[i])
 	{
 		if (is_separator(tab[i]) && group_has_tokens)
 		{
@@ -298,7 +319,7 @@ int	group_tokens(t_cmd **head, char **tab)
 	}
 	if (group_has_tokens)
 		append_node(head, sub_tab(tab, group_start, i));
-	return(1);
+	return (1);
 }
 
 t_cmd *get_input_output(t_cmd **head, t_env *env)
@@ -310,7 +331,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 	tail = *head;
 	next = tail;
 	tail->input = 0;
-	while(tail)
+	while (tail)
 	{
 		next = tail->next;
 		if (which_cmd(tail->tab[0]) == PIPE)
