@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/11 16:16:42 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/13 15:06:58 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_env	*get_in_envp(t_env *env, char *key, int size_key)
 void	change_value_in_envp(t_env *env, char *key,
 	int size_key, char *new_value)
 {
+	printf("key : %s\n", key);
+	printf("new : %s\n", new_value);
 	while (env)
 	{
 		if (ft_strncmp(env->name, key, size_key) == 0)
@@ -101,5 +103,7 @@ void	init_envp(t_env **env, char **envp)
 		ft_free_split(tmp);
 	}
 	add_env_node(env, "?", "0", 0);
+	if (!get_in_envp(*env, "OLDPWD", 6))
+		add_env_node(env, "OLDPWD", "", 0);
 	fgv_env(*env);
 }

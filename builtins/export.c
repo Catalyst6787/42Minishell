@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:06:59 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/11 13:05:01 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/13 15:19:58 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	ft_export(char **av, t_env *env)
 		var = get_in_envp(env, tab_var[0], ft_strlen(tab_var[0]));
 		if (var)
 		{
+			free(var->value);
 			var->value = ft_strdup(tab_var[1]);
 			if (!var->value)
 				return (perror("minishell: strdup error in export"), 1);
