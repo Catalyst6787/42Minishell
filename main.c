@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:14:19 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/13 15:16:49 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/13 15:20:05 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,7 @@ int	main(int ac, char **av, char **envp)
 		if (!line)
 			exit = 1;
 		else if (*line)
-		{
 			exit = handle_cmds(&line, envp, &env, &groups);
-		}
 	}
 	free_envp(&env);
 	clear_history();
