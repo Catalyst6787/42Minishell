@@ -340,7 +340,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 			{
 				tail->prev->input = open(tail->next->tab[0], O_RDONLY);
 				if ((tail->prev->input) == -1)
-					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
+					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->prev->input = 0, NULL);
 				next = tail->next->next;
 				node_remove(tail->next);
 				node_remove(tail);
