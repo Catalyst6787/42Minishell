@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/13 15:14:19 by lfaure            #+#    #+#             */
+/*   Updated: 2025/02/13 15:16:49 by lfaure           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 static void	setup(char **envp, t_env **env, int *ac, char ***av)
@@ -31,53 +43,57 @@ static void	wait_for_pids(t_env *env)
 	fgv_in_cmd(0);
 }
 
-static t_cmd*	init_list(char *line, t_cmd **groups, t_env *env)
+static t_cmd	*init_list(char *line, t_cmd **groups, t_env *env)
 {
 	parse_input(line, groups, env);
 	handle_signals();
 	create_pipes(*groups);
-	return(*groups);
+	return (*groups);
 }
 
-// static void	handle_cmds(char **line, char **envp, t_env **env, t_cmd **groups)
-// {
+static int	handle_cmds(char **line, char **envp, t_env **env, t_cmd **groups)
+{
+	t_cmd	*tail;
+	int		exit;
 
-// }
+	tail = NULL;
+	exit = 0;
+	tail = init_list(*line, groups, *env);
+	while (tail)
+	{
+		if (!redirect_operator(tail, envp, *env, *groups))
+			exit = 1;
+		tail = tail->next;
+	}
+	wait_for_pids(*env);
+	add_history(*line);
+	free(*line);
+	*line = NULL;
+	close_fd(*groups);
+	free_list(groups);
+	*groups = NULL;
+	return (exit);
+}
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_cmd	*groups;
-	t_cmd	*tail;
 	int		exit;
 	t_env	*env;
 
 	groups = NULL;
-	tail = NULL;
 	exit = 0;
 	env = NULL;
 	setup(envp, &env, &ac, &av);
-	while(!exit)
+	while (!exit)
 	{
 		line = readline(PROMPT);
 		if (!line)
 			exit = 1;
 		else if (*line)
 		{
-			tail = init_list(line, &groups, env);
-			while(tail)
-			{
-				if (!redirect_operator(tail, envp, env, groups))
-					exit = 1;
-				tail = tail->next;
-			}
-			wait_for_pids(env);
-			add_history(line);
-			free(line);
-			line = NULL;
-			close_fd(groups);
-			free_list(&groups);
-			groups = NULL;
+			exit = handle_cmds(&line, envp, &env, &groups);
 		}
 	}
 	free_envp(&env);
