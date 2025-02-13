@@ -80,7 +80,7 @@ char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
-void	append_node_first(t_cmd **tail, char **tab, t_cmd **head);
+void	append_node_before(t_cmd **tail, char **tab, t_cmd **head);
 char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head, t_env *env);
