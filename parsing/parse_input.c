@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:26:09 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/13 16:39:05 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/13 17:05:16 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,20 +147,14 @@ char	*clean_quotes(char *s, int *is_changed)
 	*is_changed = 0;
 	while (s[i])
 	{
-		if (s[i] == '"' && !simple_isopen)
-		{
-			if (double_isopen)
-				double_isopen = 0;
-			else
-				double_isopen = 1;
-		}
+		if (s[i] == '"' && !simple_isopen && double_isopen)
+			double_isopen = 0;
+		else if (s[i] == '"' && !simple_isopen)
+			double_isopen = 1;
+		else if (s[i] == '\'' && !double_isopen && simple_isopen)
+			simple_isopen = 0;
 		else if (s[i] == '\'' && !double_isopen)
-		{
-			if (simple_isopen)
-				simple_isopen = 0;
-			else
-				simple_isopen = 1;
-		}
+			simple_isopen = 1;
 		i++;
 	}
 	if (simple_isopen)
@@ -189,29 +183,29 @@ char	*clean_useless_quotes(char *s)
 	{
 		if (s[i] == '"' && !simple_isopen)
 		{
-			if (s[i + 1] && s[i + 1] == '\"')
+			if (double_isopen)
+				double_isopen = 0;
+			else if (s[i + 1] && s[i + 1] == '\"')
 			{
 				s = rem_char(s, i);
 				s = rem_char(s, i);
 				i = 0;
 				continue ;
 			}
-			else if (double_isopen)
-				double_isopen = 0;
 			else
 				double_isopen = 1;
 		}
 		else if (s[i] == '\'' && !double_isopen)
 		{
-			if (s[i + 1] && s[i + 1] == '\'')
+			if (simple_isopen)
+				simple_isopen = 0;
+			else if (s[i + 1] && s[i + 1] == '\'')
 			{
 				s = rem_char(s, i);
 				s = rem_char(s, i);
 				i = 0;
 				continue ;
 			}
-			else if (simple_isopen)
-				simple_isopen = 0;
 			else
 				simple_isopen = 1;
 		}
