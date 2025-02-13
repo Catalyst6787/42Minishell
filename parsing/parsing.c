@@ -53,9 +53,10 @@ char	*remove_lone_quotes(char *s)
 	return(s);
 }
 
-char *remove_lone_quote_specify(char *s, char c)
+char *remove_lone_quote_specify(char *s, char c, int *is_changed)
 {
 	s = rem_char(s, get_last_char(s, c));
+	*is_changed = 1;
 	return(s);
 }
 

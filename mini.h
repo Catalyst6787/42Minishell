@@ -71,7 +71,7 @@ int		red_input_del(char **av);
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
 char	*remove_lone_quotes(char *s);
-char	*remove_lone_quote_specify(char *s, char c);
+char	*remove_lone_quote_specify(char *s, char c, int *is_changed);
 char	*clean_input(char *s);
 int		end_of_token(char *s, int is_quoted_heredoc);
 char	*token_dup(char *s, int is_quoted_heredoc);

@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:26:09 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/13 17:05:16 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/13 17:14:26 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,17 +158,16 @@ char	*clean_quotes(char *s, int *is_changed)
 		i++;
 	}
 	if (simple_isopen)
-	{
-		s = remove_lone_quote_specify(s, '\'');
-		*is_changed = 1;
-	}
+		s = remove_lone_quote_specify(s, '\'', is_changed);
 	if (double_isopen)
-	{
-		s = remove_lone_quote_specify(s, '"');
-		*is_changed = 1;
-	}
+		s = remove_lone_quote_specify(s, '"', is_changed);
 	return (s);
 }
+
+// static int	clean_useless_quotes_double(char **s, int *i, int *double_isopen)
+// {
+	
+// }
 
 char	*clean_useless_quotes(char *s)
 {
