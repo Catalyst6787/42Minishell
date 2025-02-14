@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 19:23:30 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/14 19:30:44 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,9 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 	t_cmd	*tail;
 	t_cmd	*next;
 	t_cmd	*last;
-	//int		res;
+	int		res;
 
-	//res = 1;
+	res = 1;
 	tail = *head;
 	next = tail;
 	tail->input = 0;
@@ -153,31 +153,20 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 	{
 		next = tail->next;
 		if (which_cmd(tail->tab[0]) == PIPE)
-		{
-			if (!handle_pipe(&tail))
-				return (NULL);
-		}
+			res = handle_pipe(&tail);
 		else if (which_cmd(tail->tab[0]) == RED_INPUT)
-		{
-			if (!handle_redirection_input(&tail, &next, &last))
-				return (NULL);
-		}
+			res = handle_redirection_input(&tail, &next, &last);
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
-		{
-			if (!handle_redirection_output(&tail, &next))
-				return (NULL);
-		}
+			res = handle_redirection_output(&tail, &next);
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
 		{
 			last = tail->prev;
-			if (!handle_heredoc(&tail, env, head, &next))
-				return (NULL);
+			res = handle_heredoc(&tail, env, head, &next);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
-		{
-			if (!handle_red_out_append(&tail, &next, &last))
-				return(NULL);
-		}
+			res = handle_red_out_append(&tail, &next, &last);
+		if (!res)
+			return (NULL);
 		if (tail)
 			last = tail;
 		tail = next;
