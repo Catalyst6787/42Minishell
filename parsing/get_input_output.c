@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 14:00:10 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/14 17:23:21 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,26 @@ static int	handle_pipe(t_cmd **tail)
 	return (1);
 }
 
-static int	handle_redirection_input(t_cmd **tail, t_cmd **next)
+static int	handle_redirection_input(t_cmd **tail, t_cmd **next, t_cmd **last)
 {
-	if ((*tail)->next && (*tail)->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
-	{
-		(*tail)->next->next->input = open((*tail)->next->tab[0], O_RDONLY);
-		if (((*tail)->next->next->input) == -1)
-			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->next->next->input = 0, 0);
-		*next = (*tail)->next->next;
-		node_remove((*tail)->next);
-		node_remove(*tail);
-		*tail = NULL;
-	}
-	else if ((*tail)->next && (*tail)->prev)
+	if ((*tail)->next && (*tail)->prev)
 	{
 		(*tail)->prev->input = open((*tail)->next->tab[0], O_RDONLY);
 		if (((*tail)->prev->input) == -1)
 			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->prev->input = 0, 0);
 		(*next) = (*tail)->next->next;
+		*last = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else if ((*tail)->next && (*tail)->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
+	{
+		(*tail)->next->next->input = open((*tail)->next->tab[0], O_RDONLY);
+		if (((*tail)->next->next->input) == -1)
+			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->next->next->input = 0, 0);
+		*next = (*tail)->next->next;
+		*last = (*tail)->next->next;
 		node_remove((*tail)->next);
 		node_remove(*tail);
 		*tail = NULL;
@@ -51,6 +53,29 @@ static int	handle_redirection_input(t_cmd **tail, t_cmd **next)
 	else
 		return(printf("Error in get_input_output, Cannot use a < without input and output."), 0);
 	return (1);
+}
+
+static int	handle_redirection_output(t_cmd **tail, t_cmd **next)
+{
+	if ((*tail)->next && (*tail)->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
+	{
+		(*tail)->prev->output = open((*tail)->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		*next = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else if ((*tail)->next && (*tail)->next->next)
+	{
+		(*tail)->next->next->output = open((*tail)->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		*next = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else
+		return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), 0);
+	return(1);
 }
 
 t_cmd *get_input_output(t_cmd **head, t_env *env)
@@ -72,29 +97,13 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT)
 		{
-			if (!handle_redirection_input(&tail, &next))
+			if (!handle_redirection_input(&tail, &next, &last))
 				return (NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
 		{
-			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
-			{
-				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else if (tail->next && tail->next->next)
-			{
-				tail->next->next->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else
-				return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), NULL);
+			if (!handle_redirection_output(&tail, &next))
+				return (NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
 		{
