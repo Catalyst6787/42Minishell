@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 17:23:21 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/14 18:39:54 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,39 @@ static int	handle_redirection_output(t_cmd **tail, t_cmd **next)
 		return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), 0);
 	return(1);
 }
+static void	remove_tail_and_next(t_cmd **tail)
+{
+	node_remove((*tail)->next);
+	node_remove(*tail);
+	*tail = NULL;
+}
+
+static int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next)
+{
+	int sigint_received = 0;
+	
+	if ((*tail)->next && (*tail)->prev)
+	{
+		append_node_before(&(*tail)->prev, heredoc((*tail)->next->tab[0], env, &sigint_received), head);
+		if (sigint_received == 1)
+			return(free_list(head), 0);
+		*next = (*tail)->next->next;
+		(*tail)->prev->input = 0;
+		remove_tail_and_next(tail);
+	}
+	else if ((*tail)->next && (*tail)->next->next)
+	{
+		append_node_before(tail, heredoc((*tail)->next->tab[0], env, &sigint_received), head);
+		if (sigint_received == 1)
+			return(free_list(head), 0);
+		*next = (*tail)->next->next;
+		(*tail)->next->next->input = 0;
+		remove_tail_and_next(tail);
+	}
+	else
+		return(printf("Error in get_input_output, Cannot use a << without input and output.\n"), 0);
+	return(1);
+}
 
 t_cmd *get_input_output(t_cmd **head, t_env *env)
 {
@@ -107,34 +140,9 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
 		{
-			if (tail->next && tail->prev)
-			{
-				int sigint_received = 0;
-				append_node_before(&tail->prev, heredoc(tail->next->tab[0], env, &sigint_received), head);
-				if (sigint_received == 1)
-					return(free_list(head), NULL);
-				last = tail->prev;
-				tail->prev->input = 0;
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else if (tail->next && tail->next->next)
-			{
-				int sigint_received = 0;
-				append_node_before(&tail, heredoc(tail->next->tab[0], env, &sigint_received), head);
-				if (sigint_received == 1)
-					return(free_list(head), NULL);
-				last = tail->next->next;
-				tail->next->next->input = 0;
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else
-				return(printf("Error in get_input_output, Cannot use a << without input and output.\n"), NULL);
+			last = tail->prev;
+			if (!handle_heredoc(&tail, env, head, &next))
+				return (NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
 		{
