@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 18:58:29 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/14 19:23:30 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,20 +112,22 @@ static int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next)
 	return(1);
 }
 
-static int	handle_red_out_append(t_cmd **tail, t_cmd **next)
+static int	handle_red_out_append(t_cmd **tail, t_cmd **next, t_cmd **last)
 {
 	if ((*tail)->next && (*tail)->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
 	{
 		(*tail)->prev->output = open((*tail)->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
 		*next = (*tail)->next->next;
+		*last = (*tail)->prev;
 		node_remove((*tail)->next);
 		node_remove(*tail);
-		tail = NULL;
+		*tail = NULL;
 	}
 	else if ((*tail)->next && (*tail)->next->next)
 	{
 		(*tail)->next->next->output = open((*tail)->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
 		*next = (*tail)->next->next;
+		*last = (*tail)->next->next;
 		node_remove((*tail)->next);
 		node_remove(*tail);
 		*tail = NULL;
@@ -146,6 +148,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 	tail = *head;
 	next = tail;
 	tail->input = 0;
+	last = NULL;
 	while (tail)
 	{
 		next = tail->next;
@@ -172,7 +175,7 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
 		{
-			if (!handle_red_out_append(&tail, &next))
+			if (!handle_red_out_append(&tail, &next, &last))
 				return(NULL);
 		}
 		if (tail)
@@ -181,8 +184,13 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 	}
 	//(void)last;
 	//last->output = 1;
-	while(last && last->prev)
-		last = last->prev;
+	while(last)
+	{
+		if (last->prev)
+			last = last->prev;
+		else
+			break ;
+	}
 	//return(*head);
 	return(last);
 }
