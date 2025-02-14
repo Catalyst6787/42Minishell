@@ -1,5 +1,19 @@
 #include "../mini.h"
 
+static int	handle_pipe(t_cmd **tail)
+{
+	if ((*tail)->prev && (*tail)->next)
+	{
+		(*tail)->prev->output = 1;
+		(*tail)->next->input = 0;
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else
+		return(printf("Error in get_input_output, Cannot use a pipe without input and ouptut."), 0);
+	return (1);
+}
+
 t_cmd *get_input_output(t_cmd **head, t_env *env)
 {
 	t_cmd	*tail;
@@ -14,15 +28,8 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		next = tail->next;
 		if (which_cmd(tail->tab[0]) == PIPE)
 		{
-			if (tail->prev && tail->next)
-			{
-				tail->prev->output = 1;
-				tail->next->input = 0;
-				node_remove(tail);
-				tail = NULL;
-			}
-			else
-				return(printf("Error in get_input_output, Cannot use a pipe without input and ouptut."), NULL);
+			if (!handle_pipe(&tail))
+				return (NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT)
 		{
