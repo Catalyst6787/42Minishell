@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 18:39:54 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/14 18:58:29 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static int	handle_redirection_output(t_cmd **tail, t_cmd **next)
 		return(printf("Error in get_input_output, Cannot use a > without input and output.\n"), 0);
 	return(1);
 }
+
 static void	remove_tail_and_next(t_cmd **tail)
 {
 	node_remove((*tail)->next);
@@ -111,12 +112,37 @@ static int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next)
 	return(1);
 }
 
+static int	handle_red_out_append(t_cmd **tail, t_cmd **next)
+{
+	if ((*tail)->next && (*tail)->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
+	{
+		(*tail)->prev->output = open((*tail)->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
+		*next = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		tail = NULL;
+	}
+	else if ((*tail)->next && (*tail)->next->next)
+	{
+		(*tail)->next->next->output = open((*tail)->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
+		*next = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else
+		return (printf("Error in get_input_output, Cannot use a >> without input and output."), 0);
+	return (1);
+}
+
 t_cmd *get_input_output(t_cmd **head, t_env *env)
 {
 	t_cmd	*tail;
 	t_cmd	*next;
 	t_cmd	*last;
+	//int		res;
 
+	//res = 1;
 	tail = *head;
 	next = tail;
 	tail->input = 0;
@@ -146,24 +172,8 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
 		{
-			if (tail->next && tail->prev) // Maybe check if tail->next->tab is a valid file / no tab[1]
-			{
-				tail->prev->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else if (tail->next && tail->next->next)
-			{
-				tail->next->next->output = open(tail->next->tab[0], O_WRONLY | O_CREAT | O_APPEND, 0666);
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else
-				return(printf("Error in get_input_output, Cannot use a >> without input and output."), NULL);
+			if (!handle_red_out_append(&tail, &next))
+				return(NULL);
 		}
 		if (tail)
 			last = tail;
