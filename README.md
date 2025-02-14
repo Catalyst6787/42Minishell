@@ -43,3 +43,5 @@ bash exit code = 1
 
 echo > file hello
 cat < file1 file2
+
+cat < file | cat
