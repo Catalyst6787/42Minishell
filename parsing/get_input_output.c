@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 13:50:54 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/14 14:00:10 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,33 @@ static int	handle_pipe(t_cmd **tail)
 	}
 	else
 		return(printf("Error in get_input_output, Cannot use a pipe without input and ouptut."), 0);
+	return (1);
+}
+
+static int	handle_redirection_input(t_cmd **tail, t_cmd **next)
+{
+	if ((*tail)->next && (*tail)->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
+	{
+		(*tail)->next->next->input = open((*tail)->next->tab[0], O_RDONLY);
+		if (((*tail)->next->next->input) == -1)
+			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->next->next->input = 0, 0);
+		*next = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else if ((*tail)->next && (*tail)->prev)
+	{
+		(*tail)->prev->input = open((*tail)->next->tab[0], O_RDONLY);
+		if (((*tail)->prev->input) == -1)
+			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->prev->input = 0, 0);
+		(*next) = (*tail)->next->next;
+		node_remove((*tail)->next);
+		node_remove(*tail);
+		*tail = NULL;
+	}
+	else
+		return(printf("Error in get_input_output, Cannot use a < without input and output."), 0);
 	return (1);
 }
 
@@ -45,28 +72,8 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 		}
 		else if (which_cmd(tail->tab[0]) == RED_INPUT)
 		{
-			if (tail->next && tail->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
-			{
-				tail->next->next->input = open(tail->next->tab[0], O_RDONLY);
-				if ((tail->next->next->input) == -1)
-					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->next->next->input = 0, NULL);
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else if (tail->next && tail->prev)
-			{
-				tail->prev->input = open(tail->next->tab[0], O_RDONLY);
-				if ((tail->prev->input) == -1)
-					return(printf("Error in get_input_output, file '%s' doesnt exist\n", tail->next->tab[0]), tail->prev->input = 0, NULL);
-				next = tail->next->next;
-				node_remove(tail->next);
-				node_remove(tail);
-				tail = NULL;
-			}
-			else
-				return(printf("Error in get_input_output, Cannot use a < without input and output."), NULL);
+			if (!handle_redirection_input(&tail, &next))
+				return (NULL);
 		}
 		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
 		{
