@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   logic.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/15 16:55:35 by kgiraud           #+#    #+#             */
+/*   Updated: 2025/02/15 17:03:09 by kgiraud          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
-int	which_builtin(int cmd ,char **av, t_env *env)
+int	which_builtin(int cmd, char **av, t_env *env)
 {
 	int	status;
 
@@ -22,7 +34,18 @@ int	which_builtin(int cmd ,char **av, t_env *env)
 	return (status);
 }
 
-void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env, t_cmd *head)
+void	exec_parent_process(t_cmd *node, pid_t pid)
+{
+	if (!node->next)
+		fgv_last_pid(pid);
+	if (node->input != 0)
+		close(node->input);
+	if (node->output != 1)
+		close(node->output);
+}
+
+void	child_process_for_builtins(t_cmd *node, int cmd,
+		t_env *env, t_cmd *head)
 {
 	pid_t	pid;
 	int		status;
@@ -34,38 +57,31 @@ void	child_process_for_builtins(t_cmd *node, int cmd, t_env *env, t_cmd *head)
 	{
 		reset_signals();
 		if (dup2(node->input, STDIN_FILENO) == -1)
-			return(printf("errror in dup2"), (void)NULL);
+			return (printf("errror in dup2"), (void) NULL);
 		if (dup2(node->output, STDOUT_FILENO) == -1)
-			return (printf("errror in dup2"), (void)NULL);
+			return (printf("errror in dup2"), (void) NULL);
 		close_fd_except(head, node);
 		status = which_builtin(cmd, node->tab, env);
 		free_envp(&env);
-		while(node->prev)
+		while (node->prev)
 			node = node->prev;
 		free_list(&node);
 		exit(status);
 	}
 	else
-	{
-		if (!node->next)
-			fgv_last_pid(pid);
-		if (node->input != 0)
-			close(node->input);
-		if (node->output != 1)
-			close(node->output);
- 	}
+		exec_parent_process(node, pid);
 }
 
 int	redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head)
 {
-	int cmd;
+	int	cmd;
 
 	fgv_in_cmd(1);
 	if (!node || !node->tab)
-		return(0);
+		return (0);
 	cmd = which_cmd(node->tab[0]);
 	if (cmd == EXIT)
-		return(ft_exit(node->tab));
+		return (ft_exit(node->tab));
 	else if (cmd == EXTERNAL)
 		child_process_for_externs(node, envp, env, head);
 	else
@@ -75,6 +91,5 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head)
 		else
 			child_process_for_builtins(node, cmd, env, head);
 	}
-	//fgv_in_cmd(0);
 	return (1);
 }

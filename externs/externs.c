@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   externs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:09:19 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/12 13:41:20 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/15 16:54:44 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,44 @@ char	*find_path(char *command, t_env *env)
 	char	*path;
 	char	*tmp;
 	int		i;
-	t_env	*PATH;
+	t_env	*path_node;
 
 	i = 0;
 	if (access(command, X_OK) == 0)
 		return (ft_strdup(command));
-	PATH = get_in_envp(env, "PATH", 4);
-	if (!PATH)
+	path_node = get_in_envp(env, "PATH", 4);
+	if (!path_node)
 		return (NULL);
-	paths = ft_split(PATH->value, ':');
-	i = 0;
-	while (paths[i])
+	paths = ft_split(path_node->value, ':');
+	i = -1;
+	while (paths[++i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, command);
 		free(tmp);
 		if (access(path, X_OK) == 0)
-		{
-			ft_free_split(paths);
-			return (path);
-		}
+			return (ft_free_split(paths), path);
 		free(path);
-		i++;
 	}
 	ft_free_split(paths);
 	return (NULL);
 }
 
-void	child_process_for_externs(t_cmd *node, char **envp, t_env *env, t_cmd *head)
+void	exec_child_process(t_cmd *node, char **envp,
+	char *path, t_cmd *head)
+{
+	reset_signals();
+	if (dup2(node->input, STDIN_FILENO) == -1)
+		return (printf("errror in dup2"), free(path));
+	if (dup2(node->output, STDOUT_FILENO) == -1)
+		return (printf("errror in dup2"), free(path));
+	close_fd_except(head, node);
+	execve(path, node->tab, envp);
+	exit(0);
+}
+
+void	child_process_for_externs(t_cmd *node, char **envp,
+		t_env *env, t_cmd *head)
 {
 	char	*path;
 	pid_t	pid;
@@ -61,16 +71,7 @@ void	child_process_for_externs(t_cmd *node, char **envp, t_env *env, t_cmd *head
 	if (pid == -1)
 		return (free(path));
 	if (pid == 0)
-	{
-		reset_signals();
-		if (dup2(node->input, STDIN_FILENO) == -1)
-			return (printf("errror in dup2"), free(path));
-		if (dup2(node->output, STDOUT_FILENO) == -1)
-			return (printf("errror in dup2"), free(path));
-		close_fd_except(head, node);
-		execve(path, node->tab, envp);
-		exit(0);
-	}
+		exec_child_process(node, envp, path, head);
 	else
 	{
 		if (!node->next)
