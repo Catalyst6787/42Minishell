@@ -122,7 +122,7 @@ int		ft_cd(char **av, t_env *env);
 int		ft_export(char **av, t_env *env);
 int		ft_unset(char **av, t_env *env);
 int 	fgv_exit_arg(int new);
-int		ft_exit(char **av);
+int		ft_exit(char **av, t_env *env);
 
 
 // signals

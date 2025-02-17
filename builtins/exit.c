@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 15:28:00 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/12 16:06:22 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:47:28 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,17 @@ int	is_all_digits(char *s)
 	return (1);
 }
 
-int	ft_exit(char **av)
+int	ft_exit(char **av, t_env *env)
 {
 	if (av[1] && av[2])
 	{
-		fgv_exit_arg(1);
 		printf("minishell: exit: too many arguments\n");
+		if (is_all_digits(av[1]))
+		{
+			change_value_in_envp(env, "?", 1, ft_strdup("1"));
+			return (1);
+		}
+		fgv_exit_arg(2);
 	}
 	else if (av[1])
 	{

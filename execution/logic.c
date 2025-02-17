@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:55:35 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/15 17:03:09 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:48:22 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head)
 		return (0);
 	cmd = which_cmd(node->tab[0]);
 	if (cmd == EXIT)
-		return (ft_exit(node->tab));
+		return (ft_exit(node->tab, env));
 	else if (cmd == EXTERNAL)
 		child_process_for_externs(node, envp, env, head);
 	else

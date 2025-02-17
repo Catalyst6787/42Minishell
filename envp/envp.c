@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:01:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/13 15:06:58 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:23:16 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ t_env	*get_in_envp(t_env *env, char *key, int size_key)
 void	change_value_in_envp(t_env *env, char *key,
 	int size_key, char *new_value)
 {
-	printf("key : %s\n", key);
-	printf("new : %s\n", new_value);
 	while (env)
 	{
 		if (ft_strncmp(env->name, key, size_key) == 0)
