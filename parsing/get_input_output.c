@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 15:21:00 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 16:21:06 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	handle_pipe(t_cmd **tail)
 		*tail = NULL;
 	}
 	else
-		return(printf("Error in get_input_output, Cannot use a pipe without input and ouptut."), 0);
+		return (0);
 	return (1);
 }
 
@@ -32,18 +32,18 @@ static int	handle_redirection_input(t_cmd **tail, t_cmd **next, t_cmd **last)
 	{
 		(*tail)->prev->input = open((*tail)->next->tab[0], O_RDONLY);
 		if (((*tail)->prev->input) == -1)
-			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->prev->input = 0, 0);
+			return ((*tail)->next->tab[0], (*tail)->prev->input = 0, 0);
 		(*next) = (*tail)->next->next;
 		*last = (*tail)->next->next;
 		node_remove((*tail)->next);
 		node_remove(*tail);
 		*tail = NULL;
 	}
-	else if ((*tail)->next && (*tail)->next->next) // Maybe check if tail->next->tab is a valid file / no tab[1]
+	else if ((*tail)->next && (*tail)->next->next)
 	{
 		(*tail)->next->next->input = open((*tail)->next->tab[0], O_RDONLY);
 		if (((*tail)->next->next->input) == -1)
-			return(printf("Error in get_input_output, file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->next->next->input = 0, 0);
+			return (printf("file '%s' doesnt exist\n", (*tail)->next->tab[0]), (*tail)->next->next->input = 0, 0);
 		*next = (*tail)->next->next;
 		*last = (*tail)->next->next;
 		node_remove((*tail)->next);
@@ -51,7 +51,7 @@ static int	handle_redirection_input(t_cmd **tail, t_cmd **next, t_cmd **last)
 		*tail = NULL;
 	}
 	else
-		return(printf("Error in get_input_output, Cannot use a < without input and output."), 0);
+		return(printf("Error, < needs input and output."), 0);
 	return (1);
 }
 
