@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:39:23 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 16:15:56 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 16:58:12 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ char	*clean_useless_quotes(char *s);
 char	*remove_chars(char *s, char *chars);
 char	*expand_vars(char *s, t_env *env, int is_heredoc);
 char	*insert_spaces(char *s);
+
+int	handle_pipe(t_cmd **tail);
+int	handle_redirection_input(t_cmd **tail, t_cmd **next, t_cmd **last);
+int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next);
+int	handle_redirection_output(t_cmd **tail, t_cmd **next);
 
 // HEREDOC
 char	**heredoc(char *del, t_env *env, int *sigint_received);
