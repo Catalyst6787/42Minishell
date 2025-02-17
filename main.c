@@ -1,5 +1,15 @@
 #include "mini.h"
 
+int	get_exit_status(t_env *env)
+{
+	t_env	*exit_status;
+
+	if (fgv_exit_arg(-1))
+		return (fgv_exit_arg(-1));
+	exit_status = get_in_envp(env, "?", 1);
+	return (atoi(exit_status->value));
+}
+
 int main(int ac, char **av, char **envp)
 {
 	char *line;
@@ -66,7 +76,8 @@ int main(int ac, char **av, char **envp)
 			//free_env TODO
 		}
 	}
+	status = get_exit_status(env);
 	free_envp(&env);
 	clear_history();
-	return (fgv_exit_arg(-1));
+	return (status);
 }
