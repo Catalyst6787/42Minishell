@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:39:23 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 17:51:26 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:02:31 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 // libc
 # include <stdio.h>
 # include <unistd.h>
-#include <fcntl.h>
+# include <fcntl.h>
 # include <stdlib.h>
-#include <fcntl.h>
+# include <fcntl.h>
 
 // readline
 # include <readline/readline.h>
@@ -56,12 +56,13 @@ typedef struct s_env
 }	t_env;
 
 // externs
-void	child_process_for_externs(t_cmd *node, char **envp, t_env *env, t_cmd *head);
+void	child_process_for_externs(t_cmd *node, char **envp,
+			t_env *env, t_cmd *head);
 void	ft_free_split(char **tab);
 
 // EXECUTION
 
-int	redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head);
+int		redirect_operator(t_cmd *node, char **envp, t_env *env, t_cmd *head);
 void	create_pipes(t_cmd *head);
 void	close_fd(t_cmd *head);
 void	close_fd_except(t_cmd *head, t_cmd *node);
@@ -76,15 +77,14 @@ char	*remove_chars(char *s, char *chars);
 char	*expand_vars(char *s, t_env *env, int is_heredoc);
 char	*insert_spaces(char *s);
 
-int	handle_pipe(t_cmd **tail);
-int	handle_redirection_input(t_cmd **tail, t_cmd **next, t_cmd **last);
-int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next);
-int	handle_redirection_output(t_cmd **tail, t_cmd **next);
+int		handle_pipe(t_cmd **tail);
+int		handle_redirection_input(t_cmd **tail, t_cmd **next, t_cmd **last);
+int		handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next);
+int		handle_redirection_output(t_cmd **tail, t_cmd **next);
 
 // HEREDOC
 char	**heredoc(char *del, t_env *env, int *sigint_received);
 int		red_input_del(char **av);
-
 
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
@@ -104,8 +104,7 @@ t_cmd	*get_input_output(t_cmd **head, t_env *env);
 char	*extract_var(char *s, int i);
 char	*get_var_value(char *s, t_env *env);
 char	*replace_by(char *s, char *value, int index, int length);
-int	group_tokens_loop(char **tab, t_cmd **head, int *i, int *group_start);
-
+int		group_tokens_loop(char **tab, t_cmd **head, int *i, int *group_start);
 
 // PARSING_UTILS
 
@@ -123,13 +122,14 @@ void	print_list(t_cmd *head);
 void	free_list(t_cmd **head);
 void	node_remove(t_cmd *node);
 void	reset_id(t_cmd *node);
-int is_quoted(char *s, int i, char c);
+int		is_quoted(char *s, int i, char c);
 
 // envp
 void	add_env_node(t_env **env, char *name, char *value, int export);
 void	init_envp(t_env **env, char **envp);
 t_env	*get_in_envp(t_env *env, char *key, int size_key);
-void	change_value_in_envp(t_env *env, char *key, int size_key, char *new_value);
+void	change_value_in_envp(t_env *env,
+			char *key, int size_key, char *new_value);
 void	delete_export_node(t_env **env, char *key, int size_key);
 void	free_envp(t_env **env);
 
@@ -140,16 +140,15 @@ int		ft_pwd(void);
 int		ft_cd(char **av, t_env *env);
 int		ft_export(char **av, t_env *env);
 int		ft_unset(char **av, t_env *env);
-int 	fgv_exit_arg(int new);
+int		fgv_exit_arg(int new);
 int		ft_exit(char **av, t_env *env);
-
 
 // signals
 void	handle_signals(void);
 void	reset_signals(void);
-int	received_signal(int received);
-int 	fgv_in_cmd(int new);
-int 	fgv_sig_nb(int new);
+int		received_signal(int received);
+int		fgv_in_cmd(int new);
+int		fgv_sig_nb(int new);
 t_env	*fgv_env(t_env *new);
 
 // utils
@@ -160,7 +159,6 @@ int		ft_strcmp(char *s1, char *s2);
 # define UNHANDLED "*[]\\;&`(){}#!"
 
 // define commands
-
 # define ECHO 0
 # define CD 1
 # define PWD 2
@@ -180,6 +178,5 @@ int		ft_strcmp(char *s1, char *s2);
 # define OR 16
 # define PAR_OPEN 17
 # define PAR_CLOSE 18
-
 
 #endif

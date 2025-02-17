@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:14:19 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 15:32:02 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:58:38 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	wait_for_pids(t_env *env)
 	pid = 0;
 	while (pid != -1)
 	{
-				pid = wait(&status);
+		pid = wait(&status);
 		if (pid != -1 && pid == fgv_last_pid(-1))
 		{
 			if (fgv_sig_nb(-1))

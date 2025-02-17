@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   piping.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 17:59:06 by lfaure            #+#    #+#             */
+/*   Updated: 2025/02/17 17:59:40 by lfaure           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
 
 void	create_pipes(t_cmd *head)
 {
 	t_cmd	*tail;
-	int	current_pipe[2];
+	int		current_pipe[2];
 
 	tail = head;
-	while(tail)
+	while (tail)
 	{
 		if (tail->output == 1 && tail->next && tail->next->input == 0)
 		{
@@ -20,10 +32,10 @@ void	create_pipes(t_cmd *head)
 
 void	close_fd(t_cmd *head)
 {
-	t_cmd *tail;
-	
+	t_cmd	*tail;
+
 	tail = head;
-	while(tail)
+	while (tail)
 	{
 		if (tail->input != 0)
 			close(tail->input);
@@ -35,10 +47,10 @@ void	close_fd(t_cmd *head)
 
 void	close_fd_except(t_cmd *head, t_cmd *node)
 {
-	t_cmd *tail;
-	
+	t_cmd	*tail;
+
 	tail = head;
-	while(tail)
+	while (tail)
 	{
 		if (tail->input != 0 && tail != node)
 			close(tail->input);
