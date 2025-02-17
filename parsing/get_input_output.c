@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/14 19:30:44 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 14:57:07 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,18 @@ static int	handle_red_out_append(t_cmd **tail, t_cmd **next, t_cmd **last)
 	return (1);
 }
 
+static t_cmd *get_earliest(t_cmd *last)
+{
+	while(last)
+	{
+		if (last->prev)
+			last = last->prev;
+		else
+			break ;
+	}
+	return (last);
+}
+
 t_cmd *get_input_output(t_cmd **head, t_env *env)
 {
 	t_cmd	*tail;
@@ -171,15 +183,5 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 			last = tail;
 		tail = next;
 	}
-	//(void)last;
-	//last->output = 1;
-	while(last)
-	{
-		if (last->prev)
-			last = last->prev;
-		else
-			break ;
-	}
-	//return(*head);
-	return(last);
+	return(get_earliest(last));
 }
