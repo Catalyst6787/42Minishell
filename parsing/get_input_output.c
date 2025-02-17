@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 13:49:53 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 14:57:07 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 15:21:00 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,25 @@ static t_cmd *get_earliest(t_cmd *last)
 	return (last);
 }
 
+static void	get_in_out_extra(t_cmd **tail, t_cmd **next, t_cmd **last, int *res)
+{
+	if (which_cmd((*tail)->tab[0]) == PIPE)
+		*res = handle_pipe(tail);
+	else if (which_cmd((*tail)->tab[0]) == RED_INPUT)
+		*res = handle_redirection_input(tail, next, last);
+	else if (which_cmd((*tail)->tab[0]) == RED_OUTPUT)
+		*res = handle_redirection_output(tail, next);
+	else if (which_cmd((*tail)->tab[0]) == RED_OUTPUT_APPEND)
+		*res = handle_red_out_append(tail, next, last);
+}
+
+static void	tiny_norme_fn(t_cmd **tail, t_cmd **last, t_cmd **next)
+{
+	if (*tail)
+			*last = *tail;
+	*tail = *next;
+}
+
 t_cmd *get_input_output(t_cmd **head, t_env *env)
 {
 	t_cmd	*tail;
@@ -164,24 +183,16 @@ t_cmd *get_input_output(t_cmd **head, t_env *env)
 	while (tail)
 	{
 		next = tail->next;
-		if (which_cmd(tail->tab[0]) == PIPE)
-			res = handle_pipe(&tail);
-		else if (which_cmd(tail->tab[0]) == RED_INPUT)
-			res = handle_redirection_input(&tail, &next, &last);
-		else if (which_cmd(tail->tab[0]) == RED_OUTPUT)
-			res = handle_redirection_output(&tail, &next);
-		else if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
+		if (which_cmd(tail->tab[0]) == RED_INPUT_DEL)
 		{
 			last = tail->prev;
 			res = handle_heredoc(&tail, env, head, &next);
 		}
-		else if (which_cmd(tail->tab[0]) == RED_OUTPUT_APPEND)
-			res = handle_red_out_append(&tail, &next, &last);
+		else
+			get_in_out_extra(&tail, &next, &last, &res);
 		if (!res)
 			return (NULL);
-		if (tail)
-			last = tail;
-		tail = next;
+		tiny_norme_fn(&tail, &last, &next);
 	}
 	return(get_earliest(last));
 }
