@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 15:39:23 by lfaure            #+#    #+#             */
+/*   Updated: 2025/02/17 16:15:56 by lfaure           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINI_H
 # define MINI_H
 
@@ -129,6 +141,7 @@ int		ft_exit(char **av, t_env *env);
 // signals
 void	handle_signals(void);
 void	reset_signals(void);
+int	received_signal(int received);
 int 	fgv_in_cmd(int new);
 int 	fgv_sig_nb(int new);
 t_env	*fgv_env(t_env *new);

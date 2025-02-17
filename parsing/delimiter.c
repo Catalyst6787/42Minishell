@@ -1,16 +1,16 @@
-#include "../mini.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   delimiter.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/17 15:40:05 by lfaure            #+#    #+#             */
+/*   Updated: 2025/02/17 16:15:11 by lfaure           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	received_signal(int received)
-{
-	static int signal;
-	if (received == -1)
-		signal = 0;
-	else if (received == 0)
-		return(signal);
-	else if (received == SIGINT || received == SIGQUIT)
-		signal = received;
-	return(0);
-}
+#include "../mini.h"
 
 void	handle_sig_heredoc(int signum)
 {
@@ -29,26 +29,24 @@ void	init_signals_heredoc(void)
 	signal(SIGQUIT, handle_sig_heredoc);
 }
 
-char	**heredoc(char *del, t_env *env, int *sigint_received)
+static int	setup(char *del, char **line, char **tot, int *sigint_received)
 {
-	int is_single_quoted;
-	int first = 1;
-	char *tot = ft_strdup("");
-	char *line;
-	char *to_free;
-	char **result;
-	char *ndel = NULL;
+	int		is_single_quoted;
+	char	*ndel;
+
+	ndel = NULL;
+	is_single_quoted = 0;
 	init_signals_heredoc();
 	received_signal(-1);
 	if (is_quoted(del, 1, '\'') || is_quoted(del, 1, '\"'))
 		is_single_quoted = 1;
 	else
 		is_single_quoted = 0;
-	line = readline(HEREDOC_PROMPT);
+	*line = readline(HEREDOC_PROMPT);
 	if (received_signal(0) == SIGQUIT)
-		tot = ft_strdup("");
+		*tot = ft_strdup("");
 	else if (received_signal(0) == SIGINT)
-		return(*sigint_received = 1, NULL);
+		return (*sigint_received = 1, is_single_quoted);
 	if (is_single_quoted)
 	{
 		ndel = malloc(sizeof(char) * (ft_strlen(del) - 1));
@@ -56,29 +54,51 @@ char	**heredoc(char *del, t_env *env, int *sigint_received)
 		ndel[ft_strlen(del) - 2] = '\0';
 		del = ndel;
 	}
-	while(line && !received_signal(0) && ft_strcmp(line, del))
+	return (is_single_quoted);
+}
+
+static void	read_until_del(char **line, char **tot, char *del)
+{
+	char	*to_free;
+	int		first;
+
+	to_free = NULL;
+	first = 1;
+	while (*line && !received_signal(0) && ft_strcmp(*line, del))
 	{
 		if (!first)
 		{
-			to_free = line;
-			line = ft_strjoin("\n", line);
+			to_free = *line;
+			*line = ft_strjoin("\n", *line);
 			free(to_free);
 		}
 		first = 0;
-		to_free = tot;
-		tot = ft_strjoin(tot, line);
-		free(line);
-		line = NULL;
+		to_free = *tot;
+		*tot = ft_strjoin(*tot, *line);
+		free(*line);
+		*line = NULL;
 		free(to_free);
 		to_free = NULL;
-		line = readline(HEREDOC_PROMPT);
+		*line = readline(HEREDOC_PROMPT);
 	}
+}
+
+char	**heredoc(char *del, t_env *env, int *sigint_received)
+{
+	int		is_single_quoted;
+	char	*tot;
+	char	*line;
+	char	**result;
+
+	tot = ft_strdup("");
+	is_single_quoted = setup(del, &line, &tot, sigint_received);
+	if (*sigint_received)
+		return (NULL);
+	read_until_del(&line, &tot, del);
 	if (line)
 		free(line);
-	if (ndel)
-		free(ndel);
 	if (received_signal(0) == SIGINT)
-		return(*sigint_received = 1, NULL);
+		return (*sigint_received = 1, NULL);
 	result = malloc(sizeof(char *) * 3);
 	result[0] = ft_strdup("<<");
 	if (!is_single_quoted)
@@ -86,16 +106,5 @@ char	**heredoc(char *del, t_env *env, int *sigint_received)
 	else
 		result[1] = tot;
 	result[2] = NULL;
-	return(result);
+	return (result);
 }
-
-
-// int	main(int ac, char **av)
-// {
-// 	if (ac != 2)
-// 		return(printf("Usage: ./a.out file\n"), 1);
-// 	char **tab = heredoc(av[1]);
-// 	print_tab(tab);
-// 	free_tab(tab);
-// 	return(0);
-// }
