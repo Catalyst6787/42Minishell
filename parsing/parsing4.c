@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:45:57 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 17:42:31 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:50:45 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	**sub_tab(char **tab, int from, int to)
 	return (subtab);
 }
 
-static int	group_tokens_loop(char **tab, t_cmd **head,
+int	group_tokens_loop(char **tab, t_cmd **head,
 	int *i, int *group_start)
 {
 	int	group_has_tokens;

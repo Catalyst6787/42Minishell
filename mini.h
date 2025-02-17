@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:39:23 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 16:58:12 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:51:26 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_cmd	*get_input_output(t_cmd **head, t_env *env);
 char	*extract_var(char *s, int i);
 char	*get_var_value(char *s, t_env *env);
 char	*replace_by(char *s, char *value, int index, int length);
+int	group_tokens_loop(char **tab, t_cmd **head, int *i, int *group_start);
 
 
 // PARSING_UTILS
