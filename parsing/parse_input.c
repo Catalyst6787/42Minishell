@@ -1,101 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_input.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/13 15:26:09 by lfaure            #+#    #+#             */
+/*   Updated: 2025/02/13 17:34:36 by lfaure           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../mini.h"
-
-
-char *insert_space(char *s, int i) {
-	if (!s)
-		return(printf("string is NULL"), NULL);
-	if (i < 0)
-		return(printf("bad index"), NULL);
-	int len = ft_strlen(s);
-	char *new_str = (char *)malloc(len + 2); 
-	if (!new_str) return NULL;
-
-	int j = 0;
-	while (j <= i) {
-		new_str[j] = s[j];
-		j++;
-	}
-	new_str[j] = ' ';
-	j++;	
-	while (j <= len) {
-		new_str[j] = s[j - 1];
-		j++;
-	}
-	new_str[j] = '\0';
-		
-	free(s);
-	return new_str;
-}
-
-
-char	*insert_spaces(char *s)
-{
-	int i;
-
-	i = 0;
-	while(s[i])
-	{
-		if (s[i] && s[i + 1] && ((s[i] == '<' && s[i + 1] == '<') || (s[i] == '>' && s[i + 1] == '>')))
-		{
-			if (i > 0 && s[i - 1] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
-			{
-				s = insert_space(s, i - 1);
-				i = 0;
-				continue ;
-			}
-			else if (s[i + 2] && s[i + 2] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
-			{
-				s = insert_space(s, i + 1);
-				i = 0;
-				continue ;
-			}
-		}
-		else if (s[i] && (s[i] == '|' || (s[i] == '<' && (!s[i - 1] || s[i - 1] != '<' )) || (s[i] == '>' && (!s[i - 1] || s[i - 1] != '>' ))))
-		{
-			if (i > 0 && s[i - 1] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
-			{
-				s = insert_space(s, i - 1);
-				i = 0;
-				continue ;
-			}
-			else if (s[i + 1] && s[i + 1] != ' ' && !is_quoted(s, i, '\'') && !is_quoted(s, i, '"'))
-			{
-				s = insert_space(s, i);
-				i = 0;
-				continue ;
-			}
-		}
-		i++;
-	}
-	return(s);
-}
-
-// char*	remove_unquoted_quotes(char *line)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while(line && line[i])
-// 	{
-// 		if (!is_quoted(line, i, '\'') && !is_quoted(line, i, '"') && (line[i] == '\'' || line[i] == '"'))
-// 			line = rem_char(line, i);
-// 		else
-// 			i++;
-// 	}
-// 	return(line);
-// }
 
 int	parse_input(char *line, t_cmd **groups, t_env *env)
 {
 	char	*clean_line;
-	char **tab;
+	char	**tab;
 
 	clean_line = clean_input(ft_strdup(line));
 	clean_line = remove_chars(clean_line, UNHANDLED);
 	clean_line = expand_vars(clean_line, env, 0);
 	clean_line = insert_spaces(clean_line);
 	if (!clean_line)
-		return(groups = NULL, 0);
+		return (groups = NULL, 0);
 	tab = split_tokens(clean_line);
 	if (group_tokens(groups, tab))
 		*groups = get_input_output(groups, env);
@@ -104,127 +31,70 @@ int	parse_input(char *line, t_cmd **groups, t_env *env)
 	free(tab);
 	tab = NULL;
 	reset_id(*groups);
-	return(1);
+	return (1);
 }
 
-char *clean_quotes(char *s, int *is_changed)
+char	*clean_quotes(char *s, int *is_changed)
 {
-	int simple_isopen;
+	int	simple_isopen;
 	int	double_isopen;
-	int i;
+	int	i;
 
 	simple_isopen = 0;
 	double_isopen = 0;
 	i = 0;
 	*is_changed = 0;
-
-	while(s[i])
+	while (s[i])
 	{
-		if (s[i] == '"' && !simple_isopen)
-		{
-			if (double_isopen)
-				double_isopen = 0;
-			else
-				double_isopen = 1;
-		}
+		if (s[i] == '"' && !simple_isopen && double_isopen)
+			double_isopen = 0;
+		else if (s[i] == '"' && !simple_isopen)
+			double_isopen = 1;
+		else if (s[i] == '\'' && !double_isopen && simple_isopen)
+			simple_isopen = 0;
 		else if (s[i] == '\'' && !double_isopen)
-		{
-			if (simple_isopen)
-				simple_isopen = 0;
-			else
-				simple_isopen = 1;
-		}
+			simple_isopen = 1;
 		i++;
 	}
 	if (simple_isopen)
-	{
-		s = remove_lone_quote_specify(s, '\'');
-		*is_changed = 1;
-	}
+		s = remove_lone_quote_specify(s, '\'', is_changed);
 	if (double_isopen)
-	{
-		s = remove_lone_quote_specify(s, '"');
-		*is_changed = 1;
-	}
-	return(s);
+		s = remove_lone_quote_specify(s, '"', is_changed);
+	return (s);
 }
 
-char *clean_useless_quotes(char *s)
+char	*remove_chars(char *s, char *chars)
 {
-	int simple_isopen;
-	int	double_isopen;
-	int i;
-
-	simple_isopen = 0;
-	double_isopen = 0;
-	i = 0;
-
-	while(s[i])
-	{
-		if (s[i] == '"' && !simple_isopen)
-		{
-			if (s[i + 1] && s[i + 1] == '\"')
-			{
-				s = rem_char(s, i);
-				s = rem_char(s, i);
-				i = 0;
-				continue;
-			}
-			else if (double_isopen)
-				double_isopen = 0;
-			else
-				double_isopen = 1;
-		}
-		else if (s[i] == '\'' && !double_isopen)
-		{
-			if (s[i + 1] && s[i + 1] == '\'')
-			{
-				s = rem_char(s, i);
-				s = rem_char(s, i);
-				i = 0;
-				continue;
-			}
-			else if (simple_isopen)
-				simple_isopen = 0;
-			else
-				simple_isopen = 1;
-		}
-		i++;
-	}
-	return(s);
-}
-
-char *remove_chars(char *s, char *chars)
-{
-	int i;
+	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while(s[i])
+	while (s[i])
 	{
-		while(chars[j])
+		while (chars[j])
 		{
-			if (s[i] == chars[j] && !is_quoted(s, i, '\'') && !is_quoted(s, i, '\"'))
+			if (s[i] == chars[j]
+				&& !is_quoted(s, i, '\'') && !is_quoted(s, i, '\"'))
 			{
 				s = rem_char(s, i);
 				i = 0;
 				j = 0;
-				continue;
+				continue ;
 			}
 			j++;
 		}
 		j = 0;
 		i++;
 	}
-	return(s);
+	return (s);
 }
 
-char *expand_vars(char *s, t_env *env, int is_heredoc)
+char	*expand_vars(char *s, t_env *env, int is_heredoc)
 {
-	int i;
-	char *var;
-	char *var_value;
+	int		i;
+	char	*var;
+	char	*var_value;
 
 	i = 0;
 	var = NULL;
@@ -240,9 +110,8 @@ char *expand_vars(char *s, t_env *env, int is_heredoc)
 			else
 				s = replace_by(s, ft_strdup(""), i, (ft_strlen(var) + 1));
 			free(var);
-
 		}
 		i++;
 	}
-	return(s);
+	return (s);
 }

@@ -62,6 +62,7 @@ char	*clean_quotes(char *s, int *is_changed);
 char	*clean_useless_quotes(char *s);
 char	*remove_chars(char *s, char *chars);
 char	*expand_vars(char *s, t_env *env, int is_heredoc);
+char	*insert_spaces(char *s);
 
 // HEREDOC
 char	**heredoc(char *del, t_env *env, int *sigint_received);
@@ -71,7 +72,7 @@ int		red_input_del(char **av);
 char	*rem_char(char *s, int t);
 char	*remove_useless_quotes(char *s);
 char	*remove_lone_quotes(char *s);
-char	*remove_lone_quote_specify(char *s, char c);
+char	*remove_lone_quote_specify(char *s, char c, int *is_changed);
 char	*clean_input(char *s);
 int		end_of_token(char *s, int is_quoted_heredoc);
 char	*token_dup(char *s, int is_quoted_heredoc);
@@ -79,7 +80,7 @@ char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
-void	append_node_first(t_cmd **tail, char **tab, t_cmd **head);
+void	append_node_before(t_cmd **tail, char **tab, t_cmd **head);
 char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head, t_env *env);
