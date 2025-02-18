@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:40:05 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 16:15:11 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/18 14:59:38 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_signals_heredoc(void)
 	signal(SIGQUIT, handle_sig_heredoc);
 }
 
-static int	setup(char *del, char **line, char **tot, int *sigint_received)
+static int	setup(char **del, char **line, char **tot, int *sigint_received)
 {
 	int		is_single_quoted;
 	char	*ndel;
@@ -38,7 +38,7 @@ static int	setup(char *del, char **line, char **tot, int *sigint_received)
 	is_single_quoted = 0;
 	init_signals_heredoc();
 	received_signal(-1);
-	if (is_quoted(del, 1, '\'') || is_quoted(del, 1, '\"'))
+	if (is_quoted(*del, 1, '\'') || is_quoted(*del, 1, '\"'))
 		is_single_quoted = 1;
 	else
 		is_single_quoted = 0;
@@ -49,10 +49,10 @@ static int	setup(char *del, char **line, char **tot, int *sigint_received)
 		return (*sigint_received = 1, is_single_quoted);
 	if (is_single_quoted)
 	{
-		ndel = malloc(sizeof(char) * (ft_strlen(del) - 1));
-		ft_memcpy(ndel, del + 1, ft_strlen(del) - 2);
-		ndel[ft_strlen(del) - 2] = '\0';
-		del = ndel;
+		ndel = malloc(sizeof(char) * (ft_strlen(*del) - 1));
+		ft_memcpy(ndel, *del + 1, ft_strlen(*del) - 2);
+		ndel[ft_strlen(*del) - 2] = '\0';
+		*del = ndel;
 	}
 	return (is_single_quoted);
 }
@@ -91,14 +91,14 @@ char	**heredoc(char *del, t_env *env, int *sigint_received)
 	char	**result;
 
 	tot = ft_strdup("");
-	is_single_quoted = setup(del, &line, &tot, sigint_received);
+	is_single_quoted = setup(&del, &line, &tot, sigint_received);
 	if (*sigint_received)
-		return (NULL);
+		return (free(del), NULL);
 	read_until_del(&line, &tot, del);
 	if (line)
 		free(line);
 	if (received_signal(0) == SIGINT)
-		return (*sigint_received = 1, NULL);
+		return (free(del), *sigint_received = 1, NULL);
 	result = malloc(sizeof(char *) * 3);
 	result[0] = ft_strdup("<<");
 	if (!is_single_quoted)
@@ -106,5 +106,5 @@ char	**heredoc(char *del, t_env *env, int *sigint_received)
 	else
 		result[1] = tot;
 	result[2] = NULL;
-	return (result);
+	return (free(del), result);
 }

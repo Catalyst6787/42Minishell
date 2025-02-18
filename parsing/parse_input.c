@@ -6,7 +6,7 @@
 /*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:26:09 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/13 17:34:36 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/18 15:02:29 by lfaure           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ char	*expand_vars(char *s, t_env *env, int is_heredoc)
 	var_value = NULL;
 	while (s[i])
 	{
-		if (s[i] == '$' && (!is_quoted(s, i, '\'') || is_heredoc))
+		if (s[i] == '$' && (!is_quoted(s, i, '\'') || is_heredoc)
+			&& (s[i + 1] && s[i + 1] != ' '))
 		{
 			var = extract_var(s, i);
 			var_value = get_var_value(var, env);
@@ -110,6 +111,7 @@ char	*expand_vars(char *s, t_env *env, int is_heredoc)
 			else
 				s = replace_by(s, ft_strdup(""), i, (ft_strlen(var) + 1));
 			free(var);
+			i = 0;
 		}
 		i++;
 	}
