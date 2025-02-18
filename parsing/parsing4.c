@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:45:57 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 17:50:45 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/18 16:12:49 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	append_node(t_cmd **head, char **tab)
 	new->output = 1;
 }
 
-void	append_node_before(t_cmd **tail, char **tab, t_cmd **head)
+// append node before
+void	a_n_b(t_cmd **tail, char **tab, t_cmd **head)
 {
 	t_cmd	*new;
 

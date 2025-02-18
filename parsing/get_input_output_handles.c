@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:54:42 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/18 16:00:52 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/18 16:14:08 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next)
 	sigint_received = 0;
 	if ((*tail)->next && (*tail)->prev)
 	{
-		append_node_before(&(*tail)->prev,
-			heredoc(ft_strdup((*tail)->next->tab[0]), env, &sigint_received), head);
+		a_n_b(&(*tail)->prev, heredoc(ft_strdup((*tail)->next->tab[0]),
+				env, &sigint_received), head);
 		if (sigint_received == 1)
 			return (free_list(head), 0);
 		*next = (*tail)->next->next;
@@ -76,8 +76,8 @@ int	handle_heredoc(t_cmd **tail, t_env *env, t_cmd **head, t_cmd **next)
 	}
 	else if ((*tail)->next && (*tail)->next->next)
 	{
-		append_node_before(tail,
-			heredoc(ft_strdup((*tail)->next->tab[0]), env, &sigint_received), head);
+		a_n_b(tail, heredoc(ft_strdup((*tail)->next->tab[0]),
+				env, &sigint_received), head);
 		if (sigint_received == 1)
 			return (free_list(head), 0);
 		*next = (*tail)->next->next;

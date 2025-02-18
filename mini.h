@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:39:23 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/18 15:17:46 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/18 16:13:29 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char	*quoted_token_dup(char *s);
 char	**split_tokens(char *s);
 int		count_tokens(char *s);
 void	append_node(t_cmd **head, char **tab);
-void	append_node_before(t_cmd **tail, char **tab, t_cmd **head);
+void	a_n_b(t_cmd **tail, char **tab, t_cmd **head);
 char	**sub_tab(char **tab, int from, int to);
 int		group_tokens(t_cmd **head, char **tab);
 t_cmd	*get_input_output(t_cmd **head, t_env *env);
