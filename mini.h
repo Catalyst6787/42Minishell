@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:39:23 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 18:02:31 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/18 15:17:46 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ t_env	*fgv_env(t_env *new);
 
 // utils
 int		ft_strcmp(char *s1, char *s2);
+int		get_exit_status(t_env *env);
 
 # define PROMPT "mini : "
 # define HEREDOC_PROMPT "> "

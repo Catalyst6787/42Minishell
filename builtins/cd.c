@@ -6,7 +6,7 @@
 /*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:58:49 by kgiraud           #+#    #+#             */
-/*   Updated: 2025/02/13 15:15:44 by kgiraud          ###   ########.fr       */
+/*   Updated: 2025/02/18 15:34:47 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_cd(char **av, t_env *env)
 	else
 		path = av[1];
 	if (chdir(path) == -1)
-		return (perror("minishell: chdir in cd error"), 1);
+		return (free(pwd), perror("minishell: chdir in cd error"), 1);
 	set_oldpwd(env, pwd);
 	free(pwd);
 	pwd = getcwd(NULL, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delimiter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 15:40:05 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/18 14:59:38 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/18 16:01:48 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	setup(char **del, char **line, char **tot, int *sigint_received)
 		ndel = malloc(sizeof(char) * (ft_strlen(*del) - 1));
 		ft_memcpy(ndel, *del + 1, ft_strlen(*del) - 2);
 		ndel[ft_strlen(*del) - 2] = '\0';
+		free(*del);
 		*del = ndel;
 	}
 	return (is_single_quoted);

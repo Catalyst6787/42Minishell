@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfaure <lfaure@student.42lausanne.ch>      +#+  +:+       +#+        */
+/*   By: kgiraud <kgiraud@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:14:19 by lfaure            #+#    #+#             */
-/*   Updated: 2025/02/17 17:58:38 by lfaure           ###   ########.fr       */
+/*   Updated: 2025/02/18 15:28:36 by kgiraud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	main(int ac, char **av, char **envp)
 	t_cmd	*groups;
 	int		exit;
 	t_env	*env;
+	int		status;
 
 	groups = NULL;
 	exit = 0;
@@ -93,8 +94,12 @@ int	main(int ac, char **av, char **envp)
 			exit = 1;
 		else if (*line)
 			exit = handle_cmds(&line, envp, &env, &groups);
+		if (line)
+			free(line);
+		line = NULL;
 	}
+	status = get_exit_status(env);
 	free_envp(&env);
 	clear_history();
-	return (fgv_exit_arg(-1));
+	return (status);
 }
